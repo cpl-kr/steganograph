@@ -1,0 +1,328 @@
+package de.platen.steganograph;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+public class KommandozeileTest {
+
+    private static final String OPTION_VERTEILREGELGENERIERUNG = "verteilregelgenerierung";
+    private static final String OPTION_BLOCKGROESSE = "blockgroesse";
+    private static final String OPTION_NUTZDATEN = "nutzdaten";
+    private static final String OPTION_ANZAHL_KANAELE = "anzahlkanaele";
+    private static final String OPTION_BITTIEFE = "bittiefe";
+    private static final String OPTION_DATEINAME = "dateiname";
+
+    private static final String HINWEIS_BLOCKGROESSE = "Für die Verteilregelgenerierung muss die Blockgröße angegeben werden.";
+    private static final String HINWEIS_NUTZDATEN = "Für die Verteilregelgenerierung muss die Anzahl der Nutzdaten (Bytes) angegeben werden.";
+    private static final String HINWEIS_ANZAHL_KANAELE = "Für die Verteilregelgenerierung muss die Anzahl der Kanäle angegeben werden.";
+    private static final String HINWEIS_BITTIEFE = "Für die Verteilregelgenerierung muss die Bittiefe angegeben werden.";
+    private static final String HINWEIS_DATEINAME = "Für die Verteilregelgenerierung muss ein Dateiname angegeben werden.";
+
+    private static final String OPTION_VERSTECKEN = "verstecken";
+    private static final String OPTION_HOLEN = "holen";
+
+    private static final String OPTION_DATEINAME_VERTEILREGEL = "dateiVerteilregel";
+    private static final String OPTION_DATEINAME_NUTZDATEN = "dateiNutzdaten";
+    private static final String OPTION_DATEINAME_QUELLE = "dateiQuelle";
+    private static final String OPTION_DATEINAME_ZIEL = "dateiZiel";
+
+    private static final String HINWEIS_DATEINAME_VERTEILREGEL = "Für das Verstecken/Holen muss die Datei mit den Verteilregeln angegeben werden.";
+    private static final String HINWEIS_DATEINAME_NUTZDATEN = "Für das Verstecken/Holen muss die Datei mit/für den Nutzdaten angegeben werden.";
+    private static final String HINWEIS_DATEINAME_QUELLE = "Für das Verstecken/Holen muss die Quelldatei angegeben werden.";
+    private static final String HINWEIS_DATEINAME_ZIEL = "Für das Verstecken muss die Zieldatei angegeben werden.";
+
+    private static final String DATEINAME_VERTEILREGEL = "src/test/resources/verteilregel";
+
+    private Kommandozeile kommandozeile;
+    private Aktionen aktionen = Mockito.mock(Aktionen.class);
+    private PrintStream ps;
+    private OutputStream os;
+
+    @Before
+    public void errorStream() throws Exception {
+        os = new ByteArrayOutputStream();
+        ps = new PrintStream(os);
+        System.setErr(ps);
+        kommandozeile = new Kommandozeile(aktionen);
+    }
+
+    @After
+    public void standardStream() {
+        ps.close();
+        System.setErr(System.out);
+    }
+
+    @Test
+    public void testBehandleKommandozeileOhneParameter() throws Exception {
+        String[] args = {};
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungAlle() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "100");
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "10");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
+                nutzdaten[1], anzahlKanaele[0], anzahlKanaele[1], bittiefe[0], bittiefe[1], dateiname[0],
+                dateiname[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungNurHauptparameter() throws Exception {
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertTrue(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertTrue(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungOhneBlockgroesse() throws Exception {
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "500");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, nutzdaten[0], nutzdaten[1], anzahlKanaele[0],
+                anzahlKanaele[1], bittiefe[0], bittiefe[1], dateiname[0], dateiname[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertFalse(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertFalse(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungOhneNutzdaten() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "1000");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], anzahlKanaele[0],
+                anzahlKanaele[1], bittiefe[0], bittiefe[1], dateiname[0], dateiname[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertTrue(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertFalse(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungOhneAnzahlKanaele() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "1000");
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "500");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
+                nutzdaten[1], bittiefe[0], bittiefe[1], dateiname[0], dateiname[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertFalse(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertFalse(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungOhneBittiefe() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "1000");
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "500");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
+                nutzdaten[1], anzahlKanaele[0], anzahlKanaele[1], dateiname[0], dateiname[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertFalse(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertTrue(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungOhneDateiname() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "1000");
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "500");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
+                nutzdaten[1], anzahlKanaele[0], anzahlKanaele[1], bittiefe[0], bittiefe[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_BLOCKGROESSE));
+        assertFalse(ausgabe.contains(HINWEIS_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_ANZAHL_KANAELE));
+        assertFalse(ausgabe.contains(HINWEIS_BITTIEFE));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlle() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueVersteckenNurHauptparameter() throws Exception {
+        String[] args = { "--" + OPTION_VERSTECKEN };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_ZIEL));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueVersteckenOhneDateiVersteckregel() throws Exception {
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiNutzdaten[0], dateiNutzdaten[1], dateiQuelle[0],
+                dateiQuelle[1], dateiZiel[0], dateiZiel[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_ZIEL));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueVersteckenOhneDateiNutzdaten() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiQuelle[0],
+                dateiQuelle[1], dateiZiel[0], dateiZiel[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_ZIEL));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueVersteckenOhneDateiQuelle() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiZiel[0], dateiZiel[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_ZIEL));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueVersteckenOhneDateiZiel() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_ZIEL));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerHolenAlle() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] args = { "--" + OPTION_HOLEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueHolenNurHauptparameter() throws Exception {
+        String[] args = { "--" + OPTION_HOLEN };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueHolenOhneDateiVersteckregel() throws Exception {
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] args = { "--" + OPTION_HOLEN, dateiNutzdaten[0], dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueHolenOhneDateiNutzdaten() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] args = { "--" + OPTION_HOLEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiQuelle[0],
+                dateiQuelle[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFueHolenOhneDateiQuelle() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] args = { "--" + OPTION_HOLEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
+        assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
+        assertTrue(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+    }
+
+    private static String[] erzeugeParameter(String name, String wert) {
+        return new String[] { "--" + name, wert };
+    }
+}
