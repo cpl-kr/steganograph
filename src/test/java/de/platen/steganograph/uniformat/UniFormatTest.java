@@ -296,6 +296,24 @@ public class UniFormatTest {
         uniFormat.checkPositionsinhalte(8);
     }
 
+    @Test
+    public void testGetAnzahlPositionen() {
+        UniFormatZumTest uniFormat = erzeugeUniFormat(2);
+        assertEquals(512, uniFormat.getAnzahlPositionen());
+    }
+
+    @Test
+    public void testGetAnzahlKanaele() {
+        UniFormatZumTest uniFormat = erzeugeUniFormat(2);
+        assertEquals(4, uniFormat.getAnzahlKanaele());
+    }
+
+    @Test
+    public void testGetBittiefe() {
+        UniFormatZumTest uniFormat = erzeugeUniFormat(2);
+        assertEquals(2, uniFormat.getBittiefe());
+    }
+
     private UniFormatZumTest erzeugeUniFormat(int wertBittiefe) {
         int positionsanzahl = 512;
         int kanalanzahl = 4;

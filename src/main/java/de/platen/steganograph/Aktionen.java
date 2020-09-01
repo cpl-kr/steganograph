@@ -16,7 +16,7 @@ import de.platen.steganograph.datentypen.Hoehe;
 import de.platen.steganograph.datentypen.PositionXY;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
-import de.platen.steganograph.uniformat.UniformatBild4ByteABGR;
+import de.platen.steganograph.uniformat.UniFormatBild4ByteABGR;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.utils.DateiUtils;
@@ -58,7 +58,7 @@ public class Aktionen {
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);
         AnzahlKanaele anzahlKanaele = Verteilregelgenerierung.ermittleAnzahlKanaele(verteilregel);
         Bittiefe bittiefe = Verteilregelgenerierung.ermittleBittiefe(verteilregel);
-        UniformatBild4ByteABGR uniFormatBild = new UniformatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe,
+        UniFormatBild4ByteABGR uniFormatBild = new UniFormatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe,
                 eintraege);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         byte[] startblock = leseBlock(bufferedImage, uniFormatBild, abPosition, anzahlPositionen.get());
@@ -113,7 +113,7 @@ public class Aktionen {
         return bufferedImageKopie;
     }
 
-    private static byte[] leseBlock(BufferedImage bufferedImage, UniformatBild4ByteABGR uniFormatBild,
+    private static byte[] leseBlock(BufferedImage bufferedImage, UniFormatBild4ByteABGR uniFormatBild,
             PositionXY abPosition, int maximalAnzahl) {
         uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         return uniFormatBild.holeNutzdaten(maximalAnzahl);
