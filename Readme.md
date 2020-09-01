@@ -4,7 +4,7 @@
 
 *Übersicht*
 
-Mit diesem Programm können anhand von Versteckvorgaben Nutzdaten in einer Mediendatei (in der vorliegenden Version 1.1.0 eine Bilddatei mit 3 Farbkanälen RGB und einem Alphakanal z.B. als PNG-Datei) versteckt und auch wieder herausgeholt werden.
+Mit diesem Programm können anhand von Versteckvorgaben Nutzdaten in einer Mediendatei (in der vorliegenden Version eine Bilddatei mit 3 Farbkanälen RGB und einem Alphakanal z.B. als PNG-Datei) versteckt und auch wieder herausgeholt werden.
 Die Versteckvorgaben selbst können mit diesem Programm ebenfalls erzeugt werden.
 
 Das Verstecken wird blockweise durchgeführt. Jeder Block besteht aus einer Menge von Positionen (bei einem Bild sind dies Bildpunkte).
