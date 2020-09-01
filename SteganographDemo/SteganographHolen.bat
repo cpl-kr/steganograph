@@ -1,2 +1,2 @@
-java -jar ./Steganograph-1.0.0.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png
+java -jar ./Steganograph-1.1.0.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png
 pause
