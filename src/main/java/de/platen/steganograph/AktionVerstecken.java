@@ -13,7 +13,8 @@ import de.platen.steganograph.datentypen.Hoehe;
 import de.platen.steganograph.datentypen.PositionXY;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
-import de.platen.steganograph.uniformat.UniformatBild4ByteABGR;
+import de.platen.steganograph.uniformat.UniFormatBild;
+import de.platen.steganograph.uniformat.UniFormatBild4ByteABGR;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
@@ -32,11 +33,12 @@ public class AktionVerstecken {
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);
         AnzahlKanaele anzahlKanaele = Verteilregelgenerierung.ermittleAnzahlKanaele(verteilregel);
         Bittiefe bittiefe = Verteilregelgenerierung.ermittleBittiefe(verteilregel);
-        int anzahlBloecke = (bufferedImageQuelle.getWidth() * bufferedImageQuelle.getHeight()) / anzahlPositionen.get();
-        if (((anzahlBloecke - 1) * anzahlNutzdaten.get()) < nutzdaten.length) {
+        int anzahlBloeckeGesamt = (bufferedImageQuelle.getWidth() * bufferedImageQuelle.getHeight())
+                / anzahlPositionen.get();
+        if (((anzahlBloeckeGesamt - 1) * anzahlNutzdaten.get()) < nutzdaten.length) {
             throw new RuntimeException(FEHLER_DATENMENGE);
         }
-        UniformatBild4ByteABGR uniFormatBild = new UniformatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe,
+        UniFormatBild4ByteABGR uniFormatBild = new UniFormatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe,
                 eintraege);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         versteckeStartblock(nutzdaten.length, anzahlNutzdaten, dateinameNutzdaten, uniFormatBild, abPosition,
@@ -48,16 +50,23 @@ public class AktionVerstecken {
         } else {
             throw new RuntimeException(FEHLER_DATENMENGE);
         }
+        int anzahlBloecke = 1;
         if (nutzdaten.length <= anzahlNutzdaten.get()) {
             versteckeBlock(bufferedImageZiel, uniFormatBild, abPosition, nutzdaten);
+            anzahlBloecke++;
         } else {
-            versteckeBloecke(bufferedImageZiel, nutzdaten, anzahlPositionen, anzahlNutzdaten, uniFormatBild, abPosition,
-                    bildpunktposition);
+            anzahlBloecke += versteckeBloecke(bufferedImageZiel, nutzdaten, anzahlPositionen, anzahlNutzdaten,
+                    uniFormatBild, abPosition, bildpunktposition);
+        }
+        int laenge = anzahlPositionen.get() * anzahlBloecke;
+        if (bildpunktposition.ermittleNaechstenBildpunkt(abPosition, laenge) != null) {
+            abPosition = bildpunktposition.ermittleNaechstenBildpunkt(abPosition, laenge);
+            verrausche(bufferedImageZiel, uniFormatBild, bildpunktposition, abPosition);
         }
     }
 
     private static void versteckeStartblock(int anzahlNutzdaten, AnzahlNutzdaten anzahlNutzdatenBlock, String dateiname,
-            UniformatBild4ByteABGR uniFormatBild, PositionXY abPosition, AnzahlPositionen anzahlPositionen,
+            UniFormatBild4ByteABGR uniFormatBild, PositionXY abPosition, AnzahlPositionen anzahlPositionen,
             BufferedImage bufferedImage) {
         byte[] anzahl = ByteUtils.intToBytes(anzahlNutzdaten);
         String datei = dateiname;
@@ -89,7 +98,7 @@ public class AktionVerstecken {
         versteckeBlock(bufferedImage, uniFormatBild, abPosition, daten);
     }
 
-    private static void versteckeBlock(BufferedImage bufferedImage, UniformatBild4ByteABGR uniFormatBild,
+    private static void versteckeBlock(BufferedImage bufferedImage, UniFormatBild4ByteABGR uniFormatBild,
             PositionXY abPosition, byte[] nutzdatenblock) {
         uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         uniFormatBild.verrausche();
@@ -97,16 +106,18 @@ public class AktionVerstecken {
         uniFormatBild.uebertrageBereichVonUniFormat(bufferedImage, abPosition);
     }
 
-    private static void versteckeBloecke(BufferedImage bufferedImageZiel, byte[] nutzdaten,
-            AnzahlPositionen anzahlPositionen, AnzahlNutzdaten anzahlNutzdaten, UniformatBild4ByteABGR uniFormatBild,
+    private static int versteckeBloecke(BufferedImage bufferedImageZiel, byte[] nutzdaten,
+            AnzahlPositionen anzahlPositionen, AnzahlNutzdaten anzahlNutzdaten, UniFormatBild4ByteABGR uniFormatBild,
             PositionXY abPosition, Bildpunktposition bildpunktposition) {
         int laenge = anzahlNutzdaten.get();
         byte[] nutzdatenblock = new byte[laenge];
         boolean ende = false;
         int offset = 0;
+        int anzahlBloecke = 0;
         while (!ende) {
             System.arraycopy(nutzdaten, offset, nutzdatenblock, 0, laenge);
             versteckeBlock(bufferedImageZiel, uniFormatBild, abPosition, nutzdatenblock);
+            anzahlBloecke++;
             if (laenge == anzahlNutzdaten.get()) {
                 offset += laenge;
                 if (bildpunktposition.ermittleNaechstenBildpunkt(abPosition, laenge) != null) {
@@ -122,6 +133,28 @@ public class AktionVerstecken {
                 ende = true;
             }
         }
+        return anzahlBloecke;
+    }
+
+    private static void verrausche(BufferedImage bufferedImage, UniFormatBild uniFormatBild,
+            Bildpunktposition bildpunktposition, PositionXY abPositionXY) {
+        boolean ende = false;
+        int laenge = uniFormatBild.getAnzahlPositionen();
+        PositionXY abPosition = abPositionXY;
+        while (!ende) {
+            verrauscheBlock(bufferedImage, uniFormatBild, bildpunktposition, abPositionXY);
+            abPosition = bildpunktposition.ermittleNaechstenBildpunkt(abPosition, laenge);
+            if (abPosition == null) {
+                ende = true;
+            }
+        }
+    }
+
+    private static void verrauscheBlock(BufferedImage bufferedImage, UniFormatBild uniFormatBild,
+            Bildpunktposition bildpunktposition, PositionXY abPosition) {
+        uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
+        uniFormatBild.verrausche();
+        uniFormatBild.uebertrageBereichVonUniFormat(bufferedImage, abPosition);
     }
 
     private static void pruefeParameter(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,

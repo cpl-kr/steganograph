@@ -133,6 +133,18 @@ public abstract class UniFormat {
         }
     }
 
+    public int getAnzahlPositionen() {
+        return anzahlPositionen.get();
+    }
+
+    public int getAnzahlKanaele() {
+        return anzahlKanaele.get();
+    }
+
+    public int getBittiefe() {
+        return bittiefe.get();
+    }
+
     private void checkPositionsinhalt() {
         for (Eintrag eintrag : eintraege) {
             if ((eintrag.getPositionsnummer().get() > anzahlPositionen.get())

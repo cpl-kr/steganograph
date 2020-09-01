@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import de.platen.steganograph.datentypen.AnzahlKanaele;
 import de.platen.steganograph.datentypen.AnzahlNutzdaten;
@@ -214,6 +216,33 @@ public class AktionVersteckenTest {
         assertEquals("00000011000000110000000000000000", verteileByte((byte) 0xF0));
         assertEquals("00000000000000110000000000000000", verteileByte((byte) 0x30));
         assertEquals("00000011000000000000000000000000", verteileByte((byte) 0xC0));
+    }
+
+    @Test
+    public void testVerrauscheRest() {
+        Blockgroesse blockgroesse = new Blockgroesse(BLOCKGROESSE);
+        AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
+        AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
+        Bittiefe bittiefe = new Bittiefe(BITTIEFE);
+        byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
+        int anzahlBytes = 10;
+        byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
+        BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
+        BufferedImage bufferedImageZiel = Mockito.mock(BufferedImage.class);
+        Mockito.when(bufferedImageZiel.getRGB(Mockito.anyInt(), Mockito.anyInt())).thenReturn(0xff000000);
+        Mockito.when(bufferedImageZiel.getType()).thenReturn(BufferedImage.TYPE_4BYTE_ABGR);
+        Mockito.when(bufferedImageZiel.getHeight()).thenReturn(bufferedImageQuelle.getHeight());
+        Mockito.when(bufferedImageZiel.getWidth()).thenReturn(bufferedImageQuelle.getWidth());
+        WritableRaster writableRaster = Mockito.mock(WritableRaster.class);
+        Mockito.when(bufferedImageZiel.getAlphaRaster()).thenReturn(writableRaster);
+        AktionVerstecken.versteckeNutzdaten(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel, verteilregel,
+                nutzdaten);
+        for (int x = 0; x < bufferedImageQuelle.getWidth(); x++) {
+            for (int y = 0; y < bufferedImageQuelle.getHeight(); y++) {
+                Mockito.verify(bufferedImageZiel, Mockito.atLeast(2)).setRGB(Mockito.anyInt(), Mockito.anyInt(),
+                        Mockito.anyInt());
+            }
+        }
     }
 
     private byte[] generiere(Blockgroesse blockgroesse, AnzahlNutzdaten anzahlNutzdaten, AnzahlKanaele anzahlKanaele,
