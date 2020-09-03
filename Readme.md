@@ -38,6 +38,7 @@ Verstecken von Nutzdaten:<br>
 --dateiNutzdaten \<Dateiname\> Dateiname der Datei mit den Nutzdaten><br>
 --dateiQuelle \<Dateiname\> Dateiname der Mediendatei für das Verstecken der Nutzdaten><br>
 --dateiZiel \<Dateiname\> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
+--verrauschen [ohne|nutzdatenbereich|alles] Optionale Angabe zum Verrauschen<br>
 Holen von Nutzdaten:<br>
 --holen Hauptparameter für das Holen der Nutzdaten<br>
 --dateiVerteilregel \<Dateiname\> Dateiname der Datei mit den Verteilregeln><br>
