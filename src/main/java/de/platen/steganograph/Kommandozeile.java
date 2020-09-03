@@ -16,12 +16,17 @@ public class Kommandozeile {
     private static final String OPTION_ANZAHL_KANAELE = "anzahlkanaele";
     private static final String OPTION_BITTIEFE = "bittiefe";
     private static final String OPTION_DATEINAME = "dateiname";
+    private static final String OPTION_VERRAUSCHEN = "verrauschen";
+    private static final String VERRAUSCHEN_WERT_OHNE = "ohne";
+    private static final String VERRAUSCHEN_WERT_NUTZDATENBEREICH = "nutzdatenbereich";
+    private static final String VERRAUSCHEN_WERT_ALLES = "alles";
 
     private static final String HINWEIS_BLOCKGROESSE = "Für die Verteilregelgenerierung muss die Blockgröße angegeben werden.";
     private static final String HINWEIS_NUTZDATEN = "Für die Verteilregelgenerierung muss die Anzahl der Nutzdaten (Bytes) angegeben werden.";
     private static final String HINWEIS_ANZAHL_KANAELE = "Für die Verteilregelgenerierung muss die Anzahl der Kanäle angegeben werden.";
     private static final String HINWEIS_BITTIEFE = "Für die Verteilregelgenerierung muss die Bittiefe angegeben werden.";
     private static final String HINWEIS_DATEINAME = "Für die Verteilregelgenerierung muss ein Dateiname angegeben werden.";
+    private static final String HINWEIS_VERRAUSCHEN = "Für das Verrauschen muss 'ohne' oder 'nutzdatenbereich' oder 'alles' angegeben werden.";
 
     private static final String OPTION_VERSTECKEN = "verstecken";
     private static final String OPTION_HOLEN = "holen";
@@ -76,6 +81,7 @@ public class Kommandozeile {
         options.addOption("n", OPTION_DATEINAME_NUTZDATEN, true, "Datei der Nutzdaten für das Verstecken.");
         options.addOption("q", OPTION_DATEINAME_QUELLE, true, "Quelldatei für das Verstecken.");
         options.addOption("z", OPTION_DATEINAME_ZIEL, true, "Zieldatei für das Verstecken.");
+        options.addOption("w", OPTION_VERRAUSCHEN, true, "Angabe für das Verrauschen.");
     }
 
     private static void addOptionsHolen(Options options) {
@@ -144,7 +150,25 @@ public class Kommandozeile {
         if (hatfehlendenParameter) {
             return 1;
         }
-        aktionen.verstecke(dateiVerteilregel, dateiNutzdaten, dateiQuelle, dateiZiel);
+        Verrauschoption verrauschoption = Verrauschoption.OHNE;
+        String verrauschen = getOption(cmd, OPTION_VERRAUSCHEN);
+        if (isOptionOk(verrauschen)) {
+            switch (verrauschen) {
+            case VERRAUSCHEN_WERT_OHNE:
+                verrauschoption = Verrauschoption.OHNE;
+                break;
+            case VERRAUSCHEN_WERT_NUTZDATENBEREICH:
+                verrauschoption = Verrauschoption.NUTZDATENBEREICH;
+                break;
+            case VERRAUSCHEN_WERT_ALLES:
+                verrauschoption = Verrauschoption.ALLES;
+                break;
+            default:
+                System.err.println(HINWEIS_VERRAUSCHEN);
+                return 1;
+            }
+        }
+        aktionen.verstecke(dateiVerteilregel, dateiNutzdaten, dateiQuelle, dateiZiel, verrauschoption);
         return 0;
     }
 
