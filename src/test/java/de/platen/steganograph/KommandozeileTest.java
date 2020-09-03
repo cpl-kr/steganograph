@@ -21,6 +21,11 @@ public class KommandozeileTest {
     private static final String OPTION_ANZAHL_KANAELE = "anzahlkanaele";
     private static final String OPTION_BITTIEFE = "bittiefe";
     private static final String OPTION_DATEINAME = "dateiname";
+    private static final String OPTION_VERRAUSCHEN = "verrauschen";
+    private static final String VERRAUSCHEN_WERT_OHNE = "ohne";
+    private static final String VERRAUSCHEN_WERT_NUTZDATENBEREICH = "nutzdatenbereich";
+    private static final String VERRAUSCHEN_WERT_ALLES = "alles";
+    private static final String HINWEIS_VERRAUSCHEN = "Für das Verrauschen muss 'ohne' oder 'nutzdatenbereich' oder 'alles' angegeben werden.";
 
     private static final String HINWEIS_BLOCKGROESSE = "Für die Verteilregelgenerierung muss die Blockgröße angegeben werden.";
     private static final String HINWEIS_NUTZDATEN = "Für die Verteilregelgenerierung muss die Anzahl der Nutzdaten (Bytes) angegeben werden.";
@@ -44,7 +49,7 @@ public class KommandozeileTest {
     private static final String DATEINAME_VERTEILREGEL = "src/test/resources/verteilregel";
 
     private Kommandozeile kommandozeile;
-    private Aktionen aktionen = Mockito.mock(Aktionen.class);
+    private final Aktionen aktionen = Mockito.mock(Aktionen.class);
     private PrintStream ps;
     private OutputStream os;
 
@@ -190,6 +195,64 @@ public class KommandozeileTest {
                 dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1] };
         assertEquals(0, kommandozeile.behandleKommandozeile(args));
         assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleUndOptionVerrauscheOhne() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] verrauschen = erzeugeParameter(OPTION_VERRAUSCHEN, VERRAUSCHEN_WERT_OHNE);
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1], verrauschen[0],
+                verrauschen[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleUndOptionVerrauscheNutzdatenbereich()
+            throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] verrauschen = erzeugeParameter(OPTION_VERRAUSCHEN, VERRAUSCHEN_WERT_NUTZDATENBEREICH);
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1], verrauschen[0],
+                verrauschen[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleUndOptionVerrauscheAlles() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] verrauschen = erzeugeParameter(OPTION_VERRAUSCHEN, VERRAUSCHEN_WERT_ALLES);
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1], verrauschen[0],
+                verrauschen[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleUndOptionVerrauscheFalscherWert() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] verrauschen = erzeugeParameter(OPTION_VERRAUSCHEN, "falsch");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1], verrauschen[0],
+                verrauschen[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertTrue(ausgabe.contains(HINWEIS_VERRAUSCHEN));
     }
 
     @Test
