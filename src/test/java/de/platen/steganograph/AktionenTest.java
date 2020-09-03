@@ -46,7 +46,7 @@ public class AktionenTest {
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK);
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
@@ -73,7 +73,7 @@ public class AktionenTest {
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 50);
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK);
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
@@ -100,7 +100,7 @@ public class AktionenTest {
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 500);
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK);
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
@@ -127,7 +127,7 @@ public class AktionenTest {
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 525);
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK);
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
@@ -154,7 +154,7 @@ public class AktionenTest {
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK);
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
         assertTrue(fileNutzdatenOriginal.exists());
         fileNutzdatenOriginal.delete();
@@ -185,7 +185,7 @@ public class AktionenTest {
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         try {
             aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                    DATEINAME_BILD_VERSTECK);
+                    DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
             assertEquals("Es können nicht alle Nutzdaten im Bild untergebracht werden.", e.getMessage());
@@ -205,7 +205,7 @@ public class AktionenTest {
         erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
         try {
             aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                    DATEINAME_BILD_VERSTECK);
+                    DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
             assertEquals("Es können nicht alle Daten im Block untergebracht werden.", e.getMessage());
