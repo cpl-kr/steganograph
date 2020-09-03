@@ -39,13 +39,13 @@ public class Aktionen {
     }
 
     public void verstecke(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
-            String dateinameZiel) throws IOException {
+            String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
         BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
         AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten);
+                nutzdaten, verrauschoption);
         DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
     }
 
