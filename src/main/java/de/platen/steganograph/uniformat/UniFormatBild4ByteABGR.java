@@ -34,12 +34,18 @@ public class UniFormatBild4ByteABGR extends UniFormatBild {
         Bildpunkt4ByteABGR bildpunkt = new Bildpunkt4ByteABGR(farbe);
         Kanalnummer kanalnummer = new Kanalnummer(KANAL_ROT);
         positionsinhalt.setzeWert(kanalnummer, bildpunkt.getRot());
-        kanalnummer = new Kanalnummer(KANAL_GRUEN);
-        positionsinhalt.setzeWert(kanalnummer, bildpunkt.getGruen());
-        kanalnummer = new Kanalnummer(KANAL_BLAU);
-        positionsinhalt.setzeWert(kanalnummer, bildpunkt.getBlau());
-        kanalnummer = new Kanalnummer(KANAL_ALPHA);
-        positionsinhalt.setzeWert(kanalnummer, bildpunkt.getAlpha());
+        if (anzahlKanaele.get() > 1) {
+            kanalnummer = new Kanalnummer(KANAL_GRUEN);
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getGruen());
+        }
+        if (anzahlKanaele.get() > 2) {
+            kanalnummer = new Kanalnummer(KANAL_BLAU);
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getBlau());
+        }
+        if (anzahlKanaele.get() > 3) {
+            kanalnummer = new Kanalnummer(KANAL_ALPHA);
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getAlpha());
+        }
         positionsinhalte.put(positionsnummer, positionsinhalt);
     }
 
@@ -49,10 +55,16 @@ public class UniFormatBild4ByteABGR extends UniFormatBild {
         checkParameter(bufferedImage, positionXY, positionsnummer);
         Positionsinhalt positionsinhalt = positionsinhalte.get(positionsnummer);
         int rgb = 0;
-        rgb += Bildpunkt4ByteABGR.getBlau(positionsinhalt.holeWert(new Kanalnummer(KANAL_BLAU)));
-        rgb += Bildpunkt4ByteABGR.getGruen(positionsinhalt.holeWert(new Kanalnummer(KANAL_GRUEN)));
         rgb += Bildpunkt4ByteABGR.getRot(positionsinhalt.holeWert(new Kanalnummer(KANAL_ROT)));
-        rgb += Bildpunkt4ByteABGR.getAlpha(positionsinhalt.holeWert(new Kanalnummer(KANAL_ALPHA)));
+        if (anzahlKanaele.get() > 1) {
+            rgb += Bildpunkt4ByteABGR.getGruen(positionsinhalt.holeWert(new Kanalnummer(KANAL_GRUEN)));
+        }
+        if (anzahlKanaele.get() > 2) {
+            rgb += Bildpunkt4ByteABGR.getBlau(positionsinhalt.holeWert(new Kanalnummer(KANAL_BLAU)));
+        }
+        if (anzahlKanaele.get() > 3) {
+            rgb += Bildpunkt4ByteABGR.getAlpha(positionsinhalt.holeWert(new Kanalnummer(KANAL_ALPHA)));
+        }
         bufferedImage.setRGB(positionXY.getX().get(), positionXY.getY().get(), rgb);
     }
 
@@ -61,7 +73,7 @@ public class UniFormatBild4ByteABGR extends UniFormatBild {
         if (anzahlKanaele == null) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_UNIFORMAT_NULL);
         }
-        if (anzahlKanaele.get() != 4) {
+        if (anzahlKanaele.get() > 4) {
             throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
         }
     }
