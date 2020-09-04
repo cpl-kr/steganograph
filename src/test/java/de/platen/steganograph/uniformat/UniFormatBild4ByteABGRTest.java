@@ -34,9 +34,8 @@ public class UniFormatBild4ByteABGRTest {
         try {
             uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         } catch (RuntimeException e) {
-            assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
+            fail();
         }
-
     }
 
     @Test
@@ -52,10 +51,10 @@ public class UniFormatBild4ByteABGRTest {
         }
         try {
             uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
+            fail();
         } catch (RuntimeException e) {
             assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
         }
-
     }
 
     @Test
@@ -66,9 +65,8 @@ public class UniFormatBild4ByteABGRTest {
         try {
             uniFormatBild.uebertrageBereichVonUniFormat(bufferedImage, abPosition);
         } catch (RuntimeException e) {
-            assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
+            fail();
         }
-
     }
 
     @Test
@@ -78,10 +76,10 @@ public class UniFormatBild4ByteABGRTest {
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         try {
             uniFormatBild.uebertrageBereichVonUniFormat(bufferedImage, abPosition);
+            fail();
         } catch (RuntimeException e) {
             assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
         }
-
     }
 
     @Test
@@ -229,7 +227,7 @@ public class UniFormatBild4ByteABGRTest {
     @Test
     public void testtestCheckAnzahlKanaeleAnzahlFalsch() {
         UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
-        AnzahlKanaele anzahlKanaele = new AnzahlKanaele(3);
+        AnzahlKanaele anzahlKanaele = new AnzahlKanaele(5);
         try {
             uniformatBild4ByteABGR.checkAnzahlKanaele(anzahlKanaele);
             fail();
