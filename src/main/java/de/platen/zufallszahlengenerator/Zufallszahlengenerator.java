@@ -14,7 +14,12 @@ public class Zufallszahlengenerator {
     private static final String FEHLER_BEREICH_FALSCH = "Der Bereich ist nicht groß genug.";
     private static final String FEHLER_ANZAHLZUFALLSZAHL = "Die Anzahl der Zufallszahlen ist größer als der Bereich.";
 
-    private Zufallszahlengenerator() {
+    public Zufallszahlengenerator() {
+    }
+
+    public Set<Integer> erzeugeMengeZufallszahlen(AnzahlZufallszahlen anzahlZufallszahlen, BereichVon bereichVon,
+            BereichBis bereichBis) {
+        return Zufallszahlengenerator.erzeugeZufallszahlenmenge(anzahlZufallszahlen, bereichVon, bereichBis);
     }
 
     public static Set<Integer> erzeugeZufallszahlenmenge(AnzahlZufallszahlen anzahlZufallszahlen, BereichVon bereichVon,
