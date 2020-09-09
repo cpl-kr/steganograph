@@ -54,6 +54,14 @@ public class VerteilregelgenerierungTest {
     }
 
     @Test
+    public void testGeneriereByteArrayAndereKonfiguration() {
+        final KonfigurationVerteilregeln konfigurationGenerierung = erzeugeKonfiguration(100, 50, 3, 2);
+        final Verteilregelgenerierung verteilregelgenerierung = new Verteilregelgenerierung(konfigurationGenerierung);
+        final byte[] konfiguration = verteilregelgenerierung.generiere();
+        checkErgebnis(konfiguration, 100, 50, (byte) 0x03, (byte) 0x02);
+    }
+
+    @Test
     public void testGeneriereMitVorgabeParameterNull() {
         final KonfigurationVerteilregeln konfigurationGenerierung = erzeugeKonfiguration();
         final Verteilregelgenerierung verteilregelgenerierung = new Verteilregelgenerierung(konfigurationGenerierung);
@@ -289,6 +297,15 @@ public class VerteilregelgenerierungTest {
         return new KonfigurationVerteilregeln(blockGroesse, nutzdaten, bittiefe, anzahlKanaele);
     }
 
+    private KonfigurationVerteilregeln erzeugeKonfiguration(int blockgroesse, int anzahlNutzdaten, int kanalanzahl,
+            int tiefe) {
+        final Blockgroesse blockGroesse = new Blockgroesse(blockgroesse);
+        final AnzahlNutzdaten nutzdaten = new AnzahlNutzdaten(anzahlNutzdaten);
+        final AnzahlKanaele anzahlKanaele = new AnzahlKanaele(kanalanzahl);
+        final Bittiefe bittiefe = new Bittiefe(tiefe);
+        return new KonfigurationVerteilregeln(blockGroesse, nutzdaten, bittiefe, anzahlKanaele);
+    }
+
     private void checkErgebnis(byte[] ergebnis) {
         checkVersion(ergebnis);
         checkKonfigurationBlockgroesse(ergebnis);
@@ -309,6 +326,17 @@ public class VerteilregelgenerierungTest {
         checkVerteilungMitVorgabe(ergebnis);
     }
 
+    private void checkErgebnis(byte[] ergebnis, int blockgroesse, int anzahlNutzdaten, byte kanalanzahl, byte tiefe) {
+        checkVersion(ergebnis);
+        checkKonfigurationBlockgroesse(ergebnis, blockgroesse);
+        checkKonfigurationNutzdaten(ergebnis, anzahlNutzdaten);
+        checkKonfigurationAnzahlKanaele(ergebnis, kanalanzahl);
+        checkKonfigurationBittiefe(ergebnis, tiefe);
+        int anzahlBytesVerteilung = anzahlNutzdaten * GROESSE_EINTRAG * (8 / tiefe);
+        checkKAnzahlVerteilung(ergebnis, anzahlBytesVerteilung);
+        checkVerteilung(ergebnis, anzahlBytesVerteilung, blockgroesse, anzahlNutzdaten, kanalanzahl, tiefe);
+    }
+
     private void checkVersion(byte[] ergebnis) {
         assertEquals(0x1, ergebnis[0]);
         assertEquals(0x0, ergebnis[1]);
@@ -319,20 +347,40 @@ public class VerteilregelgenerierungTest {
         checkInt(ergebnis, BLOCKGROESSE, 3);
     }
 
+    private void checkKonfigurationBlockgroesse(byte[] ergebnis, int vergleich) {
+        checkInt(ergebnis, vergleich, 3);
+    }
+
     private void checkKonfigurationNutzdaten(byte[] ergebnis) {
         checkInt(ergebnis, ANZAHL_NUTZDATEN, 7);
+    }
+
+    private void checkKonfigurationNutzdaten(byte[] ergebnis, int vergleich) {
+        checkInt(ergebnis, vergleich, 7);
     }
 
     private void checkKonfigurationAnzahlKanaele(byte[] ergebnis) {
         checkByte(ergebnis, ANZAHL_KANAELE, 11);
     }
 
+    private void checkKonfigurationAnzahlKanaele(byte[] ergebnis, byte vergleich) {
+        checkByte(ergebnis, vergleich, 11);
+    }
+
     private void checkKonfigurationBittiefe(byte[] ergebnis) {
         checkByte(ergebnis, BITTIEFE, 12);
     }
 
+    private void checkKonfigurationBittiefe(byte[] ergebnis, byte vergleich) {
+        checkByte(ergebnis, vergleich, 12);
+    }
+
     private void checkKAnzahlVerteilung(byte[] ergebnis) {
         checkInt(ergebnis, ANZAHL_BYTES_VERTEILUNG, 13);
+    }
+
+    private void checkKAnzahlVerteilung(byte[] ergebnis, int vergleich) {
+        checkInt(ergebnis, vergleich, 13);
     }
 
     private void checkVerteilung(byte[] ergebnis) {
@@ -348,6 +396,24 @@ public class VerteilregelgenerierungTest {
             assertTrue(zahl > 0 && zahl <= BLOCKGROESSE);
             final int kanal = eintrag[eintrag.length - 1];
             assertTrue(kanal > 0 && kanal <= ANZAHL_KANAELE);
+            offset += GROESSE_EINTRAG;
+        }
+    }
+
+    private void checkVerteilung(byte[] ergebnis, int anzahlBytesVerteilung, int blockgroesse, int anzahlNutzdaten,
+            int anzahlKanaele, int bittiefe) {
+        assertEquals(anzahlBytesVerteilung, ergebnis.length - 17);
+        int offset = 17;
+        final byte[] eintrag = new byte[GROESSE_EINTRAG];
+        final int anzahlEintraege = anzahlNutzdaten * (8 / bittiefe);
+        for (int index = 0; index < anzahlEintraege; index++) {
+            System.arraycopy(ergebnis, offset, eintrag, 0, eintrag.length);
+            final byte[] position = new byte[4];
+            System.arraycopy(eintrag, 0, position, 0, position.length);
+            final int zahl = ByteUtils.bytesToInt(position);
+            assertTrue(zahl > 0 && zahl <= blockgroesse);
+            final int kanal = eintrag[eintrag.length - 1];
+            assertTrue(kanal > 0 && kanal <= anzahlKanaele);
             offset += GROESSE_EINTRAG;
         }
     }
