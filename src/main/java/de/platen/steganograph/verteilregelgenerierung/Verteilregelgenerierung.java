@@ -202,14 +202,14 @@ public class Verteilregelgenerierung {
     private byte[] erzeugeEintrag(Integer zufallszahl) {
         byte[] eintrag = new byte[EINTRAG_GROESSE];
         int zwischenzahl = zufallszahl;
-        int kanal = 1;
+        int kanal = 0;
         int blockgroesse = konfiguration.getBlockgroesse().get();
         while (zwischenzahl > blockgroesse) {
             zwischenzahl -= blockgroesse;
             kanal++;
         }
         int offset = ByteUtils.setzeIntWert(eintrag, 0, zwischenzahl);
-        ByteUtils.setzeAlsByteWert(eintrag, offset, kanal);
+        ByteUtils.setzeAlsByteWert(eintrag, offset, kanal + 1);
         return eintrag;
     }
 
@@ -223,7 +223,7 @@ public class Verteilregelgenerierung {
     private Set<Integer> erzeugeZufallszahlen() {
         return Zufallszahlengenerator.erzeugeZufallszahlenmenge(
                 new AnzahlZufallszahlen(ermittleAnzahlEintraegeNutzdaten()), new BereichVon(1),
-                new BereichBis(ermittleAnzahlEintraegeBlock() + 1));
+                new BereichBis(konfiguration.getBlockgroesse().get() * konfiguration.getAnzahlKanaele().get()));
     }
 
     private void checkParameter(List<Eintrag> eintraege) {
