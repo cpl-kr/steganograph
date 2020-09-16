@@ -26,7 +26,7 @@ public class BildTest {
         erzeugeTestbild("src/test/resources/BildWeiss3ByteBGR.png", 0xFFFFFF, BufferedImage.TYPE_3BYTE_BGR); // Weiß
 
         erzeugeTestbild("src/test/resources/BildSchwarzByteGray.png", 0x00, BufferedImage.TYPE_BYTE_GRAY); // Schwarz
-        erzeugeTestbild("src/test/resources/BildWeissByteGray.png", 0x0000000F, BufferedImage.TYPE_BYTE_GRAY); // Weiß
+        erzeugeTestbild("src/test/resources/BildWeissByteGray.png", 0xFFFFFFFF, BufferedImage.TYPE_BYTE_GRAY); // Weiß
     }
 
     private static void erzeugeTestbild(String dateiname, int farbe, int typ) throws IOException {
