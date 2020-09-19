@@ -19,7 +19,7 @@ import de.platen.steganograph.datentypen.Positionsinhalt;
 import de.platen.steganograph.datentypen.Positionsnummer;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
-import de.platen.steganograph.utils.Bildpunkt4ByteABGR;
+import de.platen.steganograph.utils.BildpunktInteger;
 
 public class UniFormatBildTest {
 
@@ -125,15 +125,15 @@ public class UniFormatBildTest {
                 Positionsnummer positionsnummer) {
             Positionsinhalt positionsinhalt = new Positionsinhalt(anzahlKanaele);
             int farbe = bufferedImage.getRGB(positionXY.getX().get(), positionXY.getY().get());
-            Bildpunkt4ByteABGR bildpunkt = new Bildpunkt4ByteABGR(farbe);
+            BildpunktInteger bildpunkt = new BildpunktInteger(farbe);
             Kanalnummer kanalnummer = new Kanalnummer(KANAL_ROT);
-            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getRot());
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getByte3());
             kanalnummer = new Kanalnummer(KANAL_GRUEN);
-            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getGruen());
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getByte2());
             kanalnummer = new Kanalnummer(KANAL_BLAU);
-            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getBlau());
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getByte1());
             kanalnummer = new Kanalnummer(KANAL_ALPHA);
-            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getAlpha());
+            positionsinhalt.setzeWert(kanalnummer, bildpunkt.getByte4());
             positionsinhalte.put(positionsnummer, positionsinhalt);
         }
 
