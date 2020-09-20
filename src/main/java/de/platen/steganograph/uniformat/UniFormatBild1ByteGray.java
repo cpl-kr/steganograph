@@ -7,9 +7,11 @@ import de.platen.steganograph.datentypen.AnzahlKanaele;
 import de.platen.steganograph.datentypen.AnzahlPositionen;
 import de.platen.steganograph.datentypen.Bittiefe;
 import de.platen.steganograph.datentypen.Eintrag;
+import de.platen.steganograph.datentypen.Kanalnummer;
 import de.platen.steganograph.datentypen.PositionXY;
 import de.platen.steganograph.datentypen.Positionsinhalt;
 import de.platen.steganograph.datentypen.Positionsnummer;
+import de.platen.steganograph.utils.BildpunktInteger;
 
 public class UniFormatBild1ByteGray extends UniFormatBild {
 
@@ -24,17 +26,10 @@ public class UniFormatBild1ByteGray extends UniFormatBild {
         checkParameter(bufferedImage, positionXY, positionsnummer);
         Positionsinhalt positionsinhalt = new Positionsinhalt(anzahlKanaele);
         int farbe = bufferedImage.getRGB(positionXY.getX().get(), positionXY.getY().get());
-        // Bildpunkt4ByteABGR bildpunkt = new Bildpunkt4ByteABGR(farbe);
-        // Kanalnummer kanalnummer = new Kanalnummer(KANAL_ROT);
-        // positionsinhalt.setzeWert(kanalnummer, bildpunkt.getRot());
-        // if (anzahlKanaele.get() > 1) {
-        // kanalnummer = new Kanalnummer(KANAL_GRUEN);
-        // positionsinhalt.setzeWert(kanalnummer, bildpunkt.getGruen());
-        // }
-        // if (anzahlKanaele.get() > 2) {
-        // kanalnummer = new Kanalnummer(KANAL_BLAU);
-        // positionsinhalt.setzeWert(kanalnummer, bildpunkt.getBlau());
-        // }
+        System.out.println(Integer.toHexString(bufferedImage.getRGB(positionXY.getX().get(), positionXY.getY().get())));
+        BildpunktInteger bildpunktInteger = new BildpunktInteger(farbe);
+        Kanalnummer kanalnummer = new Kanalnummer(1);
+        positionsinhalt.setzeWert(kanalnummer, bildpunktInteger.getByte1());
         positionsinhalte.put(positionsnummer, positionsinhalt);
     }
 
@@ -44,13 +39,10 @@ public class UniFormatBild1ByteGray extends UniFormatBild {
         checkParameter(bufferedImage, positionXY, positionsnummer);
         Positionsinhalt positionsinhalt = positionsinhalte.get(positionsnummer);
         int rgb = 0;
-        // rgb += Bildpunkt4ByteABGR.getRot(positionsinhalt.holeWert(new Kanalnummer(KANAL_ROT)));
-        // if (anzahlKanaele.get() > 1) {
-        // rgb += Bildpunkt4ByteABGR.getGruen(positionsinhalt.holeWert(new Kanalnummer(KANAL_GRUEN)));
-        // }
-        // if (anzahlKanaele.get() > 2) {
-        // rgb += Bildpunkt4ByteABGR.getBlau(positionsinhalt.holeWert(new Kanalnummer(KANAL_BLAU)));
-        // }
+        int wert = BildpunktInteger.getByte1(positionsinhalt.holeWert(new Kanalnummer(1)));
+        rgb = wert;
+        rgb = rgb + (wert * 255);
+        rgb = rgb + (wert * 255 * 255);
         bufferedImage.setRGB(positionXY.getX().get(), positionXY.getY().get(), rgb);
     }
 
