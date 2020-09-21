@@ -25,9 +25,10 @@ public class UniFormatBild1ByteGray extends UniFormatBild {
             Positionsnummer positionsnummer) {
         checkParameter(bufferedImage, positionXY, positionsnummer);
         Positionsinhalt positionsinhalt = new Positionsinhalt(anzahlKanaele);
-        int farbe = bufferedImage.getRGB(positionXY.getX().get(), positionXY.getY().get());
-        System.out.println(Integer.toHexString(bufferedImage.getRGB(positionXY.getX().get(), positionXY.getY().get())));
-        BildpunktInteger bildpunktInteger = new BildpunktInteger(farbe);
+        int farbe[] = new int[1];
+        bufferedImage.getRaster().getPixel(positionXY.getX().get(), positionXY.getY().get(), farbe);
+        System.out.println("Zu Uniformat: " + farbe[0]);
+        BildpunktInteger bildpunktInteger = new BildpunktInteger(farbe[0]);
         Kanalnummer kanalnummer = new Kanalnummer(1);
         positionsinhalt.setzeWert(kanalnummer, bildpunktInteger.getByte1());
         positionsinhalte.put(positionsnummer, positionsinhalt);
@@ -38,12 +39,10 @@ public class UniFormatBild1ByteGray extends UniFormatBild {
             Positionsnummer positionsnummer) {
         checkParameter(bufferedImage, positionXY, positionsnummer);
         Positionsinhalt positionsinhalt = positionsinhalte.get(positionsnummer);
-        int rgb = 0;
         int wert = BildpunktInteger.getByte1(positionsinhalt.holeWert(new Kanalnummer(1)));
-        rgb = wert;
-        rgb = rgb + (wert * 255);
-        rgb = rgb + (wert * 255 * 255);
-        bufferedImage.setRGB(positionXY.getX().get(), positionXY.getY().get(), rgb);
+        int farbe[] = new int[1];
+        farbe[0] = wert;
+        bufferedImage.getRaster().setPixel(positionXY.getX().get(), positionXY.getY().get(), farbe);
     }
 
     @Override
