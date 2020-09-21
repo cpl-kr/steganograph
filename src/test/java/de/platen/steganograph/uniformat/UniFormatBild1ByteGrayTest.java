@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.platen.steganograph.datentypen.AnzahlKanaele;
@@ -138,19 +137,21 @@ public class UniFormatBild1ByteGrayTest {
     }
 
     @Test
-    @Ignore
     public void testUebertrageBildpunktZuUndVonUniFormat() {
         UniFormatBild1ByteGray uniFormatBild = erzeugeUniFormatBild(1);
         BufferedImage bufferedImageQuelle = new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_GRAY);
-        bufferedImageQuelle.setRGB(1, 1, 0x000F0F0F);
+        int[] farbe = new int[1];
+        farbe[0] = 0x000F;
+        bufferedImageQuelle.getRaster().setPixel(1, 1, farbe);
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
         Positionsnummer positionsnummer = new Positionsnummer(1);
         uniFormatBild.uebertrageBildpunktZuUniFormat(bufferedImageQuelle, positionXY, positionsnummer);
         BufferedImage bufferedImageZiel = new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_GRAY);
-        bufferedImageZiel.setRGB(1, 1, 0x00AAAAAA);
+        bufferedImageZiel.setRGB(1, 1, 0x00);
         uniFormatBild.uebertrageBildpunktVonUniFormat(bufferedImageZiel, positionXY, positionsnummer);
-        System.out.println(Integer.toHexString(bufferedImageZiel.getRGB(1, 1)));
-        assertEquals(0x000F0F0F, bufferedImageZiel.getRGB(1, 1));
+        bufferedImageZiel.getRaster().getPixel(1, 1, farbe);
+        System.out.println("Von Uniformat: " + farbe[0]);
+        assertEquals(0x000F, farbe[0]);
     }
 
     @Test
