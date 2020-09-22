@@ -16,6 +16,7 @@ import de.platen.steganograph.datentypen.Hoehe;
 import de.platen.steganograph.datentypen.PositionXY;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
+import de.platen.steganograph.uniformat.UniFormatBild;
 import de.platen.steganograph.uniformat.UniFormatBild4ByteABGR;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
@@ -113,8 +114,8 @@ public class Aktionen {
         return bufferedImageKopie;
     }
 
-    private static byte[] leseBlock(BufferedImage bufferedImage, UniFormatBild4ByteABGR uniFormatBild,
-            PositionXY abPosition, int maximalAnzahl) {
+    private static byte[] leseBlock(BufferedImage bufferedImage, UniFormatBild uniFormatBild, PositionXY abPosition,
+            int maximalAnzahl) {
         uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         return uniFormatBild.holeNutzdaten(maximalAnzahl);
     }

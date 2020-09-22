@@ -68,7 +68,7 @@ public class AktionVerstecken {
     }
 
     private static void versteckeStartblock(int anzahlNutzdaten, AnzahlNutzdaten anzahlNutzdatenBlock, String dateiname,
-            UniFormatBild4ByteABGR uniFormatBild, PositionXY abPosition, AnzahlPositionen anzahlPositionen,
+            UniFormatBild uniFormatBild, PositionXY abPosition, AnzahlPositionen anzahlPositionen,
             BufferedImage bufferedImage, Verrauschoption verrauschoption) {
         byte[] anzahl = ByteUtils.intToBytes(anzahlNutzdaten);
         String datei = dateiname;
@@ -100,8 +100,8 @@ public class AktionVerstecken {
         versteckeBlock(bufferedImage, uniFormatBild, abPosition, daten, verrauschoption);
     }
 
-    private static void versteckeBlock(BufferedImage bufferedImage, UniFormatBild4ByteABGR uniFormatBild,
-            PositionXY abPosition, byte[] nutzdatenblock, Verrauschoption verrauschoption) {
+    private static void versteckeBlock(BufferedImage bufferedImage, UniFormatBild uniFormatBild, PositionXY abPosition,
+            byte[] nutzdatenblock, Verrauschoption verrauschoption) {
         uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         if (verrauschoption != Verrauschoption.OHNE) {
             uniFormatBild.verrausche();
@@ -111,7 +111,7 @@ public class AktionVerstecken {
     }
 
     private static int versteckeBloecke(BufferedImage bufferedImageZiel, byte[] nutzdaten,
-            AnzahlPositionen anzahlPositionen, AnzahlNutzdaten anzahlNutzdaten, UniFormatBild4ByteABGR uniFormatBild,
+            AnzahlPositionen anzahlPositionen, AnzahlNutzdaten anzahlNutzdaten, UniFormatBild uniFormatBild,
             PositionXY abPosition, Bildpunktposition bildpunktposition, Verrauschoption verrauschoption) {
         int laenge = anzahlNutzdaten.get();
         byte[] nutzdatenblock = new byte[laenge];
