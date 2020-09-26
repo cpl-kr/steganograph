@@ -203,6 +203,19 @@ public class UniFormatBildFarbeTest {
     }
 
     @Test
+    public void testUebertrageBildpunktZuUndVonUniFormat3Byte() {
+        BufferedImage bufferedImageQuelle1 = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImageZiel1 = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
+        uebertrageBildpunktZuUndVonUniFormat3Byte(bufferedImageQuelle1, bufferedImageZiel1);
+        BufferedImage bufferedImageQuelle2 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_BGR);
+        BufferedImage bufferedImageZiel2 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_BGR);
+        uebertrageBildpunktZuUndVonUniFormat3Byte(bufferedImageQuelle2, bufferedImageZiel2);
+        BufferedImage bufferedImageQuelle3 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImageZiel3 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+        uebertrageBildpunktZuUndVonUniFormat3Byte(bufferedImageQuelle3, bufferedImageZiel3);
+    }
+
+    @Test
     public void testCheckAnzahlKanaeleParameterNull() {
         UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         try {
@@ -247,18 +260,18 @@ public class UniFormatBildFarbeTest {
     public void testCheckBildtypBildTypRichtig() {
         checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR));
         checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
+        checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR));
+        checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_INT_BGR));
+        checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB));
     }
 
     @Test
     public void testCheckBildtypBildTypFalsch() {
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_GRAY));
-        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR_PRE));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_BINARY));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_INDEXED));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB_PRE));
-        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_BGR));
-        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_555_RGB));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_565_RGB));
         checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_GRAY));
@@ -281,6 +294,19 @@ public class UniFormatBildFarbeTest {
         Positionsnummer positionsnummer = new Positionsnummer(1);
         uniFormatBild.uebertrageBildpunktZuUniFormat(bufferedImageQuelle, positionXY, positionsnummer);
         bufferedImageZiel.setRGB(1, 1, 0xAFAFAFAF);
+        uniFormatBild.uebertrageBildpunktVonUniFormat(bufferedImageZiel, positionXY, positionsnummer);
+        assertEquals(farbwert, bufferedImageZiel.getRGB(1, 1));
+    }
+
+    private void uebertrageBildpunktZuUndVonUniFormat3Byte(BufferedImage bufferedImageQuelle,
+            BufferedImage bufferedImageZiel) {
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(3);
+        int farbwert = 0xFF0B0C0D;
+        bufferedImageQuelle.setRGB(1, 1, farbwert);
+        PositionXY positionXY = new PositionXY(new X(1), new Y(1));
+        Positionsnummer positionsnummer = new Positionsnummer(1);
+        uniFormatBild.uebertrageBildpunktZuUniFormat(bufferedImageQuelle, positionXY, positionsnummer);
+        bufferedImageZiel.setRGB(1, 1, 0x00AFAFAF);
         uniFormatBild.uebertrageBildpunktVonUniFormat(bufferedImageZiel, positionXY, positionsnummer);
         assertEquals(farbwert, bufferedImageZiel.getRGB(1, 1));
     }
