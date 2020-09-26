@@ -193,24 +193,20 @@ public class UniFormatBildFarbeTest {
     }
 
     @Test
-    public void testUebertrageBildpunktZuUndVonUniFormat() {
-        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
-        BufferedImage bufferedImageQuelle = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
-        bufferedImageQuelle.setRGB(1, 1, 0x0F0F0F0F);
-        PositionXY positionXY = new PositionXY(new X(1), new Y(1));
-        Positionsnummer positionsnummer = new Positionsnummer(1);
-        uniFormatBild.uebertrageBildpunktZuUniFormat(bufferedImageQuelle, positionXY, positionsnummer);
-        BufferedImage bufferedImageZiel = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
-        bufferedImageZiel.setRGB(1, 1, 0xAFAFAFAF);
-        uniFormatBild.uebertrageBildpunktVonUniFormat(bufferedImageZiel, positionXY, positionsnummer);
-        assertEquals(0x0F0F0F0F, bufferedImageZiel.getRGB(1, 1));
+    public void testUebertrageBildpunktZuUndVonUniFormat4Byte() {
+        BufferedImage bufferedImageQuelle1 = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage bufferedImageZiel1 = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        uebertrageBildpunktZuUndVonUniFormat4Byte(bufferedImageQuelle1, bufferedImageZiel1);
+        BufferedImage bufferedImageQuelle2 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImageZiel2 = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+        uebertrageBildpunktZuUndVonUniFormat4Byte(bufferedImageQuelle2, bufferedImageZiel2);
     }
 
     @Test
     public void testCheckAnzahlKanaeleParameterNull() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         try {
-            uniformatBild4ByteABGR.checkAnzahlKanaele(null);
+            uniFormatBild.checkAnzahlKanaele(null);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
@@ -219,17 +215,17 @@ public class UniFormatBildFarbeTest {
 
     @Test
     public void testtestCheckAnzahlKanaeleAnzahlRichtig() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
-        uniformatBild4ByteABGR.checkAnzahlKanaele(anzahlKanaele);
+        uniFormatBild.checkAnzahlKanaele(anzahlKanaele);
     }
 
     @Test
     public void testtestCheckAnzahlKanaeleAnzahlFalsch() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(5);
         try {
-            uniformatBild4ByteABGR.checkAnzahlKanaele(anzahlKanaele);
+            uniFormatBild.checkAnzahlKanaele(anzahlKanaele);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
@@ -238,9 +234,9 @@ public class UniFormatBildFarbeTest {
 
     @Test
     public void testCheckBildtypParameterNull() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         try {
-            uniformatBild4ByteABGR.checkBildtyp(null);
+            uniFormatBild.checkBildtyp(null);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
@@ -249,22 +245,23 @@ public class UniFormatBildFarbeTest {
 
     @Test
     public void testCheckBildtypBildTypRichtig() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
-        BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
-        uniformatBild4ByteABGR.checkBildtyp(bufferedImage);
+        checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR));
+        checkBildtypRichtig(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
     }
 
     @Test
     public void testCheckBildtypBildTypFalsch() {
-        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
-        BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
-        try {
-            uniformatBild4ByteABGR.checkBildtyp(bufferedImage);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Der Bildtyp wird nicht unterstützt.", e.getMessage());
-        }
-
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_GRAY));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR_PRE));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_BINARY));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_INDEXED));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB_PRE));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_BGR));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_555_RGB));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_565_RGB));
+        checkBildtypFalsch(new BufferedImage(10, 10, BufferedImage.TYPE_USHORT_GRAY));
     }
 
     private UniFormatBildFarbe erzeugeUniFormatBild(int kanalanzahl) {
@@ -273,5 +270,33 @@ public class UniFormatBildFarbeTest {
         Bittiefe bittiefe = new Bittiefe(2);
         List<Eintrag> eintraege = new ArrayList<>();
         return new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+    }
+
+    private void uebertrageBildpunktZuUndVonUniFormat4Byte(BufferedImage bufferedImageQuelle,
+            BufferedImage bufferedImageZiel) {
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
+        int farbwert = 0x0A0B0C0D;
+        bufferedImageQuelle.setRGB(1, 1, farbwert);
+        PositionXY positionXY = new PositionXY(new X(1), new Y(1));
+        Positionsnummer positionsnummer = new Positionsnummer(1);
+        uniFormatBild.uebertrageBildpunktZuUniFormat(bufferedImageQuelle, positionXY, positionsnummer);
+        bufferedImageZiel.setRGB(1, 1, 0xAFAFAFAF);
+        uniFormatBild.uebertrageBildpunktVonUniFormat(bufferedImageZiel, positionXY, positionsnummer);
+        assertEquals(farbwert, bufferedImageZiel.getRGB(1, 1));
+    }
+
+    private void checkBildtypRichtig(BufferedImage bufferedImage) {
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
+        uniFormatBild.checkBildtyp(bufferedImage);
+    }
+
+    private void checkBildtypFalsch(BufferedImage bufferedImage) {
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
+        try {
+            uniFormatBild.checkBildtyp(bufferedImage);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Der Bildtyp wird nicht unterstützt.", e.getMessage());
+        }
     }
 }
