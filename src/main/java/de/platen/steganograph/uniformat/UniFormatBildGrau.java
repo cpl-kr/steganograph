@@ -27,7 +27,6 @@ public class UniFormatBildGrau extends UniFormatBild {
         Positionsinhalt positionsinhalt = new Positionsinhalt(anzahlKanaele);
         int farbe[] = new int[1];
         bufferedImage.getRaster().getPixel(positionXY.getX().get(), positionXY.getY().get(), farbe);
-        System.out.println("Zu Uniformat: " + farbe[0]);
         BildpunktInteger bildpunktInteger = new BildpunktInteger(farbe[0]);
         Kanalnummer kanalnummer = new Kanalnummer(1);
         positionsinhalt.setzeWert(kanalnummer, bildpunktInteger.getByte1());
