@@ -18,6 +18,7 @@ import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
 import de.platen.steganograph.uniformat.UniFormatBild;
 import de.platen.steganograph.uniformat.UniFormatBildFarbe;
+import de.platen.steganograph.uniformat.UniFormatBildGrau;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.utils.DateiUtils;
@@ -59,7 +60,12 @@ public class Aktionen {
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);
         AnzahlKanaele anzahlKanaele = Verteilregelgenerierung.ermittleAnzahlKanaele(verteilregel);
         Bittiefe bittiefe = Verteilregelgenerierung.ermittleBittiefe(verteilregel);
-        UniFormatBildFarbe uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        UniFormatBild uniFormatBild = null;
+        if (bufferedImage.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+            uniFormatBild = new UniFormatBildGrau(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        } else {
+            uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        }
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         byte[] startblock = leseBlock(bufferedImage, uniFormatBild, abPosition, anzahlPositionen.get());
         byte[] zahl = new byte[4];
