@@ -86,9 +86,6 @@ public class UniFormatBildFarbe extends UniFormatBild {
         if (bufferedImage.getType() != BufferedImage.TYPE_4BYTE_ABGR) {
             throw new IllegalArgumentException(FEHLER_BILDTYP);
         }
-        if (bufferedImage.getAlphaRaster() == null) {
-            throw new IllegalArgumentException(FEHLER_BILDTYP);
-        }
     }
 
     private void checkParameter(BufferedImage bufferedImage, PositionXY positionXY, Positionsnummer positionsnummer) {
