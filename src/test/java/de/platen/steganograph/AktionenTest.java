@@ -36,7 +36,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleFuer1BlockAlsTeilblock() throws IOException {
+    public void testGeneriereVersteckeHoleFuer1BlockAlsTeilblockFarbe() throws IOException {
         Aktionen aktionen = new Aktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
@@ -44,10 +44,37 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                 DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
+        File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileBildOriginal.exists());
+        assertTrue(fileBildVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleFuer1BlockAlsTeilblockGrau() throws IOException {
+        Aktionen aktionen = new Aktionen();
+        String blockgroesse = "1000";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "1";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        erzeugeBildGrau(DATEINAME_BILD_ORIGINAL, 150, 150);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_BYTE_GRAY);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
@@ -71,10 +98,10 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 50);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                 DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
@@ -98,10 +125,10 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 500);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                 DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
@@ -125,10 +152,10 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 525);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                 DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
@@ -152,13 +179,13 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                 DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
         assertTrue(fileNutzdatenOriginal.exists());
         fileNutzdatenOriginal.delete();
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, VERZEICHNIS_NUTZDATEN_NEU);
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
@@ -182,7 +209,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 1201);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         try {
             aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                     DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
@@ -202,7 +229,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
-        erzeugeBild(DATEINAME_BILD_ORIGINAL, 50, 50);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
         try {
             aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
                     DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
@@ -253,7 +280,7 @@ public class AktionenTest {
         }
     }
 
-    private void erzeugeBild(String dateiname, int breite, int hoehe) throws IOException {
+    private void erzeugeBildFarbe(String dateiname, int breite, int hoehe) throws IOException {
         BufferedImage bufferedImage = new BufferedImage(breite, hoehe, BufferedImage.TYPE_4BYTE_ABGR);
         int rgb = 0xFF000000;
         for (int x = 0; x < breite; x++) {
@@ -264,11 +291,22 @@ public class AktionenTest {
         DateiUtils.schreibeBild(dateiname, bufferedImage);
     }
 
-    private void pruefeVersteckbild(String dateiname) throws IOException {
+    private void erzeugeBildGrau(String dateiname, int breite, int hoehe) throws IOException {
+        BufferedImage bufferedImage = new BufferedImage(breite, hoehe, BufferedImage.TYPE_BYTE_GRAY);
+        int rgb = 0xFF000000;
+        for (int x = 0; x < breite; x++) {
+            for (int y = 0; y < hoehe; y++) {
+                bufferedImage.setRGB(x, y, rgb);
+            }
+        }
+        DateiUtils.schreibeBild(dateiname, bufferedImage);
+    }
+
+    private void pruefeVersteckbild(String dateiname, int bildtyp) throws IOException {
         BufferedImage bufferedImage = DateiUtils.leseBild(dateiname);
         int breite = bufferedImage.getWidth();
         int hoehe = bufferedImage.getHeight();
-        assertEquals(BufferedImage.TYPE_4BYTE_ABGR, bufferedImage.getType());
+        assertEquals(bildtyp, bufferedImage.getType());
         boolean alleGleich = true;
         for (int x = 0; x < breite; x++) {
             for (int y = 0; y < hoehe; y++) {
