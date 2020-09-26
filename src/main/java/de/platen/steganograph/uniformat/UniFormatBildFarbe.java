@@ -25,6 +25,9 @@ public class UniFormatBildFarbe extends UniFormatBild {
     private static final Map<Integer, Map<Integer, Integer>> BILDTYP_ZU_KANAL_ABBILDUMG = new HashMap<>();
     private static final Map<Integer, Integer> TYPE_4BYTE_ABGR = new HashMap<>();
     private static final Map<Integer, Integer> TYPE_INT_ARGB = new HashMap<>();
+    private static final Map<Integer, Integer> TYPE_3BYTE_BGR = new HashMap<>();
+    private static final Map<Integer, Integer> TYPE_INT_BGR = new HashMap<>();
+    private static final Map<Integer, Integer> TYPE_INT_RGB = new HashMap<>();
 
     static {
         TYPE_4BYTE_ABGR.put(KANAL_BLAU, 1);
@@ -35,8 +38,20 @@ public class UniFormatBildFarbe extends UniFormatBild {
         TYPE_INT_ARGB.put(KANAL_GRUEN, 2);
         TYPE_INT_ARGB.put(KANAL_ROT, 1);
         TYPE_INT_ARGB.put(KANAL_ALPHA, 4);
+        TYPE_3BYTE_BGR.put(KANAL_BLAU, 1);
+        TYPE_3BYTE_BGR.put(KANAL_GRUEN, 2);
+        TYPE_3BYTE_BGR.put(KANAL_ROT, 3);
+        TYPE_INT_BGR.put(KANAL_BLAU, 1);
+        TYPE_INT_BGR.put(KANAL_GRUEN, 2);
+        TYPE_INT_BGR.put(KANAL_ROT, 3);
+        TYPE_INT_RGB.put(KANAL_BLAU, 3);
+        TYPE_INT_RGB.put(KANAL_GRUEN, 2);
+        TYPE_INT_RGB.put(KANAL_ROT, 1);
         BILDTYP_ZU_KANAL_ABBILDUMG.put(BufferedImage.TYPE_4BYTE_ABGR, TYPE_4BYTE_ABGR);
         BILDTYP_ZU_KANAL_ABBILDUMG.put(BufferedImage.TYPE_INT_ARGB, TYPE_INT_ARGB);
+        BILDTYP_ZU_KANAL_ABBILDUMG.put(BufferedImage.TYPE_3BYTE_BGR, TYPE_3BYTE_BGR);
+        BILDTYP_ZU_KANAL_ABBILDUMG.put(BufferedImage.TYPE_INT_BGR, TYPE_INT_BGR);
+        BILDTYP_ZU_KANAL_ABBILDUMG.put(BufferedImage.TYPE_INT_RGB, TYPE_INT_RGB);
     }
 
     public UniFormatBildFarbe(AnzahlPositionen anzahlPositionen, AnzahlKanaele anzahlKanaele, Bittiefe bittiefe,
@@ -105,6 +120,12 @@ public class UniFormatBildFarbe extends UniFormatBild {
                 throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
             }
         }
+        if ((bildtyp == BufferedImage.TYPE_3BYTE_BGR) || (bildtyp == BufferedImage.TYPE_INT_BGR)
+                || (bildtyp == BufferedImage.TYPE_INT_RGB)) {
+            if (anzahlKanaele.get() > 4) {
+                throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
+            }
+        }
     }
 
     @Override
@@ -113,7 +134,10 @@ public class UniFormatBildFarbe extends UniFormatBild {
             throw new IllegalArgumentException(FEHLER_PARAMETER_UNIFORMAT_NULL);
         }
         if (!((bufferedImage.getType() == BufferedImage.TYPE_4BYTE_ABGR)
-                || (bufferedImage.getType() == BufferedImage.TYPE_INT_ARGB))) {
+                || (bufferedImage.getType() == BufferedImage.TYPE_INT_ARGB)
+                || (bufferedImage.getType() == BufferedImage.TYPE_3BYTE_BGR)
+                || (bufferedImage.getType() == BufferedImage.TYPE_INT_BGR)
+                || (bufferedImage.getType() == BufferedImage.TYPE_INT_RGB))) {
             throw new IllegalArgumentException(FEHLER_BILDTYP);
         }
     }
