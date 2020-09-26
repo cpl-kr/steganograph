@@ -59,8 +59,7 @@ public class Aktionen {
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);
         AnzahlKanaele anzahlKanaele = Verteilregelgenerierung.ermittleAnzahlKanaele(verteilregel);
         Bittiefe bittiefe = Verteilregelgenerierung.ermittleBittiefe(verteilregel);
-        UniFormatBildFarbe uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe,
-                eintraege);
+        UniFormatBildFarbe uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         byte[] startblock = leseBlock(bufferedImage, uniFormatBild, abPosition, anzahlPositionen.get());
         byte[] zahl = new byte[4];
@@ -108,7 +107,7 @@ public class Aktionen {
                 bufferedImage.getType());
         for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
-                bufferedImageKopie.setRGB(x, y, bufferedImage.getRGB(x, x));
+                bufferedImageKopie.setRGB(x, y, bufferedImage.getRGB(x, y));
             }
         }
         return bufferedImageKopie;
