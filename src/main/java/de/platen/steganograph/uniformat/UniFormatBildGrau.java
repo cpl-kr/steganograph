@@ -46,7 +46,7 @@ public class UniFormatBildGrau extends UniFormatBild {
     }
 
     @Override
-    public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele) {
+    public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele, int bildtyp) {
         if (anzahlKanaele == null) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_UNIFORMAT_NULL);
         }

@@ -150,7 +150,7 @@ public class UniFormatBildTest {
         }
 
         @Override
-        public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele) {
+        public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele, int bildtyp) {
         }
 
         @Override

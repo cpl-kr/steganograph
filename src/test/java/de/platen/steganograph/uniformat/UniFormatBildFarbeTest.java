@@ -206,7 +206,7 @@ public class UniFormatBildFarbeTest {
     public void testCheckAnzahlKanaeleParameterNull() {
         UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         try {
-            uniFormatBild.checkAnzahlKanaele(null);
+            uniFormatBild.checkAnzahlKanaele(null, BufferedImage.TYPE_4BYTE_ABGR);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
@@ -217,7 +217,7 @@ public class UniFormatBildFarbeTest {
     public void testtestCheckAnzahlKanaeleAnzahlRichtig() {
         UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
-        uniFormatBild.checkAnzahlKanaele(anzahlKanaele);
+        uniFormatBild.checkAnzahlKanaele(anzahlKanaele, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class UniFormatBildFarbeTest {
         UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(5);
         try {
-            uniFormatBild.checkAnzahlKanaele(anzahlKanaele);
+            uniFormatBild.checkAnzahlKanaele(anzahlKanaele, BufferedImage.TYPE_4BYTE_ABGR);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());

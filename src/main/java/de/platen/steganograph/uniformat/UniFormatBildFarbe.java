@@ -96,12 +96,14 @@ public class UniFormatBildFarbe extends UniFormatBild {
     }
 
     @Override
-    public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele) {
+    public void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele, int bildtyp) {
         if (anzahlKanaele == null) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_UNIFORMAT_NULL);
         }
-        if (anzahlKanaele.get() > 4) {
-            throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
+        if ((bildtyp == BufferedImage.TYPE_4BYTE_ABGR) || (bildtyp == BufferedImage.TYPE_INT_ARGB)) {
+            if (anzahlKanaele.get() > 4) {
+                throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
+            }
         }
     }
 

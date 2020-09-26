@@ -30,7 +30,7 @@ public abstract class UniFormatBild extends UniFormat {
 
     public void uebertrageBereichZuUniFormat(BufferedImage bufferedImage, PositionXY abPosition) {
         checkParameter(bufferedImage, abPosition);
-        checkAnzahlKanaele(anzahlKanaele);
+        checkAnzahlKanaele(anzahlKanaele, bufferedImage.getType());
         checkBildtyp(bufferedImage);
         boolean ende = false;
         int position = 1;
@@ -57,7 +57,7 @@ public abstract class UniFormatBild extends UniFormat {
 
     public void uebertrageBereichVonUniFormat(BufferedImage bufferedImage, PositionXY abPosition) {
         checkParameter(bufferedImage, abPosition);
-        checkAnzahlKanaele(anzahlKanaele);
+        checkAnzahlKanaele(anzahlKanaele, bufferedImage.getType());
         checkBildtyp(bufferedImage);
         boolean ende = false;
         Positionsnummer positionsnummer = null;
@@ -84,7 +84,7 @@ public abstract class UniFormatBild extends UniFormat {
     protected abstract void uebertrageBildpunktVonUniFormat(BufferedImage bufferedImage, PositionXY positionXY,
             Positionsnummer positionsnummer);
 
-    protected abstract void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele);
+    protected abstract void checkAnzahlKanaele(AnzahlKanaele anzahlKanaele, int bildtyp);
 
     protected abstract void checkBildtyp(BufferedImage bufferedImage);
 
