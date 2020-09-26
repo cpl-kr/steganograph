@@ -22,7 +22,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichZuUniFormatMitAnzahlKanaeleKleiner4() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(3);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(3);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         int rgb = 0xFFFFFFFF;
@@ -40,7 +40,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichZuUniFormatMitAnzahlKanaeleGroesser4() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(5);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(5);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         int rgb = 0xFFFFFFFF;
@@ -59,7 +59,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichVonUniFormatMitAnzahlKanaeleKleiner4() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(3);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(3);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         try {
@@ -71,7 +71,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichVonUniFormatMitAnzahlKanaeleGroesser4() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(5);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(5);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         try {
@@ -84,7 +84,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichZuUniFormatOhneAlphaKanal() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_BYTE_GRAY);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         try {
@@ -97,7 +97,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBereichVonUniFormatOhneAlphaKanal() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 20, BufferedImage.TYPE_BYTE_GRAY);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         try {
@@ -110,7 +110,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktZuUniFormatParameterBufferedImageNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = null;
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
         Positionsnummer positionsnummer = new Positionsnummer(1);
@@ -124,7 +124,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktZuUniFormatParameterPositionXYNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY positionXY = null;
         Positionsnummer positionsnummer = new Positionsnummer(1);
@@ -138,7 +138,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktZuUniFormatParameterPositionsnummerNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
         Positionsnummer positionsnummer = null;
@@ -152,7 +152,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktVonUniFormatParameterBufferedImageNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = null;
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
         Positionsnummer positionsnummer = new Positionsnummer(1);
@@ -166,7 +166,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktVonUniFormatParameterPositionXYNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY positionXY = null;
         Positionsnummer positionsnummer = new Positionsnummer(1);
@@ -180,7 +180,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktVonUniFormatParameterPositionsnummerNull() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
         Positionsnummer positionsnummer = null;
@@ -194,7 +194,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testUebertrageBildpunktZuUndVonUniFormat() {
-        UniFormatBild4ByteABGR uniFormatBild = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         BufferedImage bufferedImageQuelle = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         bufferedImageQuelle.setRGB(1, 1, 0x0F0F0F0F);
         PositionXY positionXY = new PositionXY(new X(1), new Y(1));
@@ -208,7 +208,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testCheckAnzahlKanaeleParameterNull() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         try {
             uniformatBild4ByteABGR.checkAnzahlKanaele(null);
             fail();
@@ -219,14 +219,14 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testtestCheckAnzahlKanaeleAnzahlRichtig() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
         uniformatBild4ByteABGR.checkAnzahlKanaele(anzahlKanaele);
     }
 
     @Test
     public void testtestCheckAnzahlKanaeleAnzahlFalsch() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(5);
         try {
             uniformatBild4ByteABGR.checkAnzahlKanaele(anzahlKanaele);
@@ -238,7 +238,7 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testCheckBildtypParameterNull() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         try {
             uniformatBild4ByteABGR.checkBildtyp(null);
             fail();
@@ -249,14 +249,14 @@ public class UniFormatBild4ByteABGRTest {
 
     @Test
     public void testCheckBildtypBildTypRichtig() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         uniformatBild4ByteABGR.checkBildtyp(bufferedImage);
     }
 
     @Test
     public void testCheckBildtypBildTypFalsch() {
-        UniFormatBild4ByteABGR uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
+        UniFormatBildFarbe uniformatBild4ByteABGR = erzeugeUniFormatBild(4);
         BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
         try {
             uniformatBild4ByteABGR.checkBildtyp(bufferedImage);
@@ -267,11 +267,11 @@ public class UniFormatBild4ByteABGRTest {
 
     }
 
-    private UniFormatBild4ByteABGR erzeugeUniFormatBild(int kanalanzahl) {
+    private UniFormatBildFarbe erzeugeUniFormatBild(int kanalanzahl) {
         AnzahlPositionen anzahlPositionen = new AnzahlPositionen(512);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(kanalanzahl);
         Bittiefe bittiefe = new Bittiefe(2);
         List<Eintrag> eintraege = new ArrayList<>();
-        return new UniFormatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        return new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
     }
 }

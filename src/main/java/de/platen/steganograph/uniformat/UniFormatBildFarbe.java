@@ -13,14 +13,14 @@ import de.platen.steganograph.datentypen.Positionsinhalt;
 import de.platen.steganograph.datentypen.Positionsnummer;
 import de.platen.steganograph.utils.BildpunktInteger;
 
-public class UniFormatBild4ByteABGR extends UniFormatBild {
+public class UniFormatBildFarbe extends UniFormatBild {
 
     private static final int KANAL_BLAU = 1;
     private static final int KANAL_GRUEN = 2;
     private static final int KANAL_ROT = 3;
     private static final int KANAL_ALPHA = 4;
 
-    public UniFormatBild4ByteABGR(AnzahlPositionen anzahlPositionen, AnzahlKanaele anzahlKanaele, Bittiefe bittiefe,
+    public UniFormatBildFarbe(AnzahlPositionen anzahlPositionen, AnzahlKanaele anzahlKanaele, Bittiefe bittiefe,
             List<Eintrag> eintraege) {
         super(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
     }

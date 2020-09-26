@@ -14,7 +14,7 @@ import de.platen.steganograph.datentypen.PositionXY;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
 import de.platen.steganograph.uniformat.UniFormatBild;
-import de.platen.steganograph.uniformat.UniFormatBild4ByteABGR;
+import de.platen.steganograph.uniformat.UniFormatBildFarbe;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
@@ -38,7 +38,7 @@ public class AktionVerstecken {
         if (((anzahlBloeckeGesamt - 1) * anzahlNutzdaten.get()) < nutzdaten.length) {
             throw new RuntimeException(FEHLER_DATENMENGE);
         }
-        UniFormatBild4ByteABGR uniFormatBild = new UniFormatBild4ByteABGR(anzahlPositionen, anzahlKanaele, bittiefe,
+        UniFormatBildFarbe uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe,
                 eintraege);
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         versteckeStartblock(nutzdaten.length, anzahlNutzdaten, dateinameNutzdaten, uniFormatBild, abPosition,

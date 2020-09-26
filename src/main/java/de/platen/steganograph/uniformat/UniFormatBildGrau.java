@@ -13,9 +13,9 @@ import de.platen.steganograph.datentypen.Positionsinhalt;
 import de.platen.steganograph.datentypen.Positionsnummer;
 import de.platen.steganograph.utils.BildpunktInteger;
 
-public class UniFormatBild1ByteGray extends UniFormatBild {
+public class UniFormatBildGrau extends UniFormatBild {
 
-    public UniFormatBild1ByteGray(AnzahlPositionen anzahlPositionen, AnzahlKanaele anzahlKanaele, Bittiefe bittiefe,
+    public UniFormatBildGrau(AnzahlPositionen anzahlPositionen, AnzahlKanaele anzahlKanaele, Bittiefe bittiefe,
             List<Eintrag> eintraege) {
         super(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
     }
