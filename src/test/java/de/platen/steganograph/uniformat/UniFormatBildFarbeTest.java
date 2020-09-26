@@ -18,7 +18,7 @@ import de.platen.steganograph.datentypen.Positionsnummer;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
 
-public class UniFormatBild4ByteABGRTest {
+public class UniFormatBildFarbeTest {
 
     @Test
     public void testUebertrageBereichZuUniFormatMitAnzahlKanaeleKleiner4() {

@@ -18,7 +18,7 @@ import de.platen.steganograph.datentypen.Positionsnummer;
 import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
 
-public class UniFormatBild1ByteGrayTest {
+public class UniFormatBildGrauTest {
 
     @Test
     public void testUebertrageBereichZuUniFormatMitAnzahlKanaeleGroesser1() {
