@@ -15,6 +15,7 @@ import de.platen.steganograph.datentypen.X;
 import de.platen.steganograph.datentypen.Y;
 import de.platen.steganograph.uniformat.UniFormatBild;
 import de.platen.steganograph.uniformat.UniFormatBildFarbe;
+import de.platen.steganograph.uniformat.UniFormatBildGrau;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
@@ -38,8 +39,12 @@ public class AktionVerstecken {
         if (((anzahlBloeckeGesamt - 1) * anzahlNutzdaten.get()) < nutzdaten.length) {
             throw new RuntimeException(FEHLER_DATENMENGE);
         }
-        UniFormatBildFarbe uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe,
-                eintraege);
+        UniFormatBild uniFormatBild = null;
+        if (bufferedImageZiel.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+            uniFormatBild = new UniFormatBildGrau(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        } else {
+            uniFormatBild = new UniFormatBildFarbe(anzahlPositionen, anzahlKanaele, bittiefe, eintraege);
+        }
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         versteckeStartblock(nutzdaten.length, anzahlNutzdaten, dateinameNutzdaten, uniFormatBild, abPosition,
                 anzahlPositionen, bufferedImageZiel, verrauschoption);
