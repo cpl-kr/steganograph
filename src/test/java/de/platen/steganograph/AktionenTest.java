@@ -20,8 +20,8 @@ public class AktionenTest {
 
     private static final String DATEINAME_VERTEILREGELl = "src/test/resources/verteilregeln";
     private static final String DATEINAME_NUTZDATEN_ORIGINAL = "src/test/resources/nutzdatenOriginal";
-    private static final String DATEINAME_BILD_ORIGINAL = "src/test/resources/bildoriginal";
-    private static final String DATEINAME_BILD_VERSTECK = "src/test/resources/bildversteck";
+    private static final String DATEINAME_BILD_ORIGINAL = "src/test/resources/bildoriginal.png";
+    private static final String DATEINAME_BILD_VERSTECK = "src/test/resources/bildversteck.png";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
     private static final String VERZEICHNIS_NUTZDATEN_NEU = "src/test/resources/";
 
