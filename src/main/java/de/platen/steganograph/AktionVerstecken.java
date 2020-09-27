@@ -26,7 +26,7 @@ public class AktionVerstecken {
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten im Bild untergebracht werden.";
     private static final String FEHLER_BLOCK = "Es können nicht alle Daten im Block untergebracht werden.";
 
-    public static void versteckeNutzdaten(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
+    public static void versteckeNutzdatenInBild(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
             BufferedImage bufferedImageZiel, byte[] verteilregel, byte[] nutzdaten, Verrauschoption verrauschoption) {
         pruefeParameter(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);

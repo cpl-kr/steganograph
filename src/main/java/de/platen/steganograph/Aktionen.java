@@ -46,7 +46,7 @@ public class Aktionen {
         BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
-        AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel,
+        AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel,
                 nutzdaten, verrauschoption);
         DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
     }

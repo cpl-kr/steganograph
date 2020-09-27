@@ -40,35 +40,35 @@ public class AktionVersteckenTest {
         byte[] verteilregel = { 0x01, 0x02, 0x03 };
         byte[] nutzdaten = { 0x04, 0x05, 0x06 };
         try {
-            AktionVerstecken.versteckeNutzdaten(null, bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten,
-                    Verrauschoption.ALLES);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
-        }
-        try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, null, bufferedImageZiel, verteilregel, nutzdaten,
-                    Verrauschoption.ALLES);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
-        }
-        try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, null, verteilregel, nutzdaten,
-                    Verrauschoption.ALLES);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
-        }
-        try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, null,
+            AktionVerstecken.versteckeNutzdatenInBild(null, bufferedImageQuelle, bufferedImageZiel, verteilregel,
                     nutzdaten, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
         }
         try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, null, bufferedImageZiel, verteilregel,
+                    nutzdaten, Verrauschoption.ALLES);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
+        }
+        try {
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, null, verteilregel,
+                    nutzdaten, Verrauschoption.ALLES);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
+        }
+        try {
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, null,
+                    nutzdaten, Verrauschoption.ALLES);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
+        }
+        try {
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
                     verteilregel, null, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
@@ -84,21 +84,21 @@ public class AktionVersteckenTest {
         byte[] verteilregel = { 0x01, 0x02, 0x03 };
         byte[] nutzdaten = { 0x04, 0x05, 0x06 };
         try {
-            AktionVerstecken.versteckeNutzdaten("", bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten,
-                    Verrauschoption.ALLES);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
-        }
-        try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, new byte[0],
+            AktionVerstecken.versteckeNutzdatenInBild("", bufferedImageQuelle, bufferedImageZiel, verteilregel,
                     nutzdaten, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
         }
         try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+                    new byte[0], nutzdaten, Verrauschoption.ALLES);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
+        }
+        try {
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
                     verteilregel, new byte[0], Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
@@ -116,22 +116,22 @@ public class AktionVersteckenTest {
         BufferedImage bufferedImageUngleich2 = new BufferedImage(10, 20, BufferedImage.TYPE_4BYTE_ABGR);
         BufferedImage bufferedImageUngleich3 = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
         try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImage, bufferedImageUngleich1, verteilregel,
-                    nutzdaten, Verrauschoption.ALLES);
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImage, bufferedImageUngleich1,
+                    verteilregel, nutzdaten, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
         }
         try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImage, bufferedImageUngleich2, verteilregel,
-                    nutzdaten, Verrauschoption.ALLES);
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImage, bufferedImageUngleich2,
+                    verteilregel, nutzdaten, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
         }
         try {
-            AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImage, bufferedImageUngleich3, verteilregel,
-                    nutzdaten, Verrauschoption.ALLES);
+            AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImage, bufferedImageUngleich3,
+                    verteilregel, nutzdaten, Verrauschoption.ALLES);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Ein oder mehrere Parameter sind null oder fehlerhaft.", e.getMessage());
@@ -139,7 +139,7 @@ public class AktionVersteckenTest {
     }
 
     @Test
-    public void testVersteckeNutzdatenFuer1BlockAlsTeilblock() {
+    public void testVersteckeNutzdatenInBildFuer1BlockAlsTeilblock() {
         Blockgroesse blockgroesse = new Blockgroesse(BLOCKGROESSE);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
@@ -149,14 +149,14 @@ public class AktionVersteckenTest {
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
         BufferedImage bufferedImageZiel = erzeugeBild(BILDBREITE, BILDHOEHE);
-        AktionVerstecken.versteckeNutzdaten(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, Verrauschoption.ALLES);
+        AktionVerstecken.versteckeNutzdatenInBild(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, Verrauschoption.ALLES);
         pruefeStartblock(anzahlBytes, DATEINAME_NUTZDATEN, bufferedImageZiel);
         pruefeDatenblock(1, nutzdaten, bufferedImageZiel);
     }
 
     @Test
-    public void testVersteckeNutzdatenFuer1BlockAlsKomplettblock() {
+    public void testVersteckeNutzdatenInBildFuer1BlockAlsKomplettblock() {
         Blockgroesse blockgroesse = new Blockgroesse(BLOCKGROESSE);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
@@ -166,14 +166,14 @@ public class AktionVersteckenTest {
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
         BufferedImage bufferedImageZiel = erzeugeBild(BILDBREITE, BILDHOEHE);
-        AktionVerstecken.versteckeNutzdaten(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, Verrauschoption.ALLES);
+        AktionVerstecken.versteckeNutzdatenInBild(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, Verrauschoption.ALLES);
         pruefeStartblock(anzahlBytes, DATEINAME_NUTZDATEN, bufferedImageZiel);
         pruefeDatenblock(1, nutzdaten, bufferedImageZiel);
     }
 
     @Test
-    public void testVersteckeNutzdatenFuerMehrereBloeckeKompletteBloecke() {
+    public void testVersteckeNutzdatenInBildFuerMehrereBloeckeKompletteBloecke() {
         Blockgroesse blockgroesse = new Blockgroesse(BLOCKGROESSE);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
@@ -183,8 +183,8 @@ public class AktionVersteckenTest {
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
         BufferedImage bufferedImageZiel = erzeugeBild(BILDBREITE, BILDHOEHE);
-        AktionVerstecken.versteckeNutzdaten(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, Verrauschoption.ALLES);
+        AktionVerstecken.versteckeNutzdatenInBild(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, Verrauschoption.ALLES);
         pruefeStartblock(anzahlBytes, DATEINAME_NUTZDATEN, bufferedImageZiel);
         pruefeDatenblock(1, nutzdaten, bufferedImageZiel);
         pruefeDatenblock(2, nutzdaten, bufferedImageZiel);
@@ -192,7 +192,7 @@ public class AktionVersteckenTest {
     }
 
     @Test
-    public void testVersteckeNutzdatenFuerMehrereBloeckeLetzterBlockTeilblock() {
+    public void testVersteckeNutzdatenInBildFuerMehrereBloeckeLetzterBlockTeilblock() {
         Blockgroesse blockgroesse = new Blockgroesse(BLOCKGROESSE);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
@@ -203,8 +203,8 @@ public class AktionVersteckenTest {
         BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
         BufferedImage bufferedImageZiel = erzeugeBild(BILDBREITE, BILDHOEHE);
         String dateinameNutzdaten = "dateinameNutzdaten";
-        AktionVerstecken.versteckeNutzdaten(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, Verrauschoption.ALLES);
+        AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, Verrauschoption.ALLES);
         pruefeStartblock(anzahlBytes, dateinameNutzdaten, bufferedImageZiel);
         pruefeDatenblock(1, nutzdaten, bufferedImageZiel);
         pruefeDatenblock(2, nutzdaten, bufferedImageZiel);
@@ -239,8 +239,8 @@ public class AktionVersteckenTest {
         Mockito.when(bufferedImageZiel.getWidth()).thenReturn(bufferedImageQuelle.getWidth());
         WritableRaster writableRaster = Mockito.mock(WritableRaster.class);
         Mockito.when(bufferedImageZiel.getAlphaRaster()).thenReturn(writableRaster);
-        AktionVerstecken.versteckeNutzdaten(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, Verrauschoption.ALLES);
+        AktionVerstecken.versteckeNutzdatenInBild(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, Verrauschoption.ALLES);
         for (int x = 0; x < bufferedImageQuelle.getWidth(); x++) {
             for (int y = 0; y < bufferedImageQuelle.getHeight(); y++) {
                 Mockito.verify(bufferedImageZiel, Mockito.atLeast(2)).setRGB(Mockito.anyInt(), Mockito.anyInt(),
