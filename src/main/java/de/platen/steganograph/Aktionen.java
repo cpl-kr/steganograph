@@ -42,16 +42,30 @@ public class Aktionen {
 
     public void verstecke(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
             String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+        if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
+            versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
+        }
+    }
+
+    public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
+            throws IOException {
+        if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
+            holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
+        }
+    }
+
+    private static void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
+            String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
         BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
-        AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel,
-                nutzdaten, verrauschoption);
+        AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, verrauschoption);
         DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
     }
 
-    public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
+    private static void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
         BufferedImage bufferedImage = DateiUtils.leseBild(dateinameQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
