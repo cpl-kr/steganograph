@@ -122,7 +122,7 @@ public class UniFormatBildFarbe extends UniFormatBild {
         }
         if ((bildtyp == BufferedImage.TYPE_3BYTE_BGR) || (bildtyp == BufferedImage.TYPE_INT_BGR)
                 || (bildtyp == BufferedImage.TYPE_INT_RGB)) {
-            if (anzahlKanaele.get() > 4) {
+            if (anzahlKanaele.get() > 3) {
                 throw new IllegalArgumentException(FEHLER_BILD_ANZAHL_KANAELE);
             }
         }
