@@ -227,22 +227,19 @@ public class UniFormatBildFarbeTest {
     }
 
     @Test
-    public void testtestCheckAnzahlKanaeleAnzahlRichtig() {
+    public void testCheckAnzahlKanaeleAnzahlRichtig() {
         UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
         uniFormatBild.checkAnzahlKanaele(anzahlKanaele, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
     @Test
-    public void testtestCheckAnzahlKanaeleAnzahlFalsch() {
-        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(4);
-        AnzahlKanaele anzahlKanaele = new AnzahlKanaele(5);
-        try {
-            uniFormatBild.checkAnzahlKanaele(anzahlKanaele, BufferedImage.TYPE_4BYTE_ABGR);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
-        }
+    public void testCheckAnzahlKanaeleAnzahlFalsch() {
+        checkAnzahlKanaeleFalsch(4, 5, BufferedImage.TYPE_4BYTE_ABGR);
+        checkAnzahlKanaeleFalsch(4, 5, BufferedImage.TYPE_INT_ARGB);
+        checkAnzahlKanaeleFalsch(3, 4, BufferedImage.TYPE_3BYTE_BGR);
+        checkAnzahlKanaeleFalsch(3, 4, BufferedImage.TYPE_INT_BGR);
+        checkAnzahlKanaeleFalsch(3, 4, BufferedImage.TYPE_INT_RGB);
     }
 
     @Test
@@ -323,6 +320,17 @@ public class UniFormatBildFarbeTest {
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Der Bildtyp wird nicht unterstützt.", e.getMessage());
+        }
+    }
+
+    private void checkAnzahlKanaeleFalsch(int kanalanzahlUniFormat, int kanalanzahlTyp, int bildtyp) {
+        UniFormatBildFarbe uniFormatBild = erzeugeUniFormatBild(kanalanzahlUniFormat);
+        AnzahlKanaele anzahlKanaele = new AnzahlKanaele(kanalanzahlTyp);
+        try {
+            uniFormatBild.checkAnzahlKanaele(anzahlKanaele, bildtyp);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Die Anzahl der Kanäle ist nicht passend.", e.getMessage());
         }
     }
 }
