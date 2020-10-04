@@ -202,10 +202,9 @@ public class AktionVersteckenTest {
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         BufferedImage bufferedImageQuelle = erzeugeBild(BILDBREITE, BILDHOEHE);
         BufferedImage bufferedImageZiel = erzeugeBild(BILDBREITE, BILDHOEHE);
-        String dateinameNutzdaten = "dateinameNutzdaten";
-        AktionVerstecken.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+        AktionVerstecken.versteckeNutzdatenInBild(DATEINAME_NUTZDATEN, bufferedImageQuelle, bufferedImageZiel,
                 verteilregel, nutzdaten, Verrauschoption.ALLES);
-        pruefeStartblock(anzahlBytes, dateinameNutzdaten, bufferedImageZiel);
+        pruefeStartblock(anzahlBytes, DATEINAME_NUTZDATEN, bufferedImageZiel);
         pruefeDatenblock(1, nutzdaten, bufferedImageZiel);
         pruefeDatenblock(2, nutzdaten, bufferedImageZiel);
         pruefeDatenblock(3, nutzdaten, bufferedImageZiel);
