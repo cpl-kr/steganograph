@@ -47,7 +47,7 @@ public class AktionVerstecken {
         }
         PositionXY abPosition = new PositionXY(new X(0), new Y(0));
         versteckeStartblock(nutzdaten.length, anzahlNutzdaten, dateinameNutzdaten, uniFormatBild, abPosition,
-                anzahlPositionen, bufferedImageZiel, verrauschoption);
+                bufferedImageZiel, verrauschoption);
         Bildpunktposition bildpunktposition = new Bildpunktposition(new Breite(bufferedImageQuelle.getWidth()),
                 new Hoehe(bufferedImageQuelle.getHeight()));
         if (bildpunktposition.ermittleNaechstenBildpunkt(abPosition, anzahlPositionen.get()) != null) {
@@ -73,8 +73,8 @@ public class AktionVerstecken {
     }
 
     private static void versteckeStartblock(int anzahlNutzdaten, AnzahlNutzdaten anzahlNutzdatenBlock, String dateiname,
-            UniFormatBild uniFormatBild, PositionXY abPosition, AnzahlPositionen anzahlPositionen,
-            BufferedImage bufferedImage, Verrauschoption verrauschoption) {
+            UniFormatBild uniFormatBild, PositionXY abPosition, BufferedImage bufferedImage,
+            Verrauschoption verrauschoption) {
         byte[] anzahl = ByteUtils.intToBytes(anzahlNutzdaten);
         String datei = dateiname;
         int index1 = dateiname.lastIndexOf("/");
