@@ -51,6 +51,7 @@ Beispiele:<br>
 
 <b>Ausblick auf weitere Entwicklungen:</b>
 <ul>
+<li>Graphische Benutzeroberfläche</li>
 <li>Verstecken von Nutzdaten in (verlustfreien oder verlustfreien Anteilen) Audiodateien</li>
 <li>Verstecken von Nutzdaten in (verlustfreien oder verlustfreien Anteilen) Videodateien</li>
 <li>Verstecken von Live-Streams (Video, Audio) in Live-Streams (Video, Audio, hierbei verlustfrei oder verlustfreien Anteilen)</li>
