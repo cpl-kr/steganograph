@@ -20,7 +20,7 @@ import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
-public class AktionVerstecken {
+public class AktionVersteckenInBild {
 
     private static final String FEHLER_PARAMETER = "Ein oder mehrere Parameter sind null oder fehlerhaft.";
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten im Bild untergebracht werden.";
