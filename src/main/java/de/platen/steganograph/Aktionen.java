@@ -45,12 +45,19 @@ public class Aktionen {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
             versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
         }
+        if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
+            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+                    dateinameQuelle, dateinameZiel, verrauschoption);
+        }
     }
 
     public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
             holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
+        }
+        if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
+            AktionHolenAusAudio.holeNutzdatenAusAudio(dateinameNutzdaten, dateinameNutzdaten, dateinameNutzdaten);
         }
     }
 
