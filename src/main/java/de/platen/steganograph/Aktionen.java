@@ -43,7 +43,8 @@ public class Aktionen {
     public void verstecke(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
             String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
-            versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
+            AktionVersteckenInBild.versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle,
+                    dateinameZiel, verrauschoption);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
             AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
@@ -59,17 +60,6 @@ public class Aktionen {
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
             AktionHolenAusAudio.holeNutzdatenAusAudio(dateinameNutzdaten, dateinameNutzdaten, dateinameNutzdaten);
         }
-    }
-
-    private static void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
-            String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
-        BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
-        BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
-        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
-        byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
-        AktionVersteckenInBild.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
-                verteilregel, nutzdaten, verrauschoption);
-        DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
     }
 
     private static void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
@@ -127,17 +117,6 @@ public class Aktionen {
             offset += maxAnzahl;
         }
         DateiUtils.schreibeDatei(dateinameZiel, nutzdaten);
-    }
-
-    private static BufferedImage kopiereBild(BufferedImage bufferedImage) {
-        BufferedImage bufferedImageKopie = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(),
-                bufferedImage.getType());
-        for (int x = 0; x < bufferedImage.getWidth(); x++) {
-            for (int y = 0; y < bufferedImage.getHeight(); y++) {
-                bufferedImageKopie.setRGB(x, y, bufferedImage.getRGB(x, y));
-            }
-        }
-        return bufferedImageKopie;
     }
 
     private static byte[] leseBlock(BufferedImage bufferedImage, UniFormatBild uniFormatBild, PositionXY abPosition,

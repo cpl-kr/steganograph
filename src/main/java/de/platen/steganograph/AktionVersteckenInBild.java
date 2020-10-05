@@ -1,6 +1,7 @@
 package de.platen.steganograph;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 
 import de.platen.steganograph.datentypen.AnzahlKanaele;
@@ -18,6 +19,7 @@ import de.platen.steganograph.uniformat.UniFormatBildFarbe;
 import de.platen.steganograph.uniformat.UniFormatBildGrau;
 import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
+import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class AktionVersteckenInBild {
@@ -25,6 +27,17 @@ public class AktionVersteckenInBild {
     private static final String FEHLER_PARAMETER = "Ein oder mehrere Parameter sind null oder fehlerhaft.";
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten im Bild untergebracht werden.";
     private static final String FEHLER_BLOCK = "Es können nicht alle Daten im Block untergebracht werden.";
+
+    public static void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
+            String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+        BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
+        BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
+        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
+        AktionVersteckenInBild.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
+                verteilregel, nutzdaten, verrauschoption);
+        DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
+    }
 
     public static void versteckeNutzdatenInBild(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
             BufferedImage bufferedImageZiel, byte[] verteilregel, byte[] nutzdaten, Verrauschoption verrauschoption) {
@@ -70,6 +83,17 @@ public class AktionVersteckenInBild {
                 verrausche(bufferedImageZiel, uniFormatBild, bildpunktposition, abPosition);
             }
         }
+    }
+
+    private static BufferedImage kopiereBild(BufferedImage bufferedImage) {
+        BufferedImage bufferedImageKopie = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(),
+                bufferedImage.getType());
+        for (int x = 0; x < bufferedImage.getWidth(); x++) {
+            for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                bufferedImageKopie.setRGB(x, y, bufferedImage.getRGB(x, y));
+            }
+        }
+        return bufferedImageKopie;
     }
 
     private static void versteckeStartblock(int anzahlNutzdaten, AnzahlNutzdaten anzahlNutzdatenBlock, String dateiname,
