@@ -400,33 +400,46 @@ public class AktionVersteckenInAudioTest {
         Verrauschoption verrauschoption = Verrauschoption.ALLES;
         UniFormatAudio uniFormatAudio = Mockito.mock(UniFormatAudio.class);
         String dateinameNutzdaten = "dateinameNutzdaten";
+        WavFile wavFileZiel = null;
         try {
-            WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "1"), 3, 10, 16, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "1"), 3, 10, 16, 1000);
             AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
+        } finally {
+            wavFileQuelle.close();
+            wavFileZiel.close();
         }
         try {
-            WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "2"), 2, 20, 16, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "2"), 2, 20, 16, 1000);
             AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
+        } finally {
+            wavFileQuelle.close();
+            wavFileZiel.close();
         }
         try {
-            WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "3"), 2, 10, 8, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "3"), 2, 10, 8, 1000);
             AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
+        } finally {
+            wavFileQuelle.close();
+            wavFileZiel.close();
         }
         try {
-            WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "4"), 2, 10, 16, 2000);
+            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "4"), 2, 10, 16, 2000);
             AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
+        } finally {
+            wavFileQuelle.close();
+            wavFileZiel.close();
         }
     }
 
