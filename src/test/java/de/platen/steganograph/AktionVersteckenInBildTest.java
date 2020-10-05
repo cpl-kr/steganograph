@@ -22,7 +22,7 @@ import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.verteilregelgenerierung.KonfigurationVerteilregeln;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
-public class AktionVersteckenTest {
+public class AktionVersteckenInBildTest {
 
     private static final int BLOCKGROESSE = 100;
     private static final int ANZAHL_NUTZDATEN = 50;
