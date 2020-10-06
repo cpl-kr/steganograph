@@ -50,11 +50,10 @@ public class AktionHolenAusAudio {
         pruefeParameter(uniFormatAudio, wavFile, anzahlNutzdaten, dateinameNutzdaten);
         byte[] startblock = new byte[0];
         try {
-            startblock = leseBlock(uniFormatAudio, wavFile, anzahlNutzdaten);
+            startblock = leseBlock(uniFormatAudio, wavFile, anzahlNutzdaten.get());
         } catch (WavFileException e) {
-            throw new RuntimeException(e);
-        } finally {
             wavFile.close();
+            throw new RuntimeException(e);
         }
         byte[] zahl = new byte[4];
         System.arraycopy(startblock, 0, zahl, 0, 4);
@@ -79,9 +78,13 @@ public class AktionHolenAusAudio {
         byte[] nutzdaten = new byte[anzahlBytes];
         byte[] blockdaten = null;
         int offset = 0;
+        int maximalanzahl = anzahlNutzdaten.get();
         try {
             do {
-                blockdaten = leseBlock(uniFormatAudio, wavFile, anzahlNutzdaten);
+                if (anzahlBytes < anzahlNutzdaten.get()) {
+                    maximalanzahl = anzahlBytes;
+                }
+                blockdaten = leseBlock(uniFormatAudio, wavFile, maximalanzahl);
                 System.arraycopy(blockdaten, 0, nutzdaten, offset, blockdaten.length);
                 if (offset + blockdaten.length < anzahlBytes) {
                     offset += blockdaten.length;
@@ -118,7 +121,7 @@ public class AktionHolenAusAudio {
         }
     }
 
-    private static byte[] leseBlock(UniFormatAudio uniFormatAudio, WavFile wavFile, AnzahlNutzdaten anzahlNutzdaten)
+    private static byte[] leseBlock(UniFormatAudio uniFormatAudio, WavFile wavFile, int maximalanzahl)
             throws IOException, WavFileException {
         int[][] sampleWerte = new int[uniFormatAudio.getAnzahlKanaele()][uniFormatAudio.getAnzahlPositionen()];
         int anzahlGelesen = wavFile.readFrames(sampleWerte, uniFormatAudio.getAnzahlPositionen());
@@ -133,6 +136,6 @@ public class AktionHolenAusAudio {
         }
         Samples samples = new Samples(sampleWerte);
         uniFormatAudio.uebertrageBereichZuUniFormat(samples);
-        return uniFormatAudio.holeNutzdaten(anzahlNutzdaten.get());
+        return uniFormatAudio.holeNutzdaten(maximalanzahl);
     }
 }
