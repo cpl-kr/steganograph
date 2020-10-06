@@ -24,7 +24,7 @@ public class AktionVersteckenInAudio {
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten in Audio untergebracht werden.";
     private static final String FEHLER_ANZAHL_KANAELE = "Die Anzahl der Kanäle von den Versteckregeln ist größer als die Anzahl der Kanäle von Audio.";
 
-    public static void versteckeNutzdatenInAudio(String dateinameVerteilregel, String dateinameNutzdaten,
+    public void versteckeNutzdatenInAudio(String dateinameVerteilregel, String dateinameNutzdaten,
             String dateinameQuelle, String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
@@ -62,7 +62,7 @@ public class AktionVersteckenInAudio {
         }
     }
 
-    public static void versteckeNutzdatenInAudio(byte[] verteilregel, byte[] nutzdaten, WavFile wavFileQuelle,
+    public void versteckeNutzdatenInAudio(byte[] verteilregel, byte[] nutzdaten, WavFile wavFileQuelle,
             WavFile wavFileZiel, Verrauschoption verrauschoption, UniFormatAudio uniFormatAudio,
             String dateinameNutzdaten) throws IOException {
         pruefeParameter(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel, verrauschoption, uniFormatAudio,

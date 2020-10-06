@@ -20,8 +20,8 @@ public class AktionHolenAusAudio {
     private static final String FEHLER_PARAMETER_NULL = "Einer der Parameter ist null.";
     private static final String FEHLER_PARAMETER_LEER = "Einer der Parameter ist leer.";
 
-    public static void holeNutzdatenAusAudio(String dateinameVerteilregel, String dateinameQuelle,
-            String dateinameNutzdaten) throws IOException {
+    public void holeNutzdatenAusAudio(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
+            throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
@@ -43,8 +43,8 @@ public class AktionHolenAusAudio {
         }
     }
 
-    public static void holeNutzdatenAusAudio(UniFormatAudio uniFormatAudio, WavFile wavFile,
-            AnzahlNutzdaten anzahlNutzdaten, String dateinameNutzdaten) {
+    public void holeNutzdatenAusAudio(UniFormatAudio uniFormatAudio, WavFile wavFile, AnzahlNutzdaten anzahlNutzdaten,
+            String dateinameNutzdaten) {
         pruefeParameter(uniFormatAudio, wavFile, anzahlNutzdaten, dateinameNutzdaten);
         // TODO
     }

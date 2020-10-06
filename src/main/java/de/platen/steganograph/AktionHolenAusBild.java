@@ -25,7 +25,7 @@ import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class AktionHolenAusBild {
 
-    public static void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
+    public void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
         BufferedImage bufferedImage = DateiUtils.leseBild(dateinameQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);

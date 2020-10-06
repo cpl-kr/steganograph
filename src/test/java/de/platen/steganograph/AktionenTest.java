@@ -36,8 +36,9 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleFuer1BlockAlsTeilblockFarbe() throws IOException {
-        Aktionen aktionen = new Aktionen();
+    public void testGeneriereVersteckeHoleBildFarbe() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -63,8 +64,9 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleFuer1BlockAlsTeilblockGrau() throws IOException {
-        Aktionen aktionen = new Aktionen();
+    public void testGeneriereVersteckeHolBildGrau() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "1";
@@ -90,89 +92,9 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleFuer1BlockAlsKomplettblock() throws IOException {
-        Aktionen aktionen = new Aktionen();
-        String blockgroesse = "100";
-        String anzahlNutzdaten = "50";
-        String anzahlKanaele = "4";
-        String bittiefe = "2";
-        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
-        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 50);
-        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
-        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
-        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
-        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
-        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
-        File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
-        File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
-        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
-        assertTrue(fileVerteilregel.exists());
-        assertTrue(fileNutzdatenOriginal.exists());
-        assertTrue(fileBildOriginal.exists());
-        assertTrue(fileBildVersteck.exists());
-        assertTrue(fileNutzdatenNeu.exists());
-        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
-    }
-
-    @Test
-    public void testGeneriereVersteckeHoleFuerMehrereBloeckeKompletteBloecke() throws IOException {
-        Aktionen aktionen = new Aktionen();
-        String blockgroesse = "100";
-        String anzahlNutzdaten = "50";
-        String anzahlKanaele = "4";
-        String bittiefe = "2";
-        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
-        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 500);
-        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
-        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
-        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
-        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
-        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
-        File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
-        File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
-        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
-        assertTrue(fileVerteilregel.exists());
-        assertTrue(fileNutzdatenOriginal.exists());
-        assertTrue(fileBildOriginal.exists());
-        assertTrue(fileBildVersteck.exists());
-        assertTrue(fileNutzdatenNeu.exists());
-        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
-    }
-
-    @Test
-    public void testGeneriereVersteckeHoleFuerMehrereBloeckeLetzterBlockTeilblock() throws IOException {
-        Aktionen aktionen = new Aktionen();
-        String blockgroesse = "100";
-        String anzahlNutzdaten = "50";
-        String anzahlKanaele = "4";
-        String bittiefe = "2";
-        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
-        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 525);
-        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
-        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
-                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES);
-        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
-        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU);
-        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
-        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
-        File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
-        File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
-        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
-        assertTrue(fileVerteilregel.exists());
-        assertTrue(fileNutzdatenOriginal.exists());
-        assertTrue(fileBildOriginal.exists());
-        assertTrue(fileBildVersteck.exists());
-        assertTrue(fileNutzdatenNeu.exists());
-        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
-    }
-
-    @Test
-    public void testGeneriereVersteckeHoleFuer1BlockMitDateinameAusStartblock() throws IOException {
-        Aktionen aktionen = new Aktionen();
+    public void testGeneriereVersteckeHoleDateinameAusStartblock() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -202,7 +124,8 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeZuvielNutzdaten() throws IOException {
-        Aktionen aktionen = new Aktionen();
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -217,12 +140,12 @@ public class AktionenTest {
         } catch (RuntimeException e) {
             assertEquals("Es können nicht alle Nutzdaten im Bild untergebracht werden.", e.getMessage());
         }
-
     }
 
     @Test
     public void testGeneriereVersteckeZuvielDatenImBlock() throws IOException {
-        Aktionen aktionen = new Aktionen();
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
         String anzahlNutzdaten = "24";
         String anzahlKanaele = "4";
@@ -237,7 +160,6 @@ public class AktionenTest {
         } catch (RuntimeException e) {
             assertEquals("Es können nicht alle Daten im Block untergebracht werden.", e.getMessage());
         }
-
     }
 
     private void loescheDateien() {

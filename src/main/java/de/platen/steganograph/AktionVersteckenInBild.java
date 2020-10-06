@@ -28,18 +28,18 @@ public class AktionVersteckenInBild {
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten im Bild untergebracht werden.";
     private static final String FEHLER_BLOCK = "Es können nicht alle Daten im Block untergebracht werden.";
 
-    public static void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
+    public void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
             String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
         BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
-        AktionVersteckenInBild.versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel,
-                verteilregel, nutzdaten, verrauschoption);
+        versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten,
+                verrauschoption);
         DateiUtils.schreibeBild(dateinameZiel, bufferedImageZiel);
     }
 
-    public static void versteckeNutzdatenInBild(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
+    public void versteckeNutzdatenInBild(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
             BufferedImage bufferedImageZiel, byte[] verteilregel, byte[] nutzdaten, Verrauschoption verrauschoption) {
         pruefeParameter(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);

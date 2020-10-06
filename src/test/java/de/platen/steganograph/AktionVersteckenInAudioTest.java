@@ -57,35 +57,35 @@ public class AktionVersteckenInAudioTest {
         String dateinameZiel = "dateinameZiel";
         Verrauschoption verrauschoption = Verrauschoption.OHNE;
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(null, dateinameNutzdaten, dateinameQuelle, dateinameZiel,
-                    verrauschoption);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Einer der Parameter ist null.", e.getMessage());
-        }
-        try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, null, dateinameQuelle,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(null, dateinameNutzdaten, dateinameQuelle,
                     dateinameZiel, verrauschoption);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten, null,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, null, dateinameQuelle,
                     dateinameZiel, verrauschoption);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten, null,
+                    dateinameZiel, verrauschoption);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Einer der Parameter ist null.", e.getMessage());
+        }
+        try {
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
                     dateinameQuelle, null, verrauschoption);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
                     dateinameQuelle, dateinameZiel, null);
             fail();
         } catch (IllegalArgumentException e) {
@@ -101,28 +101,28 @@ public class AktionVersteckenInAudioTest {
         String dateinameZiel = "dateinameZiel";
         Verrauschoption verrauschoption = Verrauschoption.OHNE;
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio("", dateinameNutzdaten, dateinameQuelle, dateinameZiel,
-                    verrauschoption);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Einer der Parameter ist leer.", e.getMessage());
-        }
-        try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, "", dateinameQuelle, dateinameZiel,
-                    verrauschoption);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("Einer der Parameter ist leer.", e.getMessage());
-        }
-        try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten, "",
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio("", dateinameNutzdaten, dateinameQuelle,
                     dateinameZiel, verrauschoption);
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist leer.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, "", dateinameQuelle,
+                    dateinameZiel, verrauschoption);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Einer der Parameter ist leer.", e.getMessage());
+        }
+        try {
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten, "",
+                    dateinameZiel, verrauschoption);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Einer der Parameter ist leer.", e.getMessage());
+        }
+        try {
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
                     dateinameQuelle, "", verrauschoption);
             fail();
         } catch (IllegalArgumentException e) {
@@ -141,7 +141,7 @@ public class AktionVersteckenInAudioTest {
         byte[] nutzdaten = erzeugeNutzdaten(5);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                     DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
@@ -161,7 +161,7 @@ public class AktionVersteckenInAudioTest {
         byte[] nutzdaten = erzeugeNutzdaten(50000);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                     DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
@@ -187,7 +187,7 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                 DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
@@ -221,7 +221,7 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                 DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
@@ -255,7 +255,7 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                 DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
@@ -292,7 +292,7 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        AktionVersteckenInAudio.versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                 DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
@@ -320,43 +320,43 @@ public class AktionVersteckenInAudioTest {
         UniFormatAudio uniFormatAudio = Mockito.mock(UniFormatAudio.class);
         String dateinameNutzdaten = "dateinameNutzdaten";
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(null, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(null, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, null, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, null, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, null, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, null, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, null,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, null,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel, null,
-                    uniFormatAudio, dateinameNutzdaten);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+                    null, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, null, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, null);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist null.", e.getMessage());
@@ -373,19 +373,19 @@ public class AktionVersteckenInAudioTest {
         UniFormatAudio uniFormatAudio = Mockito.mock(UniFormatAudio.class);
         String dateinameNutzdaten = "dateinameNutzdaten";
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(new byte[0], nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(new byte[0], nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist leer.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, new byte[0], wavFileQuelle, wavFileZiel,
-                    verrauschoption, uniFormatAudio, dateinameNutzdaten);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, new byte[0], wavFileQuelle,
+                    wavFileZiel, verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist leer.", e.getMessage());
         }
         try {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, "");
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist leer.", e.getMessage());
@@ -403,7 +403,7 @@ public class AktionVersteckenInAudioTest {
         WavFile wavFileZiel = null;
         try {
             wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "1"), 3, 10, 16, 1000);
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
@@ -413,7 +413,7 @@ public class AktionVersteckenInAudioTest {
         }
         try {
             wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "2"), 2, 20, 16, 1000);
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
@@ -423,7 +423,7 @@ public class AktionVersteckenInAudioTest {
         }
         try {
             wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "3"), 2, 10, 8, 1000);
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
@@ -433,7 +433,7 @@ public class AktionVersteckenInAudioTest {
         }
         try {
             wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "4"), 2, 10, 16, 2000);
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
             assertEquals("Die Audiokonfiguratuion ist ungleich.", e.getMessage());
@@ -458,7 +458,7 @@ public class AktionVersteckenInAudioTest {
         Verrauschoption verrauschoption = Verrauschoption.ALLES;
         UniFormatAudio uniFormatAudio = Mockito.mock(UniFormatAudio.class);
         String dateinameNutzdaten = "dateinameNutzdaten";
-        AktionVersteckenInAudio.versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                 verrauschoption, uniFormatAudio, dateinameNutzdaten);
         Mockito.verify(uniFormatAudio, Mockito.times(26)).verrausche();
     }

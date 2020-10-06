@@ -12,6 +12,19 @@ import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class Aktionen {
 
+    private final AktionVersteckenInBild aktionVersteckenInBild;
+    private final AktionVersteckenInAudio aktionVersteckenInAudio;
+    private final AktionHolenAusBild aktionHolenAusBild;
+    private final AktionHolenAusAudio aktionHolenAusAudio;
+
+    public Aktionen(AktionVersteckenInBild aktionVersteckenInBild, AktionVersteckenInAudio aktionVersteckenInAudio,
+            AktionHolenAusBild aktionHolenAusBild, AktionHolenAusAudio aktionHolenAusAudio) {
+        this.aktionVersteckenInBild = aktionVersteckenInBild;
+        this.aktionVersteckenInAudio = aktionVersteckenInAudio;
+        this.aktionHolenAusBild = aktionHolenAusBild;
+        this.aktionHolenAusAudio = aktionHolenAusAudio;
+    }
+
     public void generiere(String blockgroesse, String anzahlNutzdaten, String anzahlKanaele, String bittiefe,
             String dateiname) throws IOException {
         Blockgroesse blockgroesseKonfiguration = new Blockgroesse(Integer.valueOf(blockgroesse));
@@ -28,11 +41,11 @@ public class Aktionen {
     public void verstecke(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
             String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
-            AktionVersteckenInBild.versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle,
+            aktionVersteckenInBild.versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle,
                     dateinameZiel, verrauschoption);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
-            AktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+            aktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
                     dateinameQuelle, dateinameZiel, verrauschoption);
         }
     }
@@ -40,10 +53,10 @@ public class Aktionen {
     public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
-            AktionHolenAusBild.holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
+            aktionHolenAusBild.holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
-            AktionHolenAusAudio.holeNutzdatenAusAudio(dateinameNutzdaten, dateinameNutzdaten, dateinameNutzdaten);
+            aktionHolenAusAudio.holeNutzdatenAusAudio(dateinameNutzdaten, dateinameNutzdaten, dateinameNutzdaten);
         }
     }
 }
