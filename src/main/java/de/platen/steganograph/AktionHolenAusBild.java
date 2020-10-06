@@ -25,8 +25,12 @@ import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class AktionHolenAusBild {
 
+    private static final String FEHLER_PARAMETER_NULL = "Einer der Parameter ist null.";
+    private static final String FEHLER_PARAMETER_LEER = "Einer der Parameter ist leer.";
+
     public void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
+        pruefeParameter(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         BufferedImage bufferedImage = DateiUtils.leseBild(dateinameQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
@@ -80,6 +84,16 @@ public class AktionHolenAusBild {
             offset += maxAnzahl;
         }
         DateiUtils.schreibeDatei(dateinameZiel, nutzdaten);
+    }
+
+    private static void pruefeParameter(String dateinameVerteilregel, String dateinameQuelle,
+            String dateinameNutzdaten) {
+        if ((dateinameVerteilregel == null) || (dateinameQuelle == null) || (dateinameNutzdaten == null)) {
+            throw new IllegalArgumentException(FEHLER_PARAMETER_NULL);
+        }
+        if (dateinameVerteilregel.isEmpty() || dateinameQuelle.isEmpty() || dateinameNutzdaten.isEmpty()) {
+            throw new IllegalArgumentException(FEHLER_PARAMETER_LEER);
+        }
     }
 
     private static byte[] leseBlock(BufferedImage bufferedImage, UniFormatBild uniFormatBild, PositionXY abPosition,
