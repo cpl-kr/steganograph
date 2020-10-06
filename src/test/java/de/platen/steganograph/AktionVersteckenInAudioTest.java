@@ -390,6 +390,22 @@ public class AktionVersteckenInAudioTest {
         } catch (IllegalArgumentException e) {
             assertEquals("Einer der Parameter ist leer.", e.getMessage());
         }
+        try {
+            Mockito.when(wavFileQuelle.getNumFrames()).thenReturn(0L);
+            Mockito.when(wavFileZiel.getNumFrames()).thenReturn(10L);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+                    verrauschoption, uniFormatAudio, dateinameNutzdaten);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Einer der Parameter ist leer.", e.getMessage());
+        }
+        try {
+            Mockito.when(wavFileQuelle.getNumFrames()).thenReturn(10L);
+            Mockito.when(wavFileZiel.getNumFrames()).thenReturn(0L);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
+                    verrauschoption, uniFormatAudio, dateinameNutzdaten);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Einer der Parameter ist leer.", e.getMessage());
+        }
     }
 
     @Test
