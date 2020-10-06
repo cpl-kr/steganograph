@@ -79,19 +79,25 @@ public class AktionHolenAusAudio {
         byte[] blockdaten = null;
         int offset = 0;
         int maximalanzahl = anzahlNutzdaten.get();
+        int anzahlGelesen = 0;
         try {
             do {
                 if (anzahlBytes < anzahlNutzdaten.get()) {
                     maximalanzahl = anzahlBytes;
+                } else {
+                    if ((anzahlBytes - anzahlGelesen) < maximalanzahl) {
+                        maximalanzahl = anzahlBytes - anzahlGelesen;
+                    }
                 }
                 blockdaten = leseBlock(uniFormatAudio, wavFile, maximalanzahl);
                 System.arraycopy(blockdaten, 0, nutzdaten, offset, blockdaten.length);
+                anzahlGelesen += blockdaten.length;
                 if (offset + blockdaten.length < anzahlBytes) {
                     offset += blockdaten.length;
                 } else {
                     offset = anzahlBytes - offset;
                 }
-            } while (blockdaten.length == uniFormatAudio.getAnzahlPositionen());
+            } while (anzahlGelesen < anzahlBytes);
         } catch (WavFileException e) {
             throw new RuntimeException(e);
         } finally {
