@@ -56,7 +56,7 @@ public class Aktionen {
             aktionHolenAusBild.holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
-            aktionHolenAusAudio.holeNutzdatenAusAudio(dateinameNutzdaten, dateinameNutzdaten, dateinameNutzdaten);
+            aktionHolenAusAudio.holeNutzdatenAusAudio(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         }
     }
 }
