@@ -11,7 +11,9 @@ import de.platen.steganograph.datentypen.AnzahlNutzdaten;
 import de.platen.steganograph.datentypen.AnzahlPositionen;
 import de.platen.steganograph.datentypen.Bittiefe;
 import de.platen.steganograph.datentypen.Eintrag;
+import de.platen.steganograph.datentypen.Samples;
 import de.platen.steganograph.uniformat.UniFormatAudio;
+import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
@@ -44,9 +46,55 @@ public class AktionHolenAusAudio {
     }
 
     public void holeNutzdatenAusAudio(UniFormatAudio uniFormatAudio, WavFile wavFile, AnzahlNutzdaten anzahlNutzdaten,
-            String dateinameNutzdaten) {
+            String dateinameNutzdaten) throws IOException {
         pruefeParameter(uniFormatAudio, wavFile, anzahlNutzdaten, dateinameNutzdaten);
-        // TODO
+        byte[] startblock = new byte[0];
+        try {
+            startblock = leseBlock(uniFormatAudio, wavFile, anzahlNutzdaten);
+        } catch (WavFileException e) {
+            throw new RuntimeException(e);
+        } finally {
+            wavFile.close();
+        }
+        byte[] zahl = new byte[4];
+        System.arraycopy(startblock, 0, zahl, 0, 4);
+        int anzahlBytes = ByteUtils.bytesToInt(zahl);
+        System.arraycopy(startblock, 4, zahl, 0, 4);
+        int laengeDateiname = ByteUtils.bytesToInt(zahl);
+        byte[] datei = new byte[laengeDateiname];
+        System.arraycopy(startblock, 8, datei, 0, laengeDateiname);
+        String dateinameAusBlock = new String(datei);
+        String dateinameZiel = dateinameNutzdaten;
+        File file = new File(dateinameNutzdaten);
+        if (file.isDirectory()) {
+            String trenner = "/";
+            if (dateinameNutzdaten.endsWith("/")) {
+                trenner = "";
+            }
+            if (dateinameNutzdaten.endsWith("\\")) {
+                trenner = "";
+            }
+            dateinameZiel = dateinameNutzdaten + trenner + dateinameAusBlock;
+        }
+        byte[] nutzdaten = new byte[anzahlBytes];
+        byte[] blockdaten = null;
+        int offset = 0;
+        try {
+            do {
+                blockdaten = leseBlock(uniFormatAudio, wavFile, anzahlNutzdaten);
+                System.arraycopy(blockdaten, 0, nutzdaten, offset, blockdaten.length);
+                if (offset + blockdaten.length < anzahlBytes) {
+                    offset += blockdaten.length;
+                } else {
+                    offset = anzahlBytes - offset;
+                }
+            } while (blockdaten.length == uniFormatAudio.getAnzahlPositionen());
+        } catch (WavFileException e) {
+            throw new RuntimeException(e);
+        } finally {
+            wavFile.close();
+        }
+        DateiUtils.schreibeDatei(dateinameZiel, nutzdaten);
     }
 
     private static void pruefeParameter(String dateinameVerteilregel, String dateinameQuelle,
@@ -68,5 +116,23 @@ public class AktionHolenAusAudio {
         if (dateinameNutzdaten.isEmpty() || (wavFile.getNumFrames() == 0)) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_LEER);
         }
+    }
+
+    private static byte[] leseBlock(UniFormatAudio uniFormatAudio, WavFile wavFile, AnzahlNutzdaten anzahlNutzdaten)
+            throws IOException, WavFileException {
+        int[][] sampleWerte = new int[uniFormatAudio.getAnzahlKanaele()][uniFormatAudio.getAnzahlPositionen()];
+        int anzahlGelesen = wavFile.readFrames(sampleWerte, uniFormatAudio.getAnzahlPositionen());
+        if (anzahlGelesen < uniFormatAudio.getAnzahlPositionen()) {
+            int[][] sampleWerteNeu = new int[uniFormatAudio.getAnzahlKanaele()][anzahlGelesen];
+            for (int indexKanal = 0; indexKanal < sampleWerte.length; indexKanal++) {
+                for (int indexPosition = 0; indexPosition < anzahlGelesen; indexPosition++) {
+                    sampleWerteNeu[indexKanal][indexPosition] = sampleWerte[indexKanal][indexPosition];
+                }
+            }
+            sampleWerte = sampleWerteNeu;
+        }
+        Samples samples = new Samples(sampleWerte);
+        uniFormatAudio.uebertrageBereichZuUniFormat(samples);
+        return uniFormatAudio.holeNutzdaten(anzahlNutzdaten.get());
     }
 }
