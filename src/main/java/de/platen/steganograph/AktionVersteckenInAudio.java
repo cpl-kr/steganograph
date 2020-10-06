@@ -160,6 +160,9 @@ public class AktionVersteckenInAudio {
                 || (verrauschoption == null) || (uniFormatAudio == null) || (dateinameNutzdaten == null)) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_NULL);
         }
+        if ((wavFileQuelle.getNumFrames() == 0) || (wavFileZiel.getNumFrames() == 0)) {
+            throw new IllegalArgumentException(FEHLER_PARAMETER_LEER);
+        }
         if ((verteilregel.length == 0) || (nutzdaten.length == 0) || (dateinameNutzdaten.isEmpty())) {
             throw new IllegalArgumentException(FEHLER_PARAMETER_LEER);
         }
