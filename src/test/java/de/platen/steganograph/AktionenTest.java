@@ -276,7 +276,109 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleAudioDateinameAusStartblock() throws IOException {
-        // TODO
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "1000";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        assertTrue(fileNutzdatenOriginal.exists());
+        fileNutzdatenOriginal.delete();
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, VERZEICHNIS_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileBildOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileBildVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileBildOriginal.exists());
+        assertTrue(fileBildVersteck.exists());
+        byte[] nutzdaten = DateiUtils.leseDatei(DATEINAME_NUTZDATEN_ORIGINAL);
+        assertEquals(10, nutzdaten.length);
+        byte[] vergleichsdaten = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 };
+        assertArrayEquals(vergleichsdaten, nutzdaten);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleAudioFuer1BlockAlsKomplettblock() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "1000";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 50);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileAudioOriginal.exists());
+        assertTrue(fileAudioVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeKompletteBloecke() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "200";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 150);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileAudioOriginal.exists());
+        assertTrue(fileAudioVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeLetzterBlockTeilblock() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "200";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 125);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileAudioOriginal.exists());
+        assertTrue(fileAudioVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
     }
 
     private void loescheDateien() {
