@@ -210,6 +210,16 @@ public class VerteilregelgenerierungTest {
     }
 
     @Test
+    public void testKonvertiereEintraegeAlternativ() {
+        final KonfigurationVerteilregeln konfigurationGenerierung = erzeugeKonfigurationAlternativ();
+        final Verteilregelgenerierung verteilregelgenerierung = new Verteilregelgenerierung(konfigurationGenerierung);
+        final byte[] verteilregeln = verteilregelgenerierung.generiere();
+        final List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregeln);
+        assertNotNull(eintraege);
+        assertEquals(200, eintraege.size());
+    }
+
+    @Test
     public void testErmittleAnzahlPositionenParameterNull() {
         try {
             Verteilregelgenerierung.ermittleAnzahlPositionen(null);
@@ -294,6 +304,14 @@ public class VerteilregelgenerierungTest {
         final AnzahlNutzdaten nutzdaten = new AnzahlNutzdaten(ANZAHL_NUTZDATEN);
         final AnzahlKanaele anzahlKanaele = new AnzahlKanaele(ANZAHL_KANAELE);
         final Bittiefe bittiefe = new Bittiefe(BITTIEFE);
+        return new KonfigurationVerteilregeln(blockGroesse, nutzdaten, bittiefe, anzahlKanaele);
+    }
+
+    private KonfigurationVerteilregeln erzeugeKonfigurationAlternativ() {
+        final Blockgroesse blockGroesse = new Blockgroesse(1000);
+        final AnzahlNutzdaten nutzdaten = new AnzahlNutzdaten(50);
+        final AnzahlKanaele anzahlKanaele = new AnzahlKanaele(2);
+        final Bittiefe bittiefe = new Bittiefe(2);
         return new KonfigurationVerteilregeln(blockGroesse, nutzdaten, bittiefe, anzahlKanaele);
     }
 
