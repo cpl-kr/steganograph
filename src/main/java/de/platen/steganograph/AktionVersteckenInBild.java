@@ -24,12 +24,15 @@ import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class AktionVersteckenInBild {
 
+    private static final String FEHLER_PARAMETER_NULL = "Einer der Parameter ist null.";
+    private static final String FEHLER_PARAMETER_LEER = "Einer der Parameter ist leer.";
     private static final String FEHLER_PARAMETER = "Ein oder mehrere Parameter sind null oder fehlerhaft.";
     private static final String FEHLER_DATENMENGE = "Es können nicht alle Nutzdaten im Bild untergebracht werden.";
     private static final String FEHLER_BLOCK = "Es können nicht alle Daten im Block untergebracht werden.";
 
     public void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
             String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+        pruefeParameter(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
         BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
         BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
         byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
@@ -188,6 +191,18 @@ public class AktionVersteckenInBild {
         uniFormatBild.uebertrageBereichZuUniFormat(bufferedImage, abPosition);
         uniFormatBild.verrausche();
         uniFormatBild.uebertrageBereichVonUniFormat(bufferedImage, abPosition);
+    }
+
+    private static void pruefeParameter(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
+            String dateinameZiel, Verrauschoption verrauschoption) {
+        if ((dateinameVerteilregel == null) || (dateinameNutzdaten == null) || (dateinameQuelle == null)
+                || (dateinameZiel == null) || (verrauschoption == null)) {
+            throw new IllegalArgumentException(FEHLER_PARAMETER_NULL);
+        }
+        if (dateinameVerteilregel.isEmpty() || dateinameNutzdaten.isEmpty() || dateinameQuelle.isEmpty()
+                || dateinameZiel.isEmpty()) {
+            throw new IllegalArgumentException(FEHLER_PARAMETER_LEER);
+        }
     }
 
     private static void pruefeParameter(String dateinameNutzdaten, BufferedImage bufferedImageQuelle,
