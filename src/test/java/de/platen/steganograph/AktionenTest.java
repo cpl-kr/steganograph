@@ -22,6 +22,8 @@ public class AktionenTest {
     private static final String DATEINAME_NUTZDATEN_ORIGINAL = "src/test/resources/nutzdatenOriginal";
     private static final String DATEINAME_BILD_ORIGINAL = "src/test/resources/bildoriginal.png";
     private static final String DATEINAME_BILD_VERSTECK = "src/test/resources/bildversteck.png";
+    private static final String DATEINAME_AUDIO_ORIGINAL = "src/test/resources/audiooriginal.wav";
+    private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
     private static final String VERZEICHNIS_NUTZDATEN_NEU = "src/test/resources/";
 
@@ -64,7 +66,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHolBildGrau() throws IOException {
+    public void testGeneriereVersteckeHoleBildGrau() throws IOException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "1000";
@@ -92,7 +94,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleDateinameAusStartblock() throws IOException {
+    public void testGeneriereVersteckeHoleBildDateinameAusStartblock() throws IOException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
@@ -123,7 +125,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeZuvielNutzdaten() throws IOException {
+    public void testGeneriereVersteckeBildZuvielNutzdaten() throws IOException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
@@ -143,7 +145,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeZuvielDatenImBlock() throws IOException {
+    public void testGeneriereVersteckeBildZuvielDatenImBlock() throws IOException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "100";
@@ -162,11 +164,43 @@ public class AktionenTest {
         }
     }
 
+    @Test
+    public void testGeneriereVersteckeHoleAudio() throws IOException {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "1000";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileAudioOriginal.exists());
+        assertTrue(fileAudioVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleAudioDateinameAusStartblock() throws IOException {
+        // TODO
+    }
+
     private void loescheDateien() {
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
         File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
         File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
         File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
         if (fileVerteilregel.exists()) {
             fileVerteilregel.delete();
@@ -179,6 +213,9 @@ public class AktionenTest {
         }
         if (fileBildVersteck.exists()) {
             fileBildVersteck.delete();
+        }
+        if (fileAudioVersteck.exists()) {
+            fileAudioVersteck.delete();
         }
         if (fileNutzdatenNeu.exists()) {
             fileNutzdatenNeu.delete();
