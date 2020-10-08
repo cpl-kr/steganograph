@@ -27,4 +27,27 @@ public class AudioTest {
         wavFileOriginal.close();
         wavFileNeu.close();
     }
+
+    @Test
+    @Ignore
+    public void testAudioNeu() throws IOException, WavFileException {
+        int sekunden = 10;
+        int numChannels = 2;
+        int validBits = 16;
+        int sampleRate = 44100;
+        int numFrames = sampleRate * sekunden;
+        String dateiname = "src/test/resources/audioneu.wav";
+        WavFile wavFile = WavFile.newWavFile(new File(dateiname), numChannels, numFrames, validBits, sampleRate);
+        int[][] sampleBuffer = new int[numChannels][sampleRate];
+        for (int sekunde = 1; sekunde <= 10; sekunde++) {
+            for (int sample = 0; sample < sampleRate; sample++) {
+                for (int kanal = 0; kanal < numChannels; kanal++) {
+                    sampleBuffer[kanal][sample] = sample;
+                }
+
+            }
+            wavFile.writeFrames(sampleBuffer, sampleRate);
+        }
+        wavFile.close();
+    }
 }
