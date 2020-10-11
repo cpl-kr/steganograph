@@ -131,7 +131,7 @@ public class AktionVersteckenInAudioTest {
     }
 
     @Test
-    public void testVersteckeNutzdatenInAudioFehlerAnzahlKanaele() throws IOException {
+    public void testVersteckeNutzdatenInAudioFehlerAnzahlKanaele() throws IOException, WavFileException {
         Blockgroesse blockgroesse = new Blockgroesse(200);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(10);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
@@ -140,6 +140,8 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(5);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
+        WavFile wavFile = erzeugeAudiodatei(0);
+        wavFile.close();
         try {
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                     DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
@@ -151,7 +153,7 @@ public class AktionVersteckenInAudioTest {
     }
 
     @Test
-    public void testVersteckeNutzdatenInAudioFehlerDatenmenge() throws IOException {
+    public void testVersteckeNutzdatenInAudioFehlerDatenmenge() throws IOException, WavFileException {
         Blockgroesse blockgroesse = new Blockgroesse(200);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(10);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(2);
@@ -160,6 +162,8 @@ public class AktionVersteckenInAudioTest {
         DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(50000);
         DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
+        WavFile wavFile = erzeugeAudiodatei(5000);
+        wavFile.close();
         try {
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
                     DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
@@ -171,7 +175,7 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuer1BlockAlsTeilblock() throws IOException, WavFileException {
-        WavFile wavFileOriginal = WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        WavFile wavFileOriginal = erzeugeAudiodatei(5000);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -205,7 +209,7 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuer1BlockAlsKomplettblock() throws IOException, WavFileException {
-        WavFile wavFileOriginal = WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        WavFile wavFileOriginal = erzeugeAudiodatei(5000);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -239,7 +243,7 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuerMehrereBloeckeKompletteBloecke() throws IOException, WavFileException {
-        WavFile wavFileOriginal = WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        WavFile wavFileOriginal = erzeugeAudiodatei(5000);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -276,7 +280,7 @@ public class AktionVersteckenInAudioTest {
     @Test
     public void testVersteckeNutzdatenInAudioFuerMehrereBloeckeLetzterBlockTeilblock()
             throws IOException, WavFileException {
-        WavFile wavFileOriginal = WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        WavFile wavFileOriginal = erzeugeAudiodatei(5000);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -461,7 +465,7 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVerrauscheRest() throws IOException, WavFileException {
-        WavFile wavFileQuelle = WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        WavFile wavFileQuelle = erzeugeAudiodatei(5000);
         WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK), wavFileQuelle.getNumChannels(),
                 wavFileQuelle.getNumFrames(), wavFileQuelle.getValidBits(), wavFileQuelle.getSampleRate());
         Blockgroesse blockgroesse = new Blockgroesse(200);
@@ -482,7 +486,7 @@ public class AktionVersteckenInAudioTest {
     private void loescheDateien() {
         File fileVerteilregel = new File(DATEINAME_VERTEILREGEl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN);
-        // File fileOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
         File fileVersteck = new File(DATEINAME_AUDIO_VERSTECK);
         File fileVersteck1 = new File(DATEINAME_AUDIO_VERSTECK + "1");
         File fileVersteck2 = new File(DATEINAME_AUDIO_VERSTECK + "2");
@@ -495,9 +499,9 @@ public class AktionVersteckenInAudioTest {
         if (fileNutzdatenOriginal.exists()) {
             fileNutzdatenOriginal.delete();
         }
-        // if (fileOriginal.exists()) {
-        // fileOriginal.delete();
-        // }
+        if (fileOriginal.exists()) {
+            fileOriginal.delete();
+        }
         if (fileVersteck.exists()) {
             fileVersteck.delete();
         }
@@ -516,6 +520,31 @@ public class AktionVersteckenInAudioTest {
         if (fileNutzdatenNeu.exists()) {
             fileNutzdatenNeu.delete();
         }
+    }
+
+    private WavFile erzeugeAudiodatei(int maximalFrames) throws IOException, WavFileException {
+        int sekunden = 10;
+        int numChannels = 2;
+        int validBits = 16;
+        int sampleRate = 44100;
+        int numFrames = sampleRate * sekunden;
+        if (maximalFrames > 0) {
+            numFrames = maximalFrames;
+        }
+        WavFile wavFile = WavFile.newWavFile(new File(DATEINAME_AUDIO_ORIGINAL), numChannels, numFrames, validBits,
+                sampleRate);
+        int[][] sampleBuffer = new int[numChannels][sampleRate];
+        for (int sekunde = 1; sekunde <= 10; sekunde++) {
+            for (int sample = 0; sample < sampleRate; sample++) {
+                for (int kanal = 0; kanal < numChannels; kanal++) {
+                    sampleBuffer[kanal][sample] = sample;
+                }
+
+            }
+            wavFile.writeFrames(sampleBuffer, sampleRate);
+        }
+        wavFile.close();
+        return WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
     }
 
     private byte[] erzeugeNutzdaten(int anzahl) {

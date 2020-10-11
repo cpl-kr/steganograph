@@ -14,6 +14,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.platen.extern.wavfile.WavFile;
+import de.platen.extern.wavfile.WavFileException;
 import de.platen.steganograph.utils.DateiUtils;
 
 public class AktionenTest {
@@ -249,15 +251,17 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleAudio() throws IOException {
+    public void testGeneriereVersteckeHoleAudio() throws IOException, WavFileException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
         String bittiefe = "2";
+
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        erzeugeAudiodatei(5000);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
                 DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
@@ -275,7 +279,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleAudioDateinameAusStartblock() throws IOException {
+    public void testGeneriereVersteckeHoleAudioDateinameAusStartblock() throws IOException, WavFileException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "1000";
@@ -284,6 +288,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        erzeugeAudiodatei(5000);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
                 DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
@@ -304,7 +309,7 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleAudioFuer1BlockAlsKomplettblock() throws IOException {
+    public void testGeneriereVersteckeHoleAudioFuer1BlockAlsKomplettblock() throws IOException, WavFileException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "1000";
@@ -313,6 +318,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 50);
+        erzeugeAudiodatei(5000);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
                 DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
@@ -330,7 +336,8 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeKompletteBloecke() throws IOException {
+    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeKompletteBloecke()
+            throws IOException, WavFileException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "200";
@@ -339,6 +346,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 150);
+        erzeugeAudiodatei(5000);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
                 DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
@@ -356,7 +364,8 @@ public class AktionenTest {
     }
 
     @Test
-    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeLetzterBlockTeilblock() throws IOException {
+    public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeLetzterBlockTeilblock()
+            throws IOException, WavFileException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
                 new AktionHolenAusBild(), new AktionHolenAusAudio());
         String blockgroesse = "200";
@@ -365,6 +374,7 @@ public class AktionenTest {
         String bittiefe = "2";
         aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
         erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 125);
+        erzeugeAudiodatei(5000);
         aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
                 DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
         aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU);
@@ -386,6 +396,7 @@ public class AktionenTest {
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
         File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
         File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
         File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
         File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
         if (fileVerteilregel.exists()) {
@@ -399,6 +410,9 @@ public class AktionenTest {
         }
         if (fileBildVersteck.exists()) {
             fileBildVersteck.delete();
+        }
+        if (fileAudioOriginal.exists()) {
+            fileAudioOriginal.delete();
         }
         if (fileAudioVersteck.exists()) {
             fileAudioVersteck.delete();
@@ -488,5 +502,29 @@ public class AktionenTest {
         // }
         // }
         assertArrayEquals(datenOriginal, datenNeu);
+    }
+
+    private void erzeugeAudiodatei(int maximalFrames) throws IOException, WavFileException {
+        int sekunden = 10;
+        int numChannels = 2;
+        int validBits = 16;
+        int sampleRate = 44100;
+        int numFrames = sampleRate * sekunden;
+        if (maximalFrames > 0) {
+            numFrames = maximalFrames;
+        }
+        WavFile wavFile = WavFile.newWavFile(new File(DATEINAME_AUDIO_ORIGINAL), numChannels, numFrames, validBits,
+                sampleRate);
+        int[][] sampleBuffer = new int[numChannels][sampleRate];
+        for (int sekunde = 1; sekunde <= 10; sekunde++) {
+            for (int sample = 0; sample < sampleRate; sample++) {
+                for (int kanal = 0; kanal < numChannels; kanal++) {
+                    sampleBuffer[kanal][sample] = sample;
+                }
+
+            }
+            wavFile.writeFrames(sampleBuffer, sampleRate);
+        }
+        wavFile.close();
     }
 }
