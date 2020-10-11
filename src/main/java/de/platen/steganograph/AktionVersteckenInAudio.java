@@ -41,7 +41,7 @@ public class AktionVersteckenInAudio {
             if (anzahlKanaele.get() > wavFileQuelle.getNumChannels()) {
                 throw new RuntimeException(FEHLER_ANZAHL_KANAELE);
             }
-            long anzahlBloeckeGesamt = wavFileQuelle.getNumFrames();
+            long anzahlBloeckeGesamt = wavFileQuelle.getNumFrames() / anzahlPositionen.get();
             if (((anzahlBloeckeGesamt - 1) * anzahlNutzdaten.get()) < nutzdaten.length) {
                 throw new RuntimeException(FEHLER_DATENMENGE);
             }
