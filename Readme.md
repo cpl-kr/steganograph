@@ -7,6 +7,13 @@
 Mit diesem Programm können anhand von Versteckvorgaben Nutzdaten in einer Mediendatei (in der vorliegenden Version eine Bilddatei als PNG- und BMP-Datei und eine Audiodatei als wav-Datei) versteckt und auch wieder herausgeholt werden.
 Die Versteckvorgaben selbst können mit diesem Programm ebenfalls erzeugt werden.
 
+Was unterscheidet dieses Programm von anderen Steganographieprogrammen?
+Andere Programme dieser Art stellen einen symmetrischen privaten Schlüssel dar. D.h. die Versteckvorgaben sind im Programm selbst implementiert.
+Wenn man also eine Mediandatei im Verdacht hat, dass sie versteckte Daten enthält, kann man nacheinander die Steganographieprogramme dieser Art auf diese Mediendatei ansetzen und erhält so die versteckten Daten.
+Das vorliegende Staganographieprogramm verfolgt den Ansatz, die Versteckvorgaben vom Programm selbst zu trennen.
+Sie liegen dass als separate Datai außerhalb des Proggramms vor.
+Diese Datei stellt zwar ebenfalls einen symmetrsichen privaten Schlüssel dar, aber man ihn mit herkömmlichen Verschlüsselungsmethoden dem Empfänger zukommen lassen.
+
 Das Verstecken wird blockweise durchgeführt. Jeder Block besteht aus einer Menge von Positionen (bei einem Bild sind dies Bildpunkte).
 Jede Position enthält eine Menge Kanäle (bei einem Bild mit drei Farbkanälen sind dies z.B. Rot, Grün, Blau).
 
