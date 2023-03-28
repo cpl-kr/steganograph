@@ -30,9 +30,19 @@ public class AktionHolenAusBild {
 
     public void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
+        holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, null, null);
+    }
+
+    public void holeAusBild(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten, String dateiPrivateKey, String passwort)
+            throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
         BufferedImage bufferedImage = DateiUtils.leseBild(dateinameQuelle);
-        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        byte[] verteilregel;
+        if ((dateiPrivateKey != null) && !dateiPrivateKey.isEmpty()) {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel, dateiPrivateKey, passwort);
+        } else {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        }
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
         AnzahlPositionen anzahlPositionen = Verteilregelgenerierung.ermittleAnzahlPositionen(verteilregel);
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);

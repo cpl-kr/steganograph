@@ -9,7 +9,10 @@ import static org.junit.Assert.fail;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import de.platen.crypt.KeyVerwaltung;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +31,9 @@ public class AktionenTest {
     private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
     private static final String VERZEICHNIS_NUTZDATEN_NEU = "src/test/resources/";
+    private static final String DATEINAME_PUBLIC_KEY = "src/test/resources/public.pgp";
+    private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
+    private static final String ID = "person";
 
     @Before
     public void before() {
@@ -389,6 +395,85 @@ public class AktionenTest {
         assertTrue(fileAudioVersteck.exists());
         assertTrue(fileNutzdatenNeu.exists());
         vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleBildMitEncrypt() throws IOException {
+        final KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
+        keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, ID);
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "100";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "4";
+        String bittiefe = "2";
+        List<String> dateinamenPublicKey = new ArrayList<>();
+        dateinamenPublicKey.add(DATEINAME_PUBLIC_KEY);
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl, dateinamenPublicKey, null);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        erzeugeBildFarbe(DATEINAME_BILD_ORIGINAL, 50, 50);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_BILD_ORIGINAL,
+                DATEINAME_BILD_VERSTECK, Verrauschoption.ALLES, DATEINAME_PRIVATE_KEY, null);
+        pruefeVersteckbild(DATEINAME_BILD_VERSTECK, BufferedImage.TYPE_4BYTE_ABGR);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_BILD_VERSTECK, DATEINAME_NUTZDATEN_NEU, DATEINAME_PRIVATE_KEY, null);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileBildOriginal = new File(DATEINAME_BILD_ORIGINAL);
+        File fileBildVersteck = new File(DATEINAME_BILD_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileBildOriginal.exists());
+        assertTrue(fileBildVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+        File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
+        if (filePublicKey.exists()) {
+            filePublicKey.delete();
+        }
+        File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
+        if (filePrivateKey.exists()) {
+            filePrivateKey.delete();
+        }
+    }
+
+    @Test
+    public void testGeneriereVersteckeHoleAudioMitEncrypt() throws IOException, WavFileException {
+        final KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
+        keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, ID);
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        String blockgroesse = "1000";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        List<String> dateinamenPublicKey = new ArrayList<>();
+        dateinamenPublicKey.add(DATEINAME_PUBLIC_KEY);
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl, dateinamenPublicKey, null);
+        erzeugeNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, 10);
+        erzeugeAudiodatei(5000);
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_AUDIO_ORIGINAL,
+                DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES, DATEINAME_PRIVATE_KEY, null);
+        aktionen.hole(DATEINAME_VERTEILREGELl, DATEINAME_AUDIO_VERSTECK, DATEINAME_NUTZDATEN_NEU, DATEINAME_PRIVATE_KEY, null);
+        File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
+        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
+        File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
+        File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
+        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        assertTrue(fileVerteilregel.exists());
+        assertTrue(fileNutzdatenOriginal.exists());
+        assertTrue(fileAudioOriginal.exists());
+        assertTrue(fileAudioVersteck.exists());
+        assertTrue(fileNutzdatenNeu.exists());
+        vergleicheNutzdaten(DATEINAME_NUTZDATEN_ORIGINAL, DATEINAME_NUTZDATEN_NEU);
+        File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
+        if (filePublicKey.exists()) {
+            filePublicKey.delete();
+        }
+        File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
+        if (filePrivateKey.exists()) {
+            filePrivateKey.delete();
+        }
     }
 
     private void loescheDateien() {

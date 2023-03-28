@@ -25,6 +25,9 @@ public class KommandozeileTest {
     private static final String VERRAUSCHEN_WERT_OHNE = "ohne";
     private static final String VERRAUSCHEN_WERT_NUTZDATENBEREICH = "nutzdatenbereich";
     private static final String VERRAUSCHEN_WERT_ALLES = "alles";
+    private static final String OPTION_PUBLIC_KEYS = "verschluesselungsdateien";
+    private static final String OPTION_PRIVATE_KEY = "entschluesselungsdatei";
+    private static final String OPTION_PASSWORT = "passwort";
     private static final String HINWEIS_VERRAUSCHEN = "Für das Verrauschen muss 'ohne' oder 'nutzdatenbereich' oder 'alles' angegeben werden.";
 
     private static final String HINWEIS_BLOCKGROESSE = "Für die Verteilregelgenerierung muss die Blockgröße angegeben werden.";
@@ -47,6 +50,8 @@ public class KommandozeileTest {
     private static final String HINWEIS_DATEINAME_ZIEL = "Für das Verstecken muss die Zieldatei angegeben werden.";
 
     private static final String DATEINAME_VERTEILREGEL = "src/test/resources/verteilregel";
+    private static final String DATEINAME_PUBLIC_KEYS = "src/test/resources/public1.pgp,src/test/resources/public2.pgp";
+    private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
 
     private Kommandozeile kommandozeile;
     private final Aktionen aktionen = Mockito.mock(Aktionen.class);
@@ -75,7 +80,7 @@ public class KommandozeileTest {
     }
 
     @Test
-    public void testBehandleKommandozeileParameterFuerGenerierungAlle() throws Exception {
+    public void testBehandleKommandozeileParameterFuerGenerierungAlleOhneKey() throws Exception {
         String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "100");
         String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "10");
         String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
@@ -84,6 +89,22 @@ public class KommandozeileTest {
         String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
                 nutzdaten[1], anzahlKanaele[0], anzahlKanaele[1], bittiefe[0], bittiefe[1], dateiname[0],
                 dateiname[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerGenerierungAlleMitKey() throws Exception {
+        String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "100");
+        String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "10");
+        String[] anzahlKanaele = erzeugeParameter(OPTION_ANZAHL_KANAELE, "4");
+        String[] bittiefe = erzeugeParameter(OPTION_BITTIEFE, "2");
+        String[] dateiname = erzeugeParameter(OPTION_DATEINAME, DATEINAME_VERTEILREGEL);
+        String[] key = erzeugeParameter(OPTION_PRIVATE_KEY, DATEINAME_PRIVATE_KEY);
+        String[] passwort = erzeugeParameter(OPTION_PASSWORT, "passwort");
+        String[] args = { "--" + OPTION_VERTEILREGELGENERIERUNG, blockgroesse[0], blockgroesse[1], nutzdaten[0],
+                nutzdaten[1], anzahlKanaele[0], anzahlKanaele[1], bittiefe[0], bittiefe[1], dateiname[0],
+                dateiname[1], key[0], key[1], passwort[0], passwort[1] };
         assertEquals(0, kommandozeile.behandleKommandozeile(args));
         assertTrue(os.toString().isEmpty());
     }
@@ -186,13 +207,27 @@ public class KommandozeileTest {
     }
 
     @Test
-    public void testBehandleKommandozeileParameterFuerVersteckenAlle() throws Exception {
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleOhneKey() throws Exception {
         String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
         String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
         String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
         String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
         String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
                 dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerVersteckenAlleMitKey() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] dateiZiel = erzeugeParameter(OPTION_DATEINAME_ZIEL, "ziel");
+        String[] key = erzeugeParameter(OPTION_PUBLIC_KEYS, DATEINAME_PUBLIC_KEYS);
+        String[] passwort = erzeugeParameter(OPTION_PASSWORT, "passwort");
+        String[] args = { "--" + OPTION_VERSTECKEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], dateiZiel[0], dateiZiel[1], key[0], key[1], passwort[0], passwort[1] };
         assertEquals(0, kommandozeile.behandleKommandozeile(args));
         assertTrue(os.toString().isEmpty());
     }
@@ -327,12 +362,25 @@ public class KommandozeileTest {
     }
 
     @Test
-    public void testBehandleKommandozeileParameterFuerHolenAlle() throws Exception {
+    public void testBehandleKommandozeileParameterFuerHolenAlleOhneKey() throws Exception {
         String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
         String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
         String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
         String[] args = { "--" + OPTION_HOLEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
                 dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerHolenAlleMitKey() throws Exception {
+        String[] dateiVersteckregel = erzeugeParameter(OPTION_DATEINAME_VERTEILREGEL, "versteckregel");
+        String[] dateiNutzdaten = erzeugeParameter(OPTION_DATEINAME_NUTZDATEN, "nutzdaten");
+        String[] dateiQuelle = erzeugeParameter(OPTION_DATEINAME_QUELLE, "quelle");
+        String[] key = erzeugeParameter(OPTION_PUBLIC_KEYS, DATEINAME_PUBLIC_KEYS);
+        String[] passwort = erzeugeParameter(OPTION_PASSWORT, "passwort");
+        String[] args = { "--" + OPTION_HOLEN, dateiVersteckregel[0], dateiVersteckregel[1], dateiNutzdaten[0],
+                dateiNutzdaten[1], dateiQuelle[0], dateiQuelle[1], key[0], key[1], passwort[0], passwort[1] };
         assertEquals(0, kommandozeile.behandleKommandozeile(args));
         assertTrue(os.toString().isEmpty());
     }

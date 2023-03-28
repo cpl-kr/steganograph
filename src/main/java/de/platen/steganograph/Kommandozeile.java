@@ -1,6 +1,9 @@
 package de.platen.steganograph;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -20,6 +23,9 @@ public class Kommandozeile {
     private static final String VERRAUSCHEN_WERT_OHNE = "ohne";
     private static final String VERRAUSCHEN_WERT_NUTZDATENBEREICH = "nutzdatenbereich";
     private static final String VERRAUSCHEN_WERT_ALLES = "alles";
+    private static final String OPTION_PUBLIC_KEYS = "verschluesselungsdateien";
+    private static final String OPTION_PRIVATE_KEY = "entschluesselungsdatei";
+    private static final String OPTION_PASSWORT = "passwort";
 
     private static final String HINWEIS_BLOCKGROESSE = "Für die Verteilregelgenerierung muss die Blockgröße angegeben werden.";
     private static final String HINWEIS_NUTZDATEN = "Für die Verteilregelgenerierung muss die Anzahl der Nutzdaten (Bytes) angegeben werden.";
@@ -73,6 +79,8 @@ public class Kommandozeile {
         options.addOption("k", OPTION_ANZAHL_KANAELE, true, "Anzahl der Kanäle für die Verteilregelgenerierung.");
         options.addOption("t", OPTION_BITTIEFE, true, "Anzahl der Bits pro Kanal für die Verteilregelgenerierung.");
         options.addOption("d", OPTION_DATEINAME, true, "Datei für die Verteilregelgenerierung.");
+        options.addOption("e", OPTION_PUBLIC_KEYS, true, "Dateien für die Verschlüsselung.");
+        options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
     }
 
     private static void addOptionsVerstecken(Options options) {
@@ -82,6 +90,8 @@ public class Kommandozeile {
         options.addOption("q", OPTION_DATEINAME_QUELLE, true, "Quelldatei für das Verstecken.");
         options.addOption("z", OPTION_DATEINAME_ZIEL, true, "Zieldatei für das Verstecken.");
         options.addOption("w", OPTION_VERRAUSCHEN, true, "Angabe für das Verrauschen.");
+        options.addOption("e", OPTION_PRIVATE_KEY, true, "Datei für die Entschlüsselung.");
+        options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
     }
 
     private static void addOptionsHolen(Options options) {
@@ -89,6 +99,8 @@ public class Kommandozeile {
         options.addOption("v", OPTION_DATEINAME_VERTEILREGEL, true, "Datei mit Verteilregeln für das Holen.");
         options.addOption("n", OPTION_DATEINAME_NUTZDATEN, true, "Datei der Nutzdaten für das Holen.");
         options.addOption("q", OPTION_DATEINAME_QUELLE, true, "Quelldatei für das Holen.");
+        options.addOption("e", OPTION_PRIVATE_KEY, true, "Datei für die Entschlüsselung.");
+        options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
     }
 
     private static int behandleVerteilregelgenerierung(CommandLine cmd, Aktionen aktionen) throws IOException {
@@ -118,10 +130,17 @@ public class Kommandozeile {
             System.err.println(HINWEIS_DATEINAME);
             hatfehlendenParameter = true;
         }
+        String dateienPublicKeys = getOption(cmd, OPTION_PUBLIC_KEYS);
+        List<String> dateinamenPublicKeys = new ArrayList<>();
+        if (dateienPublicKeys != null) {
+            String[] dateien = dateienPublicKeys.split(",");
+            dateinamenPublicKeys.addAll(Arrays.asList(dateien));
+        }
+        String passwort = getOption(cmd, OPTION_PASSWORT);
         if (hatfehlendenParameter) {
             return 1;
         }
-        aktionen.generiere(blockgroesse, nutzdaten, anzahlKanaele, bittiefe, dateiname);
+        aktionen.generiere(blockgroesse, nutzdaten, anzahlKanaele, bittiefe, dateiname, dateinamenPublicKeys, passwort);
         return 0;
     }
 
@@ -168,7 +187,9 @@ public class Kommandozeile {
                 return 1;
             }
         }
-        aktionen.verstecke(dateiVerteilregel, dateiNutzdaten, dateiQuelle, dateiZiel, verrauschoption);
+        String dateinamePrivateKey = getOption(cmd, OPTION_PRIVATE_KEY);
+        String passwort = getOption(cmd, OPTION_PASSWORT);
+        aktionen.verstecke(dateiVerteilregel, dateiNutzdaten, dateiQuelle, dateiZiel, verrauschoption, dateinamePrivateKey, passwort);
         return 0;
     }
 
@@ -192,7 +213,9 @@ public class Kommandozeile {
         if (hatfehlendenParameter) {
             return 1;
         }
-        aktionen.hole(dateiVerteilregel, dateiQuelle, dateiNutzdaten);
+        String dateinamePrivateKey = getOption(cmd, OPTION_PRIVATE_KEY);
+        String passwort = getOption(cmd, OPTION_PASSWORT);
+        aktionen.hole(dateiVerteilregel, dateiQuelle, dateiNutzdaten, dateinamePrivateKey, passwort);
         return 0;
     }
 

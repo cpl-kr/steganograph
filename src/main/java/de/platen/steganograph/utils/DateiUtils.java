@@ -1,5 +1,9 @@
 package de.platen.steganograph.utils;
 
+import de.platen.crypt.Decryptor;
+import de.platen.crypt.KeyVerwaltung;
+import org.bouncycastle.openpgp.PGPSecretKeyRing;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,7 +26,7 @@ public class DateiUtils {
         ImageIO.write(bufferedImage, "png", file);
     }
 
-    public static void schreibeDatei(String dateiname, byte[] daten) throws IOException {
+    public static void schreibeDatei(final String dateiname, final byte[] daten) throws IOException {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(dateiname);
@@ -40,7 +44,7 @@ public class DateiUtils {
         }
     }
 
-    public static byte[] leseDatei(String dateiname) throws IOException {
+    public static byte[] leseDatei(final String dateiname) throws IOException {
         byte[] daten = new byte[0];
         FileInputStream fis = null;
         ByteArrayOutputStream fos = null;
@@ -78,5 +82,18 @@ public class DateiUtils {
             }
         }
         return daten;
+    }
+
+    public static byte[] leseDatei(String dateiname, String dateiPrivateKey, String passwort ) throws IOException {
+        final KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
+        final PGPSecretKeyRing pgpSecretKeyRing = keyVerwaltung.lesePrivateKey(dateiPrivateKey);
+        final byte[] verteilregelEncrypted = leseDatei(dateiname);
+        final Decryptor decryptor;
+        if (passwort != null) {
+            decryptor = new Decryptor(pgpSecretKeyRing, passwort);
+        } else {
+            decryptor = new Decryptor(pgpSecretKeyRing);
+        }
+        return decryptor.decrypt(verteilregelEncrypted);
     }
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import de.platen.crypt.Decryptor;
+import de.platen.crypt.KeyVerwaltung;
 import de.platen.extern.wavfile.WavFile;
 import de.platen.extern.wavfile.WavFileException;
 import de.platen.steganograph.datentypen.AnzahlKanaele;
@@ -15,6 +17,7 @@ import de.platen.steganograph.datentypen.Samples;
 import de.platen.steganograph.uniformat.UniFormatAudio;
 import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
+import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
 public class AktionVersteckenInAudio {
 
@@ -25,9 +28,19 @@ public class AktionVersteckenInAudio {
     private static final String FEHLER_ANZAHL_KANAELE = "Die Anzahl der Kanäle von den Versteckregeln ist größer als die Anzahl der Kanäle von Audio.";
 
     public void versteckeNutzdatenInAudio(String dateinameVerteilregel, String dateinameNutzdaten,
-            String dateinameQuelle, String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+                                          String dateinameQuelle, String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+        versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption, null, null);
+    }
+
+    public void versteckeNutzdatenInAudio(String dateinameVerteilregel, String dateinameNutzdaten,
+                                          String dateinameQuelle, String dateinameZiel, Verrauschoption verrauschoption, String dateiPrivateKey, String passwort) throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
-        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        byte[] verteilregel;
+        if ((dateiPrivateKey != null) && !dateiPrivateKey.isEmpty()) {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel, dateiPrivateKey, passwort);
+        } else {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        }
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
         AnzahlPositionen anzahlPositionen = Verteilregelgenerierung.ermittleAnzahlPositionen(verteilregel);
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);

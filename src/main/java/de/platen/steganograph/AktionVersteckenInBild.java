@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
+import de.platen.crypt.Decryptor;
+import de.platen.crypt.KeyVerwaltung;
 import de.platen.steganograph.datentypen.AnzahlKanaele;
 import de.platen.steganograph.datentypen.AnzahlNutzdaten;
 import de.platen.steganograph.datentypen.AnzahlPositionen;
@@ -21,6 +23,8 @@ import de.platen.steganograph.utils.Bildpunktposition;
 import de.platen.steganograph.utils.ByteUtils;
 import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
+import org.bouncycastle.openpgp.PGPSecretKey;
+import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
 public class AktionVersteckenInBild {
 
@@ -31,11 +35,21 @@ public class AktionVersteckenInBild {
     private static final String FEHLER_BLOCK = "Es können nicht alle Daten im Block untergebracht werden.";
 
     public void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
-            String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+                                String dateinameZiel, Verrauschoption verrauschoption) throws IOException {
+        versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption, null, null);
+    }
+
+    public void versteckeInBild(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
+                                String dateinameZiel, Verrauschoption verrauschoption, String dateiPrivateKey, String passwort) throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle, dateinameZiel, verrauschoption);
-        BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
-        BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
-        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        final BufferedImage bufferedImageQuelle = DateiUtils.leseBild(dateinameQuelle);
+        final BufferedImage bufferedImageZiel = kopiereBild(bufferedImageQuelle);
+        byte[] verteilregel;
+        if ((dateiPrivateKey != null) && !dateiPrivateKey.isEmpty()) {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel, dateiPrivateKey, passwort);
+        } else {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        }
         byte[] nutzdaten = DateiUtils.leseDatei(dateinameNutzdaten);
         versteckeNutzdatenInBild(dateinameNutzdaten, bufferedImageQuelle, bufferedImageZiel, verteilregel, nutzdaten,
                 verrauschoption);

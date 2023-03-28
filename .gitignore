@@ -30,4 +30,6 @@ hs_err_pid*
 **/.project
 **/.classpath
 
+.editorconfig
+
 !SteganographDemo/*.jar

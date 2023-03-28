@@ -24,8 +24,18 @@ public class AktionHolenAusAudio {
 
     public void holeNutzdatenAusAudio(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
             throws IOException {
+        holeNutzdatenAusAudio(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, null, null);
+    }
+
+    public void holeNutzdatenAusAudio(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten, String dateiPrivateKey, String passwort)
+            throws IOException {
         pruefeParameter(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten);
-        byte[] verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        byte[] verteilregel;
+        if ((dateiPrivateKey != null) && !dateiPrivateKey.isEmpty()) {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel, dateiPrivateKey, passwort);
+        } else {
+            verteilregel = DateiUtils.leseDatei(dateinameVerteilregel);
+        }
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
         AnzahlPositionen anzahlPositionen = Verteilregelgenerierung.ermittleAnzahlPositionen(verteilregel);
         AnzahlNutzdaten anzahlNutzdaten = Verteilregelgenerierung.ermittleAnzahlNutzdaten(verteilregel);

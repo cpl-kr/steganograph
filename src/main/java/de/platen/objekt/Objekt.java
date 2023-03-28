@@ -21,7 +21,7 @@ public abstract class Objekt<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Objekt other = (Objekt) obj;
+        Objekt<?> other = (Objekt<?>) obj;
         if (wert == null) {
             if (other.wert != null) {
                 return false;
