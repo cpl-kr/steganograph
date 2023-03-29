@@ -53,6 +53,16 @@ public class KommandozeileTest {
     private static final String DATEINAME_PUBLIC_KEYS = "src/test/resources/public1.pgp,src/test/resources/public2.pgp";
     private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
 
+    private static final String OPTION_KEY = "key";
+    private static final String OPTION_ID = "id";
+    private static final String OPTION_DATEI_PUBLIC_KEY = "dateiPublicKey";
+    private static final String OPTION_DATEI_PRIVATE_KEY = "dateiPrivateKey";
+    private static final String OPTION_PASSWORT_KEY = "passwort";
+
+    private static final String HINWEIS_ID = "Für das Erzeugen eines Schlüsselpaares muss die ID angegeben werden.";
+    private static final String HINWEIS_DATEI_PUBLIC_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des öffentlichen Schlüssels angegeben werden.";
+    private static final String HINWEIS_DATEI_PRIVATE_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des privaten Schlüssels angegeben werden.";
+
     private Kommandozeile kommandozeile;
     private final Aktionen aktionen = Mockito.mock(Aktionen.class);
     private PrintStream ps;
@@ -431,6 +441,60 @@ public class KommandozeileTest {
         assertFalse(ausgabe.contains(HINWEIS_DATEINAME_VERTEILREGEL));
         assertFalse(ausgabe.contains(HINWEIS_DATEINAME_NUTZDATEN));
         assertTrue(ausgabe.contains(HINWEIS_DATEINAME_QUELLE));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerKeyAlle() throws Exception {
+        String[] id = erzeugeParameter(OPTION_ID, "id");
+        String[] dateiPublicKey = erzeugeParameter(OPTION_DATEI_PUBLIC_KEY, "public.pgp");
+        String[] dateiPrivateKey = erzeugeParameter(OPTION_DATEI_PRIVATE_KEY, "private.pgp");
+        String[] passwort = erzeugeParameter(OPTION_PASSWORT_KEY, "passwort");
+        String[] args = { "--" + OPTION_KEY, id[0], id[1], dateiPublicKey[0], dateiPublicKey[1], dateiPrivateKey[0], dateiPrivateKey[1], passwort[0], passwort[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerKeyOhnePasswort() throws Exception {
+        String[] id = erzeugeParameter(OPTION_ID, "id");
+        String[] dateiPublicKey = erzeugeParameter(OPTION_DATEI_PUBLIC_KEY, "public.pgp");
+        String[] dateiPrivateKey = erzeugeParameter(OPTION_DATEI_PRIVATE_KEY, "private.pgp");
+        String[] args = { "--" + OPTION_KEY, id[0], id[1], dateiPublicKey[0], dateiPublicKey[1], dateiPrivateKey[0], dateiPrivateKey[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerKeyOhneId() throws Exception {
+        String[] dateiPublicKey = erzeugeParameter(OPTION_DATEI_PUBLIC_KEY, "public.pgp");
+        String[] dateiPrivateKey = erzeugeParameter(OPTION_DATEI_PRIVATE_KEY, "private.pgp");
+        String[] args = { "--" + OPTION_KEY, dateiPublicKey[0], dateiPublicKey[1], dateiPrivateKey[0], dateiPrivateKey[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_DATEI_PUBLIC_KEY));
+        assertFalse(ausgabe.contains(HINWEIS_DATEI_PRIVATE_KEY));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerKeyOhnePublicKey() throws Exception {
+        String[] id = erzeugeParameter(OPTION_ID, "id");
+        String[] dateiPrivateKey = erzeugeParameter(OPTION_DATEI_PRIVATE_KEY, "private.pgp");
+        String[] args = { "--" + OPTION_KEY, id[0], id[1], dateiPrivateKey[0], dateiPrivateKey[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_ID));
+        assertFalse(ausgabe.contains(HINWEIS_DATEI_PRIVATE_KEY));
+    }
+
+    @Test
+    public void testBehandleKommandozeileParameterFuerKeyOhnePrivateKey() throws Exception {
+        String[] id = erzeugeParameter(OPTION_ID, "id");
+        String[] dateiPublicKey = erzeugeParameter(OPTION_DATEI_PUBLIC_KEY, "public.pgp");
+        String[] args = { "--" + OPTION_KEY, id[0], id[1], dateiPublicKey[0], dateiPublicKey[1] };
+        assertEquals(1, kommandozeile.behandleKommandozeile(args));
+        String ausgabe = os.toString();
+        assertFalse(ausgabe.contains(HINWEIS_ID));
+        assertFalse(ausgabe.contains(HINWEIS_DATEI_PUBLIC_KEY));
     }
 
     private static String[] erzeugeParameter(String name, String wert) {

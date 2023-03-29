@@ -47,6 +47,16 @@ public class Kommandozeile {
     private static final String HINWEIS_DATEINAME_QUELLE = "Für das Verstecken/Holen muss die Quelldatei angegeben werden.";
     private static final String HINWEIS_DATEINAME_ZIEL = "Für das Verstecken muss die Zieldatei angegeben werden.";
 
+    private static final String OPTION_KEY = "key";
+    private static final String OPTION_ID = "id";
+    private static final String OPTION_DATEI_PUBLIC_KEY = "dateiPublicKey";
+    private static final String OPTION_DATEI_PRIVATE_KEY = "dateiPrivateKey";
+    private static final String OPTION_PASSWORT_KEY = "passwort";
+
+    private static final String HINWEIS_ID = "Für das Erzeugen eines Schlüsselpaares muss die ID angegeben werden.";
+    private static final String HINWEIS_DATEI_PUBLIC_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des ööfentlichen Schlüssels angegeben werden.";
+    private static final String HINWEIS_DATEI_PRIVATE_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des ööfentlichen Schlüssels angegeben werden.";
+
     private final Aktionen aktionen;
 
     public Kommandozeile(Aktionen aktionen) {
@@ -58,6 +68,7 @@ public class Kommandozeile {
         addOptionsVerteilregel(options);
         addOptionsVerstecken(options);
         addOptionsHolen(options);
+        addOptionsKeyPaar(options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         if (cmd.hasOption(OPTION_VERTEILREGELGENERIERUNG)) {
@@ -68,6 +79,9 @@ public class Kommandozeile {
         }
         if (cmd.hasOption(OPTION_HOLEN)) {
             return behandleHolen(cmd, aktionen);
+        }
+        if (cmd.hasOption(OPTION_KEY)) {
+            return behandleKey(cmd, aktionen);
         }
         return 0;
     }
@@ -101,6 +115,14 @@ public class Kommandozeile {
         options.addOption("q", OPTION_DATEINAME_QUELLE, true, "Quelldatei für das Holen.");
         options.addOption("e", OPTION_PRIVATE_KEY, true, "Datei für die Entschlüsselung.");
         options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
+    }
+
+    private static void addOptionsKeyPaar(Options options) {
+        options.addOption("h", OPTION_KEY, false, "Parameter für das Erzeugen eines Schlüsselpaares.");
+        options.addOption("i", OPTION_ID, true, "Parameter für die ID des Schlüsselpaares.");
+        options.addOption("d", OPTION_DATEI_PUBLIC_KEY, true, "Parameter für den Dateinamen des öffentlichen Schlüssels.");
+        options.addOption("f", OPTION_DATEI_PRIVATE_KEY, true, "Parameter für den Dateinamen des privaten Schlüssels.");
+        options.addOption("p", OPTION_PASSWORT_KEY, true, "Parameter für das Passwort des privaten Schlüssels.");
     }
 
     private static int behandleVerteilregelgenerierung(CommandLine cmd, Aktionen aktionen) throws IOException {
@@ -216,6 +238,35 @@ public class Kommandozeile {
         String dateinamePrivateKey = getOption(cmd, OPTION_PRIVATE_KEY);
         String passwort = getOption(cmd, OPTION_PASSWORT);
         aktionen.hole(dateiVerteilregel, dateiQuelle, dateiNutzdaten, dateinamePrivateKey, passwort);
+        return 0;
+    }
+
+    private static int behandleKey(CommandLine cmd, Aktionen aktionen) {
+        boolean hatfehlendenParameter = false;
+        String id = getOption(cmd, OPTION_ID);
+        if (!isOptionOk(id)) {
+            System.err.println(HINWEIS_ID);
+            hatfehlendenParameter = true;
+        }
+        String dateiPublicKey = getOption(cmd, OPTION_DATEI_PUBLIC_KEY);
+        if (!isOptionOk(dateiPublicKey)) {
+            System.err.println(HINWEIS_DATEI_PUBLIC_KEY);
+            hatfehlendenParameter = true;
+        }
+        String dateiPrivateKey = getOption(cmd, OPTION_DATEI_PRIVATE_KEY);
+        if (!isOptionOk(dateiPrivateKey)) {
+            System.err.println(HINWEIS_DATEI_PRIVATE_KEY);
+            hatfehlendenParameter = true;
+        }
+        if (hatfehlendenParameter) {
+            return 1;
+        }
+        String passwort = getOption(cmd, OPTION_PASSWORT_KEY);
+        if (passwort == null) {
+            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPublicKey);
+        } else {
+            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPublicKey, passwort);
+        }
         return 0;
     }
 

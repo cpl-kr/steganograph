@@ -154,8 +154,18 @@ public class KeyVerwaltungTest {
     }
 
     @Test
-    public void testErzeugeUndSpeichereKeyPaar()  {
+    public void testErzeugeUndSpeichereKeyPaarOhnePasswort()  {
         keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEI_PUBLIC_KEY, DATEI_PRIVATE_KEY, ID);
+        File filePublicKey = new File(DATEI_PUBLIC_KEY);
+        File filePrivateKey = new File(DATEI_PRIVATE_KEY);
+        assertTrue(filePublicKey.exists());
+        assertTrue(filePrivateKey.exists());
+        filePublicKey.delete();
+        filePrivateKey.delete();
+    }
+    @Test
+    public void testErzeugeUndSpeichereKeyPaarMitPasswort()  {
+        keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEI_PUBLIC_KEY, DATEI_PRIVATE_KEY, ID, PASSWORT);
         File filePublicKey = new File(DATEI_PUBLIC_KEY);
         File filePrivateKey = new File(DATEI_PRIVATE_KEY);
         assertTrue(filePublicKey.exists());

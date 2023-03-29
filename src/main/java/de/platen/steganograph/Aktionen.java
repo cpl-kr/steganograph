@@ -30,6 +30,19 @@ public class Aktionen {
         this.aktionHolenAusAudio = aktionHolenAusAudio;
     }
 
+    public void erzeugeKeyPaar(final String id, final String dateiPublicKey, final String dateiPrivateKey) {
+        erzeugeKeyPaar(id, dateiPublicKey, dateiPrivateKey, null);
+    }
+
+    public void erzeugeKeyPaar(final String id, final String dateiPublicKey, final String dateiPrivateKey, String passwort) {
+        KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
+        if (passwort != null) {
+            keyVerwaltung.erzeugeUndSpeichereKeyPaar(dateiPublicKey, dateiPrivateKey, id, passwort);
+        } else {
+            keyVerwaltung.erzeugeUndSpeichereKeyPaar(dateiPublicKey, dateiPrivateKey, id);
+        }
+    }
+
     public void generiere(final String blockgroesse, final String anzahlNutzdaten, final String anzahlKanaele, final String bittiefe,
                           final String dateiname) throws IOException {
         generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, dateiname, null, null);

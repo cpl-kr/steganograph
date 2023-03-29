@@ -108,8 +108,17 @@ public class KeyVerwaltung {
     }
 
     public void erzeugeUndSpeichereKeyPaar(String dateiPublicKey, final String dateiPrivateKey, final String id) {
+        erzeugeUndSpeichereKeyPaar(dateiPublicKey, dateiPrivateKey, id, null);
+    }
+
+    public void erzeugeUndSpeichereKeyPaar(String dateiPublicKey, final String dateiPrivateKey, final String id, final String passwort) {
         try {
-            final PGPSecretKeyRing pgpSecretKeyRing = PGPainless.generateKeyRing().modernKeyRing(id);
+            PGPSecretKeyRing pgpSecretKeyRing;
+            if (passwort != null) {
+                pgpSecretKeyRing = PGPainless.generateKeyRing().modernKeyRing(id, passwort);
+            } else {
+                pgpSecretKeyRing = PGPainless.generateKeyRing().modernKeyRing(id);
+            }
             final PGPPublicKeyRing pgpPublicKeyRing = PGPainless.extractCertificate(pgpSecretKeyRing);
             final String asciiArmoredPublic = PGPainless.asciiArmor(pgpPublicKeyRing);
             final String asciiArmoredPrivate = PGPainless.asciiArmor(pgpSecretKeyRing);

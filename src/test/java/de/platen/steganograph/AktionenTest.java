@@ -34,6 +34,7 @@ public class AktionenTest {
     private static final String DATEINAME_PUBLIC_KEY = "src/test/resources/public.pgp";
     private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
     private static final String ID = "person";
+    private static final String PASSWORT = "passwort";
 
     @Before
     public void before() {
@@ -474,6 +475,30 @@ public class AktionenTest {
         if (filePrivateKey.exists()) {
             filePrivateKey.delete();
         }
+    }
+
+    @Test
+    public void testErzeugeKeyPaarOhnePasswort() {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio());
+        aktionen.erzeugeKeyPaar(ID, DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY);
+        File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
+        File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
+        assertTrue(filePublicKey.exists());
+        assertTrue(filePrivateKey.exists());
+        filePublicKey.delete();
+        filePrivateKey.delete();
+    }
+
+    @Test
+    public void testErzeugeKeyPaarMitPasswort() {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio());
+        aktionen.erzeugeKeyPaar(ID, DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, PASSWORT);
+        File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
+        File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
+        assertTrue(filePublicKey.exists());
+        assertTrue(filePrivateKey.exists());
+        filePublicKey.delete();
+        filePrivateKey.delete();
     }
 
     private void loescheDateien() {
