@@ -263,9 +263,9 @@ public class Kommandozeile {
         }
         String passwort = getOption(cmd, OPTION_PASSWORT_KEY);
         if (passwort == null) {
-            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPublicKey);
+            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPrivateKey);
         } else {
-            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPublicKey, passwort);
+            aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPrivateKey, passwort);
         }
         return 0;
     }
