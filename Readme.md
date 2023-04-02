@@ -55,35 +55,35 @@ Zu jedem Hauptparameter gibt es zugeordnete Parameter, obligatorisch und optiona
 <ul>
 <li>Erzeugung der Verteilregeln:<br>
 --verteilregelgenerierung Hauptparameter für die Erzeugung der Verteilregeln<br>
---blockgroesse \<Zahl\> Anzahl der Medienentitäten (d.h. bei einem Bild die Anzahl der Bildpunkte) pro Block<br>
---nutzdaten \<Zahl\> Anzahl der in einem Block unterzubringenen Bytes<br>
---anzahlkanaele \<Zahl\> Anzahl der Kanäle der Mediendatei (z.B. bei einem Bild drei Farbkanäle Rot, Grün, Blau)<br>
---bittiefe \<Zahl\> Die Anzahl der Bits für das Verstecken der Nutzdaten in den Mediendaten (1, 2, 4, oder 8 Bit)<br>
---dateiname \<Zu erzeugende Datei mit den Verteilregeln\><br>
---verschluesselungsdateien \<Dateinamen\> Komma separierte Liste von Dateinamen von öffentlichen Schlüsseln (optional)
---passwort \<Passwort\> Passwort (optional)</li>
+--blockgroesse &lt;Zahl> Anzahl der Medienentitäten (d.h. bei einem Bild die Anzahl der Bildpunkte) pro Block<br>
+--nutzdaten &lt;Zahl> Anzahl der in einem Block unterzubringenen Bytes<br>
+--anzahlkanaele &lt;Zahl> Anzahl der Kanäle der Mediendatei (z.B. bei einem Bild drei Farbkanäle Rot, Grün, Blau)<br>
+--bittiefe &lt;Zahl> Die Anzahl der Bits für das Verstecken der Nutzdaten in den Mediendaten (1, 2, 4, oder 8 Bit)<br>
+--dateiname &lt;Zu erzeugende Datei mit den Verteilregeln><br>
+--verschluesselungsdateien &lt;Dateinamen> Komma separierte Liste von Dateinamen von öffentlichen Schlüsseln (optional)
+--passwort &lt;Passwort> Passwort (optional)</li>
 <li>Verstecken von Daten:<br>
 --verstecken Hauptparameter für das Verstecken von Nutzdaten<br>
---dateiVerteilregel \<Dateiname\> Dateiname der Datei mit den Verteilregeln><br>
---dateiNutzdaten \<Dateiname\> Dateiname der Datei mit den Nutzdaten><br>
---dateiQuelle \<Dateiname\> Dateiname der Mediendatei für das Verstecken der Nutzdaten><br>
---dateiZiel \<Dateiname\> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
+--dateiVerteilregel &lt;Dateiname> Dateiname der Datei mit den Verteilregeln><br>
+--dateiNutzdaten &lt;Dateiname> Dateiname der Datei mit den Nutzdaten><br>
+--dateiQuelle &lt;Dateiname> Dateiname der Mediendatei für das Verstecken der Nutzdaten><br>
+--dateiZiel &lt;Dateiname> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
 --verrauschen [ohne|nutzdatenbereich|alles] Optionale Angabe zum Verrauschen<br>
---entschluesselungsdatei \<Dateiname\> Dateiname des privaten Schlüssels (optional)
---passwort \<Passwort\> Passwort (optional)</li>
+--entschluesselungsdatei &lt;Dateiname> Dateiname des privaten Schlüssels (optional)
+--passwort &lt;Passwort> Passwort (optional)</li>
 <li>Holen von Daten:<br>
 --holen Hauptparameter für das Holen der Nutzdaten<br>
---dateiVerteilregel \<Dateiname\> Dateiname der Datei mit den Verteilregeln><br>
---dateiNutzdaten \<Dateiname\> Dateiname der Datei mit den Nutzdaten (wird hier nur ein Verzeichnis angegeben, so wird der Dateiname aus der Datei mit den versteckten Nutzdaten genommen und in das angegebene Verzeichnis gespeichert)<<br>
---dateiQuelle \<Dateiname\> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
---entschluesselungsdatei \<Dateiname\> Dateiname des privaten Schlüssels (optional)
---passwort \<Passwort\> Passwort (optional)</li>
+--dateiVerteilregel &lt;Dateiname> Dateiname der Datei mit den Verteilregeln><br>
+--dateiNutzdaten &lt;Dateiname> Dateiname der Datei mit den Nutzdaten (wird hier nur ein Verzeichnis angegeben, so wird der Dateiname aus der Datei mit den versteckten Nutzdaten genommen und in das angegebene Verzeichnis gespeichert)<<br>
+--dateiQuelle &lt;Dateiname> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
+--entschluesselungsdatei &lt;Dateiname> Dateiname des privaten Schlüssels (optional)
+--passwort &lt;Passwort> Passwort (optional)</li>
 <li>Erzeugung eines Schlüsselpaares:<br>
 --key Hauptparameter für das Erzeugen eines Schlüsselpaares<br>
---id \<Id\> Die Id für das Schlüsselpaar
---dateiPublicKey \<Dateiname\> Dateiname des öffentlichen Schlüssels
---dateiPrivateKey \<Dateiname\> Dateiname des privaten Schlüssels
---passwort \<Passwort\> Passwort (optional)</li>
+--id &lt;Id> Die Id für das Schlüsselpaar
+--dateiPublicKey &lt;Dateiname> Dateiname des öffentlichen Schlüssels
+--dateiPrivateKey &lt;Dateiname> Dateiname des privaten Schlüssels
+--passwort &lt;Passwort> Passwort (optional)</li>
 </ul>
 
 Beispiele:<br>
