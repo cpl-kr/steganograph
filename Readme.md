@@ -35,9 +35,9 @@ Jedes Byte der Nutzdaten wird in Bitbereiche zerteilt (z.B. in 4 x 2 Bits bei ei
 <li>Erzeugen von Versteckregeln:<br>
 Die erzeugten Versteckregeln werden in eine Datei gespeichert.<br>
 Optional kann diese Datei mit einem öffentlichen Schlüssel oder mehreren öffentlichen Schlüsseln verschlüsselt werden.</li>
-<li>Verstecken von Daten in einer Mediandatei (Bild als Bmp- und Png-Datei, Audio als Wav-Datei) anhand von Versteckregeln.<br>
+<li>Verstecken von Daten in einer Mediendatei (Bild als Bmp- und Png-Datei, Audio als Wav-Datei) anhand von Versteckregeln.<br>
 Optional können die Versteckregeln verschlüsselt sein.</li>
-<li>Holen von versteckten Daten aus einer Mediandatei (Bild als Bmp- und Png-Datei, Audio als Wav-Datei) anhand von Versteckregeln.<br>
+<li>Auslesen von versteckten Daten aus einer Mediendatei (Bild als Bmp- und Png-Datei, Audio als Wav-Datei) anhand von Versteckregeln.<br>
 Optional können die Versteckregeln verschlüsselt sein.</li>
 <li>Erzeugen eines Schlüsselpaares:<br>
 Das Schlüsselpaar besteht aus einem privatem und einem öffentlichen Schlüssel.
@@ -49,8 +49,8 @@ falls man von diesen die Versteckregeln nutzen und deren Dateien mit den verstec
 
 <b>Kommandozeilenparameter:</b><br>
 
-Es gibt vier Hauptparameter: <i>verteilregelgenerierung</i>, <i>verstecken</i>, <i>holen</i>, <i>key</i><br>
-Zu jedem Hauptparameter gibt es zugeordnete Parameter, obligatorisch und optional.<br>
+Es gibt fünf Hauptparameter: <i>verteilregelgenerierung</i>, <i>verstecken</i>, <i>holen</i>, <i>key</i>, <i>gui</i><br>
+Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obligatorisch und optional.<br>
 
 <ul>
 <li>Erzeugung der Verteilregeln:<br>
@@ -84,18 +84,20 @@ Zu jedem Hauptparameter gibt es zugeordnete Parameter, obligatorisch und optiona
 --dateiPublicKey &lt;Dateiname> Dateiname des öffentlichen Schlüssels
 --dateiPrivateKey &lt;Dateiname> Dateiname des privaten Schlüssels
 --passwort &lt;Passwort> Passwort (optional)</li>
+<li>Grafische Benutzeroberfläche:</li>
+--gui Parameter für den Start mit grafischer Benutzeroberfläche
 </ul>
 
 Beispiele:<br>
-<i>java -jar Steganograph-2.1.0.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 4 --bittiefe 2 --dateiname verteilregel --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.1.0.jar --verstecken --dateiVerteilregel verteilregel --dateiNutzdaten nutzdaten.txt --dateiQuelle testbild1.png --dateiZiel testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.1.0.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.1.0.jar --key --id person1 --dateiPublicKey public1.pgp  --dateiPrivateKey private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph-2.2.0.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 4 --bittiefe 2 --dateiname verteilregel --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph-2.2.0.jar --verstecken --dateiVerteilregel verteilregel --dateiNutzdaten nutzdaten.txt --dateiQuelle testbild1.png --dateiZiel testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph-2.2.0.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph-2.2.0.jar --key --id person1 --dateiPublicKey public1.pgp  --dateiPrivateKey private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph-2.2.0.jar --gui</i><br>
 
 <b>Ausblick auf weitere Entwicklungen:</b>
 <ul>
 <li>Beschleunigung des Laufzeitverhaltens</li>
-<li>Graphische Benutzeroberfläche</li>
 <li>Verstecken von Nutzdaten in (verlustfreien oder verlustfreien Anteilen) Videodateien</li>
 <li>Verstecken von Live-Streams (Video, Audio) in Live-Streams (Video, Audio, hierbei verlustfrei oder verlustfreien Anteilen)</li>
 </ul>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+  <tabs>
+    <Tab text="Schlüsselpaar" fx:id="keyTab" ><fx:include fx:id="tabKey" source="TabKey.fxml" /></Tab>
+    <Tab text="Versteckregeln" fx:id="versteckregelnTab" ><fx:include fx:id="tabVersteckregeln" source="TabVersteckregeln.fxml" /></Tab>
+    <Tab text="Verstecken" fx:id="versteckenTab" ><fx:include fx:id="tabVerstecken" source="TabVerstecken.fxml" /></Tab>
+    <Tab text="Auslesen" fx:id="auslesenTab" ><fx:include fx:id="tabAuslesen" source="TabAuslesen.fxml" /></Tab>
+  </tabs>
+</TabPane>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.platen.steganograph.gui.Gui;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -57,6 +58,7 @@ public class Kommandozeile {
     private static final String HINWEIS_DATEI_PUBLIC_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des ööfentlichen Schlüssels angegeben werden.";
     private static final String HINWEIS_DATEI_PRIVATE_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des ööfentlichen Schlüssels angegeben werden.";
 
+    private static final String OPTION_GUI = "gui";
     private final Aktionen aktionen;
 
     public Kommandozeile(Aktionen aktionen) {
@@ -69,6 +71,7 @@ public class Kommandozeile {
         addOptionsVerstecken(options);
         addOptionsHolen(options);
         addOptionsKeyPaar(options);
+        addOptionsGui(options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         if (cmd.hasOption(OPTION_VERTEILREGELGENERIERUNG)) {
@@ -82,6 +85,9 @@ public class Kommandozeile {
         }
         if (cmd.hasOption(OPTION_KEY)) {
             return behandleKey(cmd, aktionen);
+        }
+        if (cmd.hasOption(OPTION_GUI)) {
+            return behandleGui(args);
         }
         return 0;
     }
@@ -115,6 +121,10 @@ public class Kommandozeile {
         options.addOption("q", OPTION_DATEINAME_QUELLE, true, "Quelldatei für das Holen.");
         options.addOption("e", OPTION_PRIVATE_KEY, true, "Datei für die Entschlüsselung.");
         options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
+    }
+
+    private static void addOptionsGui(Options options) {
+        options.addOption("g", OPTION_GUI, false, "Parameter für die GUI.");
     }
 
     private static void addOptionsKeyPaar(Options options) {
@@ -267,6 +277,11 @@ public class Kommandozeile {
         } else {
             aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPrivateKey, passwort);
         }
+        return 0;
+    }
+
+    private static int behandleGui(String[] args) {
+        new Gui().starteGui(args);
         return 0;
     }
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.platen.steganograph.gui.TabVersteckregelnController">
+   <children>
+      <Label layoutX="5.0" layoutY="14.0" text="Erzeugen der Versteckregeln">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="49.0" text="Blockgröße (Bildpunkte/Samples):" />
+      <Label layoutX="15.0" layoutY="82.0" text="Nutzdaten (Bytes):" />
+      <Label layoutX="15.0" layoutY="115.0" text="Anzahl Kanäle:" />
+      <Label layoutX="15.0" layoutY="143.0" text="Bittiefe" />
+      <TextField fx:id="textfeldBlockgroesse" onKeyReleased="#onKey" layoutX="219.0" layoutY="45.0" />
+      <TextField fx:id="textfeldNutzdaten" onKeyReleased="#onKey" layoutX="219.0" layoutY="76.0" />
+      <TextField fx:id="textfeldAnzahlKanaele" onKeyReleased="#onKey" layoutX="219.0" layoutY="109.0" />
+      <TextField fx:id="textfeldBittiefe" onKeyReleased="#onKey" layoutX="219.0" layoutY="144.0" />
+      <Button layoutX="432.0" layoutY="70.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" onAction="#behandleButtonVorgabenBild" text="Vorgaben Bild" />
+      <Button layoutX="432.0" layoutY="112.0" mnemonicParsing="false" onAction="#behandleButtonVorgabenAudio" text="Vorgaben Audio" />
+      <Button layoutX="15.0" layoutY="186.0" mnemonicParsing="false" onAction="#behandleButtonVerzeichnisVersteckregeln" text="Verzeichnis Versteckregeln" />
+      <TextField fx:id="textfeldVerzeichnis" editable="false" layoutX="219.0" layoutY="186.0" onKeyReleased="#onKey" prefHeight="25.0" prefWidth="361.0" />
+      <Label layoutX="15.0" layoutY="225.0" text="Dateiname Versteckregeln:" />
+      <TextField fx:id="textfeldDatei" onKeyReleased="#onKey" layoutX="219.0" layoutY="221.0" prefHeight="25.0" prefWidth="361.0" />
+      <Label layoutX="5.0" layoutY="264.0" text="Optional">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <ListView fx:id="listeDateienPublicKey" layoutX="219.0" layoutY="298.0" prefHeight="86.0" prefWidth="361.0" />
+       <Button layoutX="15.0" layoutY="300.0" mnemonicParsing="false" onAction="#behandleButtonPublicKeyAdd" text="Ablageort öffentlicher Schlüssel" />
+       <Button layoutX="15.0" layoutY="350.0" mnemonicParsing="false" onAction="#behandleButtonPublicKeyDelete" text="Element entfernen" />
+      <Label layoutX="15.0" layoutY="397.0" text="Passwort (optional):" />
+      <TextField fx:id="textfeldPasswort" layoutX="219.0" layoutY="397.0" prefHeight="25.0" prefWidth="361.0" />
+      <Button fx:id="buttonErzeugen" disable="true" layoutX="219.0" layoutY="450.0" mnemonicParsing="false" onAction="#behandleButtonErzeugen" text="Erzeugen und Speichern" />
+   </children>
+</Pane>
