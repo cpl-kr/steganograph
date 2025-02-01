@@ -21,13 +21,20 @@ public class Aktionen {
     private final AktionVersteckenInAudio aktionVersteckenInAudio;
     private final AktionHolenAusBild aktionHolenAusBild;
     private final AktionHolenAusAudio aktionHolenAusAudio;
+    private final AktionZufallsdatei aktionZufallsdatei;
+    private final AktionInDatei aktionInDatei;
+    private final AktionAusDatei aktionAusDatei;
 
-    public Aktionen(AktionVersteckenInBild aktionVersteckenInBild, AktionVersteckenInAudio aktionVersteckenInAudio,
-            AktionHolenAusBild aktionHolenAusBild, AktionHolenAusAudio aktionHolenAusAudio) {
+    public Aktionen(final AktionVersteckenInBild aktionVersteckenInBild, final AktionVersteckenInAudio aktionVersteckenInAudio,
+            final AktionHolenAusBild aktionHolenAusBild, final AktionHolenAusAudio aktionHolenAusAudio,
+                    final AktionZufallsdatei aktionZufallsdatei, final AktionInDatei aktionInDatei, final AktionAusDatei aktionAusDatei) {
         this.aktionVersteckenInBild = aktionVersteckenInBild;
         this.aktionVersteckenInAudio = aktionVersteckenInAudio;
         this.aktionHolenAusBild = aktionHolenAusBild;
         this.aktionHolenAusAudio = aktionHolenAusAudio;
+        this.aktionZufallsdatei = aktionZufallsdatei;
+        this.aktionInDatei = aktionInDatei;
+        this.aktionAusDatei = aktionAusDatei;
     }
 
     public void erzeugeKeyPaar(final String id, final String dateiPublicKey, final String dateiPrivateKey) {
@@ -50,10 +57,10 @@ public class Aktionen {
 
     public void generiere(final String blockgroesse, final String anzahlNutzdaten, final String anzahlKanaele, final String bittiefe,
                           final String dateiname, final List<String> dateinamenPublicKey, final String passwort) throws IOException {
-        final Blockgroesse blockgroesseKonfiguration = new Blockgroesse(Integer.valueOf(blockgroesse));
-        final AnzahlNutzdaten nutzdatenKonfiguration = new AnzahlNutzdaten(Integer.valueOf(anzahlNutzdaten));
-        final AnzahlKanaele anzahlKanaeleKonfiguration = new AnzahlKanaele(Integer.valueOf(anzahlKanaele));
-        final Bittiefe bittiefeKonfiguration = new Bittiefe(Integer.valueOf(bittiefe));
+        final Blockgroesse blockgroesseKonfiguration = new Blockgroesse(Integer.parseInt(blockgroesse));
+        final AnzahlNutzdaten nutzdatenKonfiguration = new AnzahlNutzdaten(Integer.parseInt(anzahlNutzdaten));
+        final AnzahlKanaele anzahlKanaeleKonfiguration = new AnzahlKanaele(Integer.parseInt(anzahlKanaele));
+        final Bittiefe bittiefeKonfiguration = new Bittiefe(Integer.parseInt(bittiefe));
         final KonfigurationVerteilregeln konfigurationGenerierung = new KonfigurationVerteilregeln(blockgroesseKonfiguration,
                 nutzdatenKonfiguration, bittiefeKonfiguration, anzahlKanaeleKonfiguration);
         final Verteilregelgenerierung verteilregelgenerierung = new Verteilregelgenerierung(konfigurationGenerierung);
@@ -85,13 +92,20 @@ public class Aktionen {
     public void verstecke(String dateinameVerteilregel, String dateinameNutzdaten, String dateinameQuelle,
                           String dateinameZiel, Verrauschoption verrauschoption, String dateiPrivateKey, String passwort) throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
-            aktionVersteckenInBild.versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle,
+            this.aktionVersteckenInBild.versteckeInBild(dateinameVerteilregel, dateinameNutzdaten, dateinameQuelle,
                     dateinameZiel, verrauschoption, dateiPrivateKey, passwort);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
-            aktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
+            this.aktionVersteckenInAudio.versteckeNutzdatenInAudio(dateinameVerteilregel, dateinameNutzdaten,
                     dateinameQuelle, dateinameZiel, verrauschoption, dateiPrivateKey, passwort);
         }
+    }
+
+    public void verstecke(final String dateinameQuelle, final String dateinameZiel, final String laenge, final String offset, final String mitErzeugung) {
+        if (Boolean.parseBoolean(mitErzeugung)) {
+            this.aktionZufallsdatei.erzeugeZufallsdatei(dateinameZiel, Integer.parseInt(laenge));
+        }
+        this.aktionInDatei.schreibeInDatei(dateinameQuelle, dateinameZiel, Integer.parseInt(offset));
     }
 
     public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten)
@@ -102,10 +116,14 @@ public class Aktionen {
     public void hole(String dateinameVerteilregel, String dateinameQuelle, String dateinameNutzdaten, String dateiPrivateKey, String passwort)
             throws IOException {
         if (dateinameQuelle.toLowerCase().endsWith(".png") || dateinameQuelle.toLowerCase().endsWith(".bmp")) {
-            aktionHolenAusBild.holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, dateiPrivateKey, passwort);
+            this.aktionHolenAusBild.holeAusBild(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, dateiPrivateKey, passwort);
         }
         if (dateinameQuelle.toLowerCase().endsWith(".wav")) {
-            aktionHolenAusAudio.holeNutzdatenAusAudio(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, dateiPrivateKey, passwort);
+            this.aktionHolenAusAudio.holeNutzdatenAusAudio(dateinameVerteilregel, dateinameQuelle, dateinameNutzdaten, dateiPrivateKey, passwort);
         }
+    }
+
+    public void hole(final String dateinameQuelle, final String dateinameZiel, final String offset, String laenge) {
+        this.aktionAusDatei.leseAusDatei(dateinameQuelle, dateinameZiel, Integer.parseInt(offset), Integer.parseInt(laenge));
     }
 }

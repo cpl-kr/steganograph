@@ -62,7 +62,7 @@ Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obli
 --dateiname &lt;Zu erzeugende Datei mit den Verteilregeln><br>
 --verschluesselungsdateien &lt;Dateinamen> Komma separierte Liste von Dateinamen von öffentlichen Schlüsseln (optional)
 --passwort &lt;Passwort> Passwort (optional)</li>
-<li>Verstecken von Daten:<br>
+<li>Verstecken von Daten 1:<br>
 --verstecken Hauptparameter für das Verstecken von Nutzdaten<br>
 --dateiVerteilregel &lt;Dateiname> Dateiname der Datei mit den Verteilregeln><br>
 --dateiNutzdaten &lt;Dateiname> Dateiname der Datei mit den Nutzdaten><br>
@@ -71,7 +71,7 @@ Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obli
 --verrauschen [ohne|nutzdatenbereich|alles] Optionale Angabe zum Verrauschen<br>
 --entschluesselungsdatei &lt;Dateiname> Dateiname des privaten Schlüssels (optional)
 --passwort &lt;Passwort> Passwort (optional)</li>
-<li>Holen von Daten:<br>
+<li>Auslesen von Daten 1:<br>
 --holen Hauptparameter für das Holen der Nutzdaten<br>
 --dateiVerteilregel &lt;Dateiname> Dateiname der Datei mit den Verteilregeln><br>
 --dateiNutzdaten &lt;Dateiname> Dateiname der Datei mit den Nutzdaten (wird hier nur ein Verzeichnis angegeben, so wird der Dateiname aus der Datei mit den versteckten Nutzdaten genommen und in das angegebene Verzeichnis gespeichert)<<br>
@@ -89,11 +89,11 @@ Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obli
 </ul>
 
 Beispiele:<br>
-<i>java -jar Steganograph-2.2.0.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 4 --bittiefe 2 --dateiname verteilregel --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.2.0.jar --verstecken --dateiVerteilregel verteilregel --dateiNutzdaten nutzdaten.txt --dateiQuelle testbild1.png --dateiZiel testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.2.0.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.2.0.jar --key --id person1 --dateiPublicKey public1.pgp  --dateiPrivateKey private1.pgp --passwort passwort</i><br>
-<i>java -jar Steganograph-2.2.0.jar --gui</i><br>
+<i>java -jar Steganograph.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 4 --bittiefe 2 --dateiname verteilregel --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph.jar --verstecken --dateiVerteilregel verteilregel --dateiNutzdaten nutzdaten.txt --dateiQuelle testbild1.png --dateiZiel testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph.jar --key --id person1 --dateiPublicKey public1.pgp  --dateiPrivateKey private1.pgp --passwort passwort</i><br>
+<i>java -jar Steganograph.jar --gui</i><br>
 
 <b>Ausblick auf weitere Entwicklungen:</b>
 <ul>

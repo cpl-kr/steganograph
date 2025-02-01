@@ -59,6 +59,11 @@ public class Kommandozeile {
     private static final String HINWEIS_DATEI_PRIVATE_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des ööfentlichen Schlüssels angegeben werden.";
 
     private static final String OPTION_GUI = "gui";
+
+    // TODO OPTION_IN_DATEI
+    // TODO OPTION_AUS_DATEI
+    // TODO OPTION_ZUFALLSDATEI
+
     private final Aktionen aktionen;
 
     public Kommandozeile(Aktionen aktionen) {
@@ -68,20 +73,23 @@ public class Kommandozeile {
     public int behandleKommandozeile(String[] args) throws IOException, ParseException {
         Options options = new Options();
         addOptionsVerteilregel(options);
-        addOptionsVerstecken(options);
-        addOptionsHolen(options);
+        addOptionsVerstecken1(options);
+        addOptionsAuslesen1(options);
         addOptionsKeyPaar(options);
         addOptionsGui(options);
+        addOptionsVerstecken2(options);
+        addOptionsAuslesen2(options);
+        addOptionsZufallsdatei(options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         if (cmd.hasOption(OPTION_VERTEILREGELGENERIERUNG)) {
             return behandleVerteilregelgenerierung(cmd, aktionen);
         }
         if (cmd.hasOption(OPTION_VERSTECKEN)) {
-            return behandleVerstecken(cmd, aktionen);
+            return behandleVerstecken1(cmd, aktionen);
         }
         if (cmd.hasOption(OPTION_HOLEN)) {
-            return behandleHolen(cmd, aktionen);
+            return behandleAuslesen1(cmd, aktionen);
         }
         if (cmd.hasOption(OPTION_KEY)) {
             return behandleKey(cmd, aktionen);
@@ -103,7 +111,7 @@ public class Kommandozeile {
         options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
     }
 
-    private static void addOptionsVerstecken(Options options) {
+    private static void addOptionsVerstecken1(Options options) {
         options.addOption("v", OPTION_VERSTECKEN, false, "Parameter für das Verstecken.");
         options.addOption("r", OPTION_DATEINAME_VERTEILREGEL, true, "Datei mit Verteilregeln für das Verstecken.");
         options.addOption("n", OPTION_DATEINAME_NUTZDATEN, true, "Datei der Nutzdaten für das Verstecken.");
@@ -114,7 +122,7 @@ public class Kommandozeile {
         options.addOption("p", OPTION_PASSWORT, true, "Passwort.");
     }
 
-    private static void addOptionsHolen(Options options) {
+    private static void addOptionsAuslesen1(Options options) {
         options.addOption("h", OPTION_HOLEN, false, "Parameter für das Holen.");
         options.addOption("v", OPTION_DATEINAME_VERTEILREGEL, true, "Datei mit Verteilregeln für das Holen.");
         options.addOption("n", OPTION_DATEINAME_NUTZDATEN, true, "Datei der Nutzdaten für das Holen.");
@@ -133,6 +141,18 @@ public class Kommandozeile {
         options.addOption("d", OPTION_DATEI_PUBLIC_KEY, true, "Parameter für den Dateinamen des öffentlichen Schlüssels.");
         options.addOption("f", OPTION_DATEI_PRIVATE_KEY, true, "Parameter für den Dateinamen des privaten Schlüssels.");
         options.addOption("p", OPTION_PASSWORT_KEY, true, "Parameter für das Passwort des privaten Schlüssels.");
+    }
+
+    private static void addOptionsVerstecken2(Options options) {
+        // TODO
+    }
+
+    private static void addOptionsAuslesen2(Options options) {
+        // TODO
+    }
+
+    private static void addOptionsZufallsdatei(Options options) {
+        // TODO
     }
 
     private static int behandleVerteilregelgenerierung(CommandLine cmd, Aktionen aktionen) throws IOException {
@@ -176,7 +196,7 @@ public class Kommandozeile {
         return 0;
     }
 
-    private static int behandleVerstecken(CommandLine cmd, Aktionen aktionen) throws IOException {
+    private static int behandleVerstecken1(CommandLine cmd, Aktionen aktionen) throws IOException {
         boolean hatfehlendenParameter = false;
         String dateiVerteilregel = getOption(cmd, OPTION_DATEINAME_VERTEILREGEL);
         if (!isOptionOk(dateiVerteilregel)) {
@@ -225,7 +245,7 @@ public class Kommandozeile {
         return 0;
     }
 
-    private static int behandleHolen(CommandLine cmd, Aktionen aktionen) throws IOException {
+    private static int behandleAuslesen1(CommandLine cmd, Aktionen aktionen) throws IOException {
         boolean hatfehlendenParameter = false;
         String dateiVerteilregel = getOption(cmd, OPTION_DATEINAME_VERTEILREGEL);
         if (!isOptionOk(dateiVerteilregel)) {
@@ -277,6 +297,21 @@ public class Kommandozeile {
         } else {
             aktionen.erzeugeKeyPaar(id, dateiPublicKey, dateiPrivateKey, passwort);
         }
+        return 0;
+    }
+
+    private static int behandleVerstecken2() {
+        // TODO
+        return 0;
+    }
+
+    private static int behandleAuslesen2() {
+        // TODO
+        return 0;
+    }
+
+    private static int behandleZufallsdatei() {
+        // TODO
         return 0;
     }
 

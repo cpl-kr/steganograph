@@ -1,2 +1,2 @@
-java -jar ./steganograph.jar --gui
+java -jar ./Steganograph.jar --gui
 pause

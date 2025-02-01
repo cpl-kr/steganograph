@@ -1,9 +1,12 @@
 package de.platen.steganograph.gui;
 
+import de.platen.steganograph.AktionAusDatei;
 import de.platen.steganograph.AktionHolenAusAudio;
 import de.platen.steganograph.AktionHolenAusBild;
+import de.platen.steganograph.AktionInDatei;
 import de.platen.steganograph.AktionVersteckenInAudio;
 import de.platen.steganograph.AktionVersteckenInBild;
+import de.platen.steganograph.AktionZufallsdatei;
 import de.platen.steganograph.Aktionen;
 import de.platen.steganograph.Verrauschoption;
 import javafx.fxml.FXML;
@@ -112,13 +115,15 @@ public class TabVersteckenController {
         if (this.radioButtonAlles.isSelected()) {
             verrauschoption = Verrauschoption.ALLES;
         }
-        final Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio());
+        final Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio(), new AktionZufallsdatei(), new AktionInDatei(), new AktionAusDatei());
         try {
             if (this.textfeldPrivateKeyDatei.getText().isEmpty()) {
                 aktionen.verstecke(this.textfeldVersteckregeln.getText(), this.textfeldQuelldatei.getText(), this.textfeldMediendateiQuelle.getText(), dateiZiel, verrauschoption);
             } else {
                 aktionen.verstecke(this.textfeldVersteckregeln.getText(), this.textfeldQuelldatei.getText(), this.textfeldMediendateiQuelle.getText(), dateiZiel, verrauschoption, this.textfeldPrivateKeyDatei.getText(), this.textfeldPasswort.getText());
             }
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION, "Verstecken erfolgt", ButtonType.OK);
+            alert.showAndWait();
         } catch(IOException | RuntimeException e) {
             final Alert alert = new Alert(Alert.AlertType.ERROR, "Fehler beim Verstecken der Daten: " + e.getMessage() + ".", ButtonType.OK);
             alert.showAndWait();

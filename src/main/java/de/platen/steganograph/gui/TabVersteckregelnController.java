@@ -101,7 +101,7 @@ public class TabVersteckregelnController {
     }
 
     public void behandleButtonErzeugen() {
-        final Aktionen aktionen = new Aktionen(null, null, null, null);
+        final Aktionen aktionen = new Aktionen(null, null, null, null, null, null, null);
         final String dateiname = this.textfeldVerzeichnis.getText() + FILE_SEPARATOR + this.textfeldDatei.getText();
         try {
             if (this.listeDateienPublicKey.getItems().isEmpty()) {
@@ -110,6 +110,8 @@ public class TabVersteckregelnController {
                 List<String> publicKeys = new ArrayList<>(this.listeDateienPublicKey.getItems());
                 aktionen.generiere(this.textfeldBlockgroesse.getText(), this.textfeldNutzdaten.getText(), this.textfeldAnzahlKanaele.getText(), this.textfeldBittiefe.getText(), dateiname, publicKeys, this.textfeldPasswort.getText());
             }
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION, "Versteckregeln erzeugt", ButtonType.OK);
+            alert.showAndWait();
         } catch(IOException | RuntimeException e) {
             final Alert alert = new Alert(Alert.AlertType.ERROR, "Fehler beim Erzeugen der Versteckregeln: " + e.getMessage() + ".", ButtonType.OK);
             alert.showAndWait();

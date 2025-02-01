@@ -16,8 +16,8 @@
        <Label layoutX="15.0" layoutY="54.0" text="Id:" />
        <TextField fx:id="textfeldId" layoutX="219.0" layoutY="54.0" onKeyReleased="#onKey" prefHeight="25.0" prefWidth="361.0" />
        <TextField fx:id="textfeldPublicKeyOrdner" editable="false" layoutX="219.0" layoutY="102.0" prefHeight="25.0" prefWidth="361.0" />
-       <Button layoutX="15.0" layoutY="103.0" mnemonicParsing="false" onAction="#behandleButtonPublicKey" text="Verzeichnis öffentlicher Schlüssel" />
-       <Label layoutX="15.0" layoutY="152.0" text="Dateiname öffentlicher Schlüssel:" />
+       <Button layoutX="15.0" layoutY="103.0" mnemonicParsing="false" onAction="#behandleButtonPublicKey" text="Verzeichnis öffentl. Schlüssel" />
+       <Label layoutX="15.0" layoutY="152.0" text="Dateiname öffentl. Schlüssel:" />
        <TextField fx:id="textfeldPublicKeyDatei" layoutX="219.0" layoutY="147.0" onKeyReleased="#onKey" prefHeight="25.0" prefWidth="361.0" />
        <TextField fx:id="textfeldPrivateKeyOrdner" editable="false" layoutX="219.0" layoutY="189.0" prefHeight="25.0" prefWidth="361.0" />
        <Button layoutX="15.0" layoutY="189.0" mnemonicParsing="false" onAction="#behandleButtonPrivateKey" text="Verzeichnis privater Schlüssel" />

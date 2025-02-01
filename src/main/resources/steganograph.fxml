@@ -7,7 +7,9 @@
   <tabs>
     <Tab text="Schlüsselpaar" fx:id="keyTab" ><fx:include fx:id="tabKey" source="TabKey.fxml" /></Tab>
     <Tab text="Versteckregeln" fx:id="versteckregelnTab" ><fx:include fx:id="tabVersteckregeln" source="TabVersteckregeln.fxml" /></Tab>
-    <Tab text="Verstecken" fx:id="versteckenTab" ><fx:include fx:id="tabVerstecken" source="TabVerstecken.fxml" /></Tab>
-    <Tab text="Auslesen" fx:id="auslesenTab" ><fx:include fx:id="tabAuslesen" source="TabAuslesen.fxml" /></Tab>
+    <Tab text="Verstecken 1" fx:id="versteckenTab" ><fx:include fx:id="tabVerstecken" source="TabVerstecken.fxml" /></Tab>
+    <Tab text="Auslesen 1" fx:id="auslesenTab" ><fx:include fx:id="tabAuslesen" source="TabAuslesen.fxml" /></Tab>
+    <Tab text="Verstecken 2" fx:id="inDateiTab" ><fx:include fx:id="tabInDatei" source="TabInDatei.fxml" /></Tab>
+    <Tab text="Auslesen 2" fx:id="ausDateiTab" ><fx:include fx:id="tabAusDatei" source="TabAusDatei.fxml" /></Tab>
   </tabs>
 </TabPane>

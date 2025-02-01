@@ -1,2 +1,2 @@
-java -jar ./steganograph.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 3 --bittiefe 2 --dateiname verteilregelbild --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort
+java -jar ./Steganograph.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 3 --bittiefe 2 --dateiname verteilregelbild --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort
 pause

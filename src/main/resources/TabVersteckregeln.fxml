@@ -34,7 +34,7 @@
          </font>
       </Label>
       <ListView fx:id="listeDateienPublicKey" layoutX="219.0" layoutY="298.0" prefHeight="86.0" prefWidth="361.0" />
-       <Button layoutX="15.0" layoutY="300.0" mnemonicParsing="false" onAction="#behandleButtonPublicKeyAdd" text="Ablageort öffentlicher Schlüssel" />
+       <Button layoutX="15.0" layoutY="300.0" mnemonicParsing="false" onAction="#behandleButtonPublicKeyAdd" text="Ablageort öffentl. Schlüssel" />
        <Button layoutX="15.0" layoutY="350.0" mnemonicParsing="false" onAction="#behandleButtonPublicKeyDelete" text="Element entfernen" />
       <Label layoutX="15.0" layoutY="397.0" text="Passwort (optional):" />
       <TextField fx:id="textfeldPasswort" layoutX="219.0" layoutY="397.0" prefHeight="25.0" prefWidth="361.0" />

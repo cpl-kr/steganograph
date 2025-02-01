@@ -13,13 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.platen.crypt.KeyVerwaltung;
+import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.platen.extern.wavfile.WavFile;
 import de.platen.extern.wavfile.WavFileException;
 import de.platen.steganograph.utils.DateiUtils;
+import org.mockito.internal.matchers.ArrayEquals;
 
 public class AktionenTest {
 
@@ -30,6 +34,8 @@ public class AktionenTest {
     private static final String DATEINAME_AUDIO_ORIGINAL = "src/test/resources/audiooriginal.wav";
     private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
+    private static final String DATEINAME_ZUFALLSDATEI = "src/test/resources/zufallsdatei";
+    private static final String DATEINAME_VON_ZUFALLSDATEI = "src/test/resources/ausZufallsdatei";
     private static final String VERZEICHNIS_NUTZDATEN_NEU = "src/test/resources/";
     private static final String DATEINAME_PUBLIC_KEY = "src/test/resources/public.pgp";
     private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
@@ -48,8 +54,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildFarbe() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -76,8 +81,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildGrau() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "1";
@@ -104,8 +108,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildDateinameAusStartblock() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -135,8 +138,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildFuer1BlockAlsKomplettblock() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -163,8 +165,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildFuerMehrereBloeckeKompletteBloecke() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -191,8 +192,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleBildFuerMehrereBloeckeLetzterBlockTeilblock() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -219,8 +219,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeBildZuvielNutzdaten() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -239,8 +238,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeBildZuvielDatenImBlock() throws IOException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "24";
         String anzahlKanaele = "4";
@@ -259,8 +257,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleAudio() throws IOException, WavFileException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -287,8 +284,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleAudioDateinameAusStartblock() throws IOException, WavFileException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -317,8 +313,7 @@ public class AktionenTest {
 
     @Test
     public void testGeneriereVersteckeHoleAudioFuer1BlockAlsKomplettblock() throws IOException, WavFileException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -345,8 +340,7 @@ public class AktionenTest {
     @Test
     public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeKompletteBloecke()
             throws IOException, WavFileException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "200";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -373,8 +367,7 @@ public class AktionenTest {
     @Test
     public void testGeneriereVersteckeHoleAudioFuerMehrereBloeckeLetzterBlockTeilblock()
             throws IOException, WavFileException {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "200";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -402,8 +395,7 @@ public class AktionenTest {
     public void testGeneriereVersteckeHoleBildMitEncrypt() throws IOException {
         final KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
         keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, ID);
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "100";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "4";
@@ -442,8 +434,7 @@ public class AktionenTest {
     public void testGeneriereVersteckeHoleAudioMitEncrypt() throws IOException, WavFileException {
         final KeyVerwaltung keyVerwaltung = new KeyVerwaltung();
         keyVerwaltung.erzeugeUndSpeichereKeyPaar(DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, ID);
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         String blockgroesse = "1000";
         String anzahlNutzdaten = "50";
         String anzahlKanaele = "2";
@@ -479,7 +470,7 @@ public class AktionenTest {
 
     @Test
     public void testErzeugeKeyPaarOhnePasswort() {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         aktionen.erzeugeKeyPaar(ID, DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY);
         File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
         File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
@@ -491,7 +482,7 @@ public class AktionenTest {
 
     @Test
     public void testErzeugeKeyPaarMitPasswort() {
-        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(), new AktionHolenAusBild(), new AktionHolenAusAudio());
+        Aktionen aktionen = getAktionen();
         aktionen.erzeugeKeyPaar(ID, DATEINAME_PUBLIC_KEY, DATEINAME_PRIVATE_KEY, PASSWORT);
         File filePublicKey = new File(DATEINAME_PUBLIC_KEY);
         File filePrivateKey = new File(DATEINAME_PRIVATE_KEY);
@@ -499,6 +490,25 @@ public class AktionenTest {
         assertTrue(filePrivateKey.exists());
         filePublicKey.delete();
         filePrivateKey.delete();
+    }
+
+    @Test
+    public void testInDateAusDatei() throws IOException {
+        Aktionen aktionen = getAktionen();
+        String blockgroesse = "200";
+        String anzahlNutzdaten = "50";
+        String anzahlKanaele = "2";
+        String bittiefe = "2";
+        aktionen.generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe, DATEINAME_VERTEILREGELl);
+        byte[] bytesOriginal = FileUtils.readFileToByteArray(new File(DATEINAME_VERTEILREGELl));
+        String laengeZufallsdatei = "100000";
+        String offsetInZufallsdatei = "1000";
+        String mitErzeugung = "true";
+        aktionen.verstecke(DATEINAME_VERTEILREGELl, DATEINAME_ZUFALLSDATEI, laengeZufallsdatei, offsetInZufallsdatei, mitErzeugung);
+        String laengeDaten = String.valueOf(bytesOriginal.length);
+        aktionen.hole(DATEINAME_ZUFALLSDATEI, DATEINAME_VON_ZUFALLSDATEI, offsetInZufallsdatei, laengeDaten);
+        byte[] bytesAusZufallsdatei = FileUtils.readFileToByteArray(new File(DATEINAME_VON_ZUFALLSDATEI));
+        assertArrayEquals(bytesOriginal, bytesAusZufallsdatei);
     }
 
     private void loescheDateien() {
@@ -509,6 +519,8 @@ public class AktionenTest {
         File fileAudioOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
         File fileAudioVersteck = new File(DATEINAME_AUDIO_VERSTECK);
         File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
+        File fileZufallsdatei = new File(DATEINAME_ZUFALLSDATEI);
+        File fileAusZufallsdatei = new File(DATEINAME_VON_ZUFALLSDATEI);
         if (fileVerteilregel.exists()) {
             fileVerteilregel.delete();
         }
@@ -530,7 +542,12 @@ public class AktionenTest {
         if (fileNutzdatenNeu.exists()) {
             fileNutzdatenNeu.delete();
         }
-
+        if (fileZufallsdatei.exists()) {
+            fileZufallsdatei.delete();
+        }
+        if (fileAusZufallsdatei.exists()) {
+            fileAusZufallsdatei.delete();
+        }
     }
 
     private void erzeugeNutzdaten(String dateiname, int anzahl) throws IOException {
@@ -587,30 +604,10 @@ public class AktionenTest {
         assertFalse(alleGleich);
     }
 
-    // private void gebeBildAus(String dateiname) throws IOException {
-    // BufferedImage bufferedImage = DateiUtils.leseBild(dateiname);
-    // int breite = bufferedImage.getWidth();
-    // int hoehe = bufferedImage.getHeight();
-    // for (int y = 0; y < breite; y++) {
-    // System.out.println("Zeile " + y);
-    // for (int x = 0; x < hoehe; x++) {
-    // String s = Integer.toBinaryString(bufferedImage.getRGB(x, y));
-    // System.out.println(s);
-    // }
-    // }
-    // }
-
     private void vergleicheNutzdaten(String dateinameNutzdatenOriginal, String dateinameNutzdatenNeu)
             throws IOException {
         byte[] datenOriginal = DateiUtils.leseDatei(dateinameNutzdatenOriginal);
         byte[] datenNeu = DateiUtils.leseDatei(dateinameNutzdatenNeu);
-        // if (datenOriginal.length == datenNeu.length) {
-        // System.out.println("Nutzdatenvergleich:");
-        // for (int index = 0; index < datenOriginal.length; index++) {
-        // String s = String.format("%2x %2x", datenOriginal[index], datenNeu[index]);
-        // System.out.println(s);
-        // }
-        // }
         assertArrayEquals(datenOriginal, datenNeu);
     }
 
@@ -636,5 +633,12 @@ public class AktionenTest {
             wavFile.writeFrames(sampleBuffer, sampleRate);
         }
         wavFile.close();
+    }
+
+    private static @NotNull Aktionen getAktionen() {
+        Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
+                new AktionHolenAusBild(), new AktionHolenAusAudio(),
+                new AktionZufallsdatei(), new AktionInDatei(), new AktionAusDatei());
+        return aktionen;
     }
 }

@@ -58,7 +58,7 @@ public class TabKeyController {
     }
 
     public void behandleButtonErzeugen() {
-        final Aktionen aktionen = new Aktionen(null, null, null, null);
+        final Aktionen aktionen = new Aktionen(null, null, null, null, null, null, null);
         final String dateiPublicKey = this.textfeldPublicKeyOrdner.getText() + FILE_SEPARATOR + this.textfeldPublicKeyDatei.getText();
         final String dateiPrivateKey = this.textfeldPrivateKeyOrdner.getText() + FILE_SEPARATOR + this.textfeldPrivateKeyDatei.getText();
         try {
@@ -67,6 +67,8 @@ public class TabKeyController {
             } else {
                 aktionen.erzeugeKeyPaar(this.textfeldId.getText(), dateiPublicKey, dateiPrivateKey, this.textfeldPasswort.getText());
             }
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION, "Schlüsselpaar erzeugt ", ButtonType.OK);
+            alert.showAndWait();
         } catch (RuntimeException e) {
             final Alert alert = new Alert(Alert.AlertType.ERROR, "Fehler beim Erzeugen des Schlüsselpaares: " + e.getMessage() + ".", ButtonType.OK);
             alert.showAndWait();

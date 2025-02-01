@@ -9,7 +9,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException {
         Aktionen aktionen = new Aktionen(new AktionVersteckenInBild(), new AktionVersteckenInAudio(),
-                new AktionHolenAusBild(), new AktionHolenAusAudio());
+                new AktionHolenAusBild(), new AktionHolenAusAudio(),
+                new AktionZufallsdatei(), new AktionInDatei(), new AktionAusDatei());
         Kommandozeile kommandozeile = new Kommandozeile(aktionen);
         final long beginn = new Date().getTime();
         kommandozeile.behandleKommandozeile(args);
