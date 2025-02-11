@@ -62,7 +62,13 @@ public class Kommandozeile {
 
     // TODO OPTION_IN_DATEI
     // TODO OPTION_AUS_DATEI
-    // TODO OPTION_ZUFALLSDATEI
+
+    private static final String OPTION_ZUFALLSDATEI = "zufallsdatei";
+    private static final String OPTION_ZUFALLSDATEI_NAME = "name";
+    private static final String OPTION_ZUFALLSDATEI_LAENGE = "laenge";
+
+    private static final String HINWEIS_ZUFFALSDATEI_NAME = "Für die Erzeugung einer Datei mit Zufallswerten muss der Dateiname angegeben werden";
+    private static final String HINWEIS_ZUFFALSDATEI_LAENGE = "Für die Erzeugung einer Datei mit Zufallswerten muss die Dateilänge angegeben werden";
 
     private final Aktionen aktionen;
 
@@ -100,6 +106,9 @@ public class Kommandozeile {
         }
         if (cmd.hasOption(OPTION_GUI)) {
             return behandleGui(args);
+        }
+        if (cmd.hasOption(OPTION_ZUFALLSDATEI)) {
+            return behandleZufallsdatei(cmd, aktionen);
         }
         return 0;
     }
@@ -156,7 +165,9 @@ public class Kommandozeile {
     }
 
     private static void addOptionsZufallsdatei(Options options) {
-        // TODO
+        options.addOption("z", OPTION_ZUFALLSDATEI, false, "Parameter fü+r die Ertzeugung einer Datei mit Zufallswerten");
+        options.addOption("n", OPTION_ZUFALLSDATEI_NAME, true, "Parameter für den Namen der Datei mit Zufallswerten");
+        options.addOption("l", OPTION_ZUFALLSDATEI_LAENGE, true, "Parameter für die Länge der Datei mit Zufallswerten");
     }
 
     private static int behandleVerteilregelgenerierung(CommandLine cmd, Aktionen aktionen) throws IOException {
@@ -314,8 +325,22 @@ public class Kommandozeile {
         return 0;
     }
 
-    private static int behandleZufallsdatei() {
-        // TODO
+    private static int behandleZufallsdatei(CommandLine cmd, Aktionen aktionen) {
+        boolean hatfehlendenParameter = false;
+        String name = getOption(cmd, OPTION_ZUFALLSDATEI_NAME);
+        if (!isOptionOk(name)) {
+            System.err.println(HINWEIS_ZUFFALSDATEI_LAENGE);
+            hatfehlendenParameter = true;
+        }
+        String laenge = getOption(cmd, OPTION_ZUFALLSDATEI_LAENGE);
+        if (!isOptionOk(laenge)) {
+            System.err.println(HINWEIS_ZUFFALSDATEI_LAENGE);
+            hatfehlendenParameter = true;
+        }
+        if (hatfehlendenParameter) {
+            return 1;
+        }
+        aktionen.erzeuge(name, laenge);
         return 0;
     }
 

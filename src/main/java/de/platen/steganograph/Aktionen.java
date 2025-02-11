@@ -126,4 +126,8 @@ public class Aktionen {
     public void hole(final String dateinameQuelle, final String dateinameZiel, final String offset, String laenge) {
         this.aktionAusDatei.leseAusDatei(dateinameQuelle, dateinameZiel, Integer.parseInt(offset), Integer.parseInt(laenge));
     }
+
+    public void erzeuge(final String dateiname, final String laenge) {
+        this.aktionZufallsdatei.erzeugeZufallsdatei(dateiname, Long.parseLong(laenge));
+    }
 }

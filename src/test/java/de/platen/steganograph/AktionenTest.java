@@ -511,6 +511,15 @@ public class AktionenTest {
         assertArrayEquals(bytesOriginal, bytesAusZufallsdatei);
     }
 
+    @Test
+    public void testErzeugeZufallsdatei() throws IOException {
+        Aktionen aktionen = getAktionen();
+        String laenge = "100";
+        aktionen.erzeuge(DATEINAME_ZUFALLSDATEI, laenge);
+        byte[] bytesAusZufallsdatei = FileUtils.readFileToByteArray(new File(DATEINAME_ZUFALLSDATEI));
+        assertEquals(100, bytesAusZufallsdatei.length);
+    }
+
     private void loescheDateien() {
         File fileVerteilregel = new File(DATEINAME_VERTEILREGELl);
         File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN_ORIGINAL);
