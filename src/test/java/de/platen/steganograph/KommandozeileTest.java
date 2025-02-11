@@ -83,13 +83,6 @@ public class KommandozeileTest {
     }
 
     @Test
-    public void testBehandleKommandozeileOhneParameter() throws Exception {
-        String[] args = {};
-        assertEquals(0, kommandozeile.behandleKommandozeile(args));
-        assertTrue(os.toString().isEmpty());
-    }
-
-    @Test
     public void testBehandleKommandozeileParameterFuerGenerierungAlleOhneKey() throws Exception {
         String[] blockgroesse = erzeugeParameter(OPTION_BLOCKGROESSE, "100");
         String[] nutzdaten = erzeugeParameter(OPTION_NUTZDATEN, "10");

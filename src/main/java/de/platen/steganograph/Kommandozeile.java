@@ -71,6 +71,10 @@ public class Kommandozeile {
     }
 
     public int behandleKommandozeile(String[] args) throws IOException, ParseException {
+        if (args.length  == 0) {
+            new Gui().starteGui(args);
+            return 0;
+        }
         Options options = new Options();
         addOptionsVerteilregel(options);
         addOptionsVerstecken1(options);
