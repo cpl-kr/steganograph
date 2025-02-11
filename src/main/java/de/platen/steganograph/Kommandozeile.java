@@ -329,7 +329,7 @@ public class Kommandozeile {
         boolean hatfehlendenParameter = false;
         String name = getOption(cmd, OPTION_ZUFALLSDATEI_NAME);
         if (!isOptionOk(name)) {
-            System.err.println(HINWEIS_ZUFFALSDATEI_LAENGE);
+            System.err.println(HINWEIS_ZUFFALSDATEI_NAME);
             hatfehlendenParameter = true;
         }
         String laenge = getOption(cmd, OPTION_ZUFALLSDATEI_LAENGE);
