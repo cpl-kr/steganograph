@@ -45,14 +45,18 @@ Der private Schlüssel ist zum Entschlüsseln der Datei mit den Versteckregeln v
 Der öffentliche Schlüssel ist zum Verschlüsseln der Datei mit den Versteckregeln vorgesehen.
 Der öffentliche Schlüssel kannn an andere Personen weitergegeben werden,
 falls man von diesen die Versteckregeln nutzen und deren Dateien mit den versteckten Daten verwenden möchte.</li>
+<li>Erzeugung einer Datei mit Zufallswerten</li>
+<li>Verstecken einer Datei in einer Datei (mit Zufallswerten)</li>
+<liu>Auslesen einer Datei aus einer Datei (mit Zufallswerten)</liu>
 </ul>
 
 <b>Kommandozeilenparameter:</b><br>
 
-Es gibt fünf Hauptparameter: <i>verteilregelgenerierung</i>, <i>verstecken</i>, <i>holen</i>, <i>key</i>, <i>gui</i><br>
+Es gibt acht Hauptparameter: <i>verteilregelgenerierung</i>, <i>verstecken</i>, <i>holen</i>, <i>key</i>, <i>gui</i>, <i>zufallsdatei</i>, <i>inDatei</i>, <i>ausDatei</i><br>
 Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obligatorisch und optional.<br>
+Der Aufruf ohne Parameter entspricht <i>gui</i>.
 
-<ul>
+<li>
 <li>Erzeugung der Verteilregeln:<br>
 --verteilregelgenerierung Hauptparameter für die Erzeugung der Verteilregeln<br>
 --blockgroesse &lt;Zahl> Anzahl der Medienentitäten (d.h. bei einem Bild die Anzahl der Bildpunkte) pro Block<br>
@@ -76,17 +80,35 @@ Zu jedem Hauptparameter (bis auf <i>gui</i>) gibt es zugeordnete Parameter, obli
 --dateiVerteilregel &lt;Dateiname> Dateiname der Datei mit den Verteilregeln><br>
 --dateiNutzdaten &lt;Dateiname> Dateiname der Datei mit den Nutzdaten (wird hier nur ein Verzeichnis angegeben, so wird der Dateiname aus der Datei mit den versteckten Nutzdaten genommen und in das angegebene Verzeichnis gespeichert)<<br>
 --dateiQuelle &lt;Dateiname> Dateiname der Mediendatei mit den versteckten Nutzdaten><br>
---entschluesselungsdatei &lt;Dateiname> Dateiname des privaten Schlüssels (optional)
+--entschluesselungsdatei &lt;Dateiname> Dateiname des privaten Schlüssels (optional)<br>
 --passwort &lt;Passwort> Passwort (optional)</li>
 <li>Erzeugung eines Schlüsselpaares:<br>
 --key Hauptparameter für das Erzeugen eines Schlüsselpaares<br>
---id &lt;Id> Die Id für das Schlüsselpaar
---dateiPublicKey &lt;Dateiname> Dateiname des öffentlichen Schlüssels
---dateiPrivateKey &lt;Dateiname> Dateiname des privaten Schlüssels
+--id &lt;Id> Die Id für das Schlüsselpaar<br>
+--dateiPublicKey &lt;Dateiname> Dateiname des öffentlichen Schlüssels<br>
+--dateiPrivateKey &lt;Dateiname> Dateiname des privaten Schlüssels<br>
 --passwort &lt;Passwort> Passwort (optional)</li>
-<li>Grafische Benutzeroberfläche:</li>
---gui Parameter für den Start mit grafischer Benutzeroberfläche
-</ul>
+<li>Grafische Benutzeroberfläche:<br>
+--gui Parameter für den Start mit grafischer Benutzeroberfläche</li>
+<li>Erzeugung einer Datei mit Zufallswerten<br>
+--zufallsdatei Hauptparameter für die Erzeugung einer Datei mit Zufallswerten<br>
+--name &lt;Dateiname> Der Dateiname für die Zufallswerte<br>
+--laenge &lt;Länge> Dateilänge<li>
+<li>Verstecken einer Datei in einer Datei<br>
+--inDatei Hauptparameter für das Verstecken einer Datei in einer Datei<br>
+--quelldatei &lt;Dateiname> Der Quelldateiname<br>
+--zieldatei &lt;Dateiname> Der Zieldateiname<br>
+--laenge &lt;Länge> Dateilänge der Datei in der versteckt wird<br>
+--offset &lt;Offset> Offset in der Datei, in der versteckt wird<br>
+--erzeugung &lt;"true" oder "false"> Angabe, ob eine Datei mit Zufallswerten erzeugt werden soll<li>
+<li>Auslesen einer Datei aus einer Datei<br>
+--ausDatei Hauptparameter für das Auslesen einer Datei aus einer Datei<br>
+--quelldatei &lt;Dateiname> Der Quelldateiname<br>
+--zieldatei &lt;Dateiname> Der Zieldateiname<br>
+--offset &lt;Offset> Offset der Datei, aus der gelesen wird<br>
+--laenge &lt;Länge> Dateilänge der Datei, die gelesen gelesen wird<br>
+--erzeugung &lt;Wert für ja oder nein> Angabe, ob eine Datei mit Zufallswerten erzeugt werden soll<li>
+</li>
 
 Beispiele:<br>
 <i>java -jar Steganograph.jar --verteilregelgenerierung --blockgroesse 100 --nutzdaten 50  --anzahlkanaele 4 --bittiefe 2 --dateiname verteilregel --verschluesselungsdateien public1.pgp,public2.pgp --passwort passwort</i><br>
@@ -94,6 +116,9 @@ Beispiele:<br>
 <i>java -jar Steganograph.jar --holen --dateiVerteilregel verteilregel --dateiNutzdaten nutzdatenNeu.txt --dateiQuelle testbild1Versteck.png --entschluesselungsdatei private1.pgp --passwort passwort</i><br>
 <i>java -jar Steganograph.jar --key --id person1 --dateiPublicKey public1.pgp  --dateiPrivateKey private1.pgp --passwort passwort</i><br>
 <i>java -jar Steganograph.jar --gui</i><br>
+<i>java -jar Steganograph.jar --zufallsdatei --name heuhaufen --laenge 1000</i>
+<i>java -jar Steganograph.jar --inDatei --quelldatei versteckregel --ztieldatei heuhaufen --laenge 1000 --offset 500 --erzeugung true</i>
+<i>java -jar Steganograph.jar --inDatei --quelldatei heuhaufen --zieldatei versteckregel --offset 500 --laenge 1000</i>
 
 <b>Ausblick auf weitere Entwicklungen:</b>
 <ul>

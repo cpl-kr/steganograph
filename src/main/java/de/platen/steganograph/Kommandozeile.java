@@ -60,8 +60,29 @@ public class Kommandozeile {
 
     private static final String OPTION_GUI = "gui";
 
-    // TODO OPTION_IN_DATEI
-    // TODO OPTION_AUS_DATEI
+    private static final String OPTION_IN_DATEI = "inDatei";
+    private static final String OPTION_IN_DATEI_QUELLE = "quelldatei";
+    private static final String OPTION_IN_DATEI_ZIEL = "zieldatei";
+    private static final String OPTION_IN_DATEI_LAENGE = "laenge";
+    private static final String OPTION_IN_DATEI_OFFSET = "offset";
+    private static final String OPTION_IN_DATEI_ERZEUGUNG = "erzeugung";
+
+    private static final String HINWEIS_IN_DATEI_QUELLE = "Für das Verstecken in einer Datei muss die Quelldatei angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_ZIEL = "Für das Verstecken in einer Datei muss die Zieldatei angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_LAENGE = "Für das Verstecken in einer Datei muss die Länge angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_OFFSET = "Für das Verstecken in einer Datei muss der Offset angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_ERZEUGUNG = "Für das Verstecken in einer Datei muss die Erzeugungsoption angegeben werden.";
+
+    private static final String OPTION_AUS_DATEI = "ausDatei";
+    private static final String OPTION_AUS_DATEI_QUELLE = "quelldatei";
+    private static final String OPTION_AUS_DATEI_ZIEL = "zieldatei";
+    private static final String OPTION_AUS_DATEI_OFFSET = "offset";
+    private static final String OPTION_AUS_DATEI_LAENGE = "laenge";
+
+    private static final String HINWEIS_AUS_DATEI_QUELLE = "Für das Auslesen aus einer Datei muss die Quelldatei angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_ZIEL = "Für das Auslesen aus einer Datei muss die Zieldatei angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_OFFSET = "Für das Auslesen aus einer Datei muss der Offset angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_LAENGE = "Für das Auslesen aus einer Datei muss die Länge angegeben werden.";
 
     private static final String OPTION_ZUFALLSDATEI = "zufallsdatei";
     private static final String OPTION_ZUFALLSDATEI_NAME = "name";
@@ -106,6 +127,12 @@ public class Kommandozeile {
         }
         if (cmd.hasOption(OPTION_GUI)) {
             return behandleGui(args);
+        }
+        if (cmd.hasOption(OPTION_IN_DATEI)) {
+            return behandleVerstecken2(cmd, aktionen);
+        }
+        if (cmd.hasOption(OPTION_AUS_DATEI)) {
+            return behandleAuslesen2(cmd, aktionen);
         }
         if (cmd.hasOption(OPTION_ZUFALLSDATEI)) {
             return behandleZufallsdatei(cmd, aktionen);
@@ -157,11 +184,20 @@ public class Kommandozeile {
     }
 
     private static void addOptionsVerstecken2(Options options) {
-        // TODO
+        options.addOption("i", OPTION_IN_DATEI, false, "Parameter für das Verstecken");
+        options.addOption("q", OPTION_IN_DATEI_QUELLE, true, "Die zu versteckende Datei");
+        options.addOption("z", OPTION_IN_DATEI_ZIEL, true, "Datei für die zu versteckende Datei");
+        options.addOption("l", OPTION_IN_DATEI_LAENGE, true, "Länge zu versteckenden Datei");
+        options.addOption("o", OPTION_IN_DATEI_OFFSET, true, "Offset innerhalb der Datei");
+        options.addOption("e", OPTION_IN_DATEI_ERZEUGUNG, true, "Flag für die Erzeugung");
     }
 
     private static void addOptionsAuslesen2(Options options) {
-        // TODO
+        options.addOption("i", OPTION_AUS_DATEI, false, "Parameter für das Auslesen");
+        options.addOption("i", OPTION_AUS_DATEI_QUELLE, true, "Datei  mit der versteckten Datei");
+        options.addOption("i", OPTION_AUS_DATEI_ZIEL, true, "Name der ausgelesenen Datei");
+        options.addOption("i", OPTION_AUS_DATEI_OFFSET, true, "Offset innerhalb der Datei");
+        options.addOption("i", OPTION_AUS_DATEI_LAENGE, true, "Länge der auszulesenden Datei");
     }
 
     private static void addOptionsZufallsdatei(Options options) {
@@ -236,7 +272,7 @@ public class Kommandozeile {
         if (hatfehlendenParameter) {
             return 1;
         }
-        Verrauschoption verrauschoption = Verrauschoption.OHNE;
+        Verrauschoption verrauschoption = null;
         String verrauschen = getOption(cmd, OPTION_VERRAUSCHEN);
         if (isOptionOk(verrauschen)) {
             switch (verrauschen) {
@@ -315,13 +351,65 @@ public class Kommandozeile {
         return 0;
     }
 
-    private static int behandleVerstecken2() {
-        // TODO
+    private static int behandleVerstecken2(CommandLine cmd, Aktionen aktionen) {
+        boolean hatfehlendenParameter = false;
+        String quelle = getOption(cmd, OPTION_IN_DATEI_QUELLE);
+        if (!isOptionOk(quelle)) {
+            System.err.println(HINWEIS_IN_DATEI_QUELLE);
+            hatfehlendenParameter = true;
+        }
+        String ziel = getOption(cmd, OPTION_IN_DATEI_ZIEL);
+        if (!isOptionOk(ziel)) {
+            System.err.println(HINWEIS_IN_DATEI_ZIEL);
+            hatfehlendenParameter = true;
+        }
+        String laenge = getOption(cmd, OPTION_IN_DATEI_LAENGE);
+        if (!isOptionOk(laenge)) {
+            System.err.println(HINWEIS_IN_DATEI_LAENGE);
+            hatfehlendenParameter = true;
+        }
+        String offset = getOption(cmd, OPTION_IN_DATEI_OFFSET);
+        if (!isOptionOk(offset)) {
+            System.err.println(HINWEIS_IN_DATEI_OFFSET);
+            hatfehlendenParameter = true;
+        }
+        String erzeugung = getOption(cmd, OPTION_IN_DATEI_ERZEUGUNG);
+        if (!isOptionOk(erzeugung)) {
+            System.err.println(HINWEIS_IN_DATEI_ERZEUGUNG);
+            hatfehlendenParameter = true;
+        }
+        if (hatfehlendenParameter) {
+            return 1;
+        }
+        aktionen.verstecke(quelle, ziel, laenge, offset, erzeugung);
         return 0;
     }
 
-    private static int behandleAuslesen2() {
-        // TODO
+    private static int behandleAuslesen2(CommandLine cmd, Aktionen aktionen) {
+        boolean hatfehlendenParameter = false;
+        String quelle = getOption(cmd, OPTION_AUS_DATEI_QUELLE);
+        if (!isOptionOk(quelle)) {
+            System.err.println(HINWEIS_AUS_DATEI_QUELLE);
+            hatfehlendenParameter = true;
+        }
+        String ziel = getOption(cmd, OPTION_AUS_DATEI_ZIEL);
+        if (!isOptionOk(ziel)) {
+            System.err.println(HINWEIS_AUS_DATEI_ZIEL);
+            hatfehlendenParameter = true;
+        }
+        String offset = getOption(cmd, OPTION_AUS_DATEI_OFFSET);
+        if (!isOptionOk(offset)) {
+            System.err.println(HINWEIS_AUS_DATEI_OFFSET);
+            hatfehlendenParameter = true;
+        }
+        String laenge = getOption(cmd, OPTION_AUS_DATEI_LAENGE);
+        if (!isOptionOk(laenge)) {
+            System.err.println(HINWEIS_AUS_DATEI_LAENGE);
+            hatfehlendenParameter = true;
+        }
+        if (hatfehlendenParameter) {
+            return 1;
+        }
         return 0;
     }
 

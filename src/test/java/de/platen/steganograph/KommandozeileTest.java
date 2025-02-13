@@ -5,9 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +64,37 @@ public class KommandozeileTest {
     private static final String HINWEIS_ID = "Für das Erzeugen eines Schlüsselpaares muss die ID angegeben werden.";
     private static final String HINWEIS_DATEI_PUBLIC_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des öffentlichen Schlüssels angegeben werden.";
     private static final String HINWEIS_DATEI_PRIVATE_KEY = "Für das Erzeugen eines Schlüsselpaares muss der Dateiname des privaten Schlüssels angegeben werden.";
+
+    private static final String OPTION_IN_DATEI = "inDatei";
+    private static final String OPTION_IN_DATEI_QUELLE = "quelldatei";
+    private static final String OPTION_IN_DATEI_ZIEL = "zieldatei";
+    private static final String OPTION_IN_DATEI_LAENGE = "laenge";
+    private static final String OPTION_IN_DATEI_OFFSET = "offset";
+    private static final String OPTION_IN_DATEI_ERZEUGUNG = "erzeugung";
+
+    private static final String HINWEIS_IN_DATEI_QUELLE = "Für das Verstecken in einer Datei muss die Quelldatei angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_ZIEL = "Für das Verstecken in einer Datei muss die Zieldatei angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_LAENGE = "Für das Verstecken in einer Datei muss die Länge angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_OFFSET = "Für das Verstecken in einer Datei muss der Offset angegeben werden.";
+    private static final String HINWEIS_IN_DATEI_ERZEUGUNG = "Für das Verstecken in einer Datei muss die Erzeugungsoption angegeben werden.";
+
+    private static final String OPTION_AUS_DATEI = "ausDatei";
+    private static final String OPTION_AUS_DATEI_QUELLE = "quelldatei";
+    private static final String OPTION_AUS_DATEI_ZIEL = "zieldatei";
+    private static final String OPTION_AUS_DATEI_OFFSET = "offset";
+    private static final String OPTION_AUS_DATEI_LAENGE = "laenge";
+
+    private static final String HINWEIS_AUS_DATEI_QUELLE = "Für das Auslesen aus einer Datei muss die Quelldatei angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_ZIEL = "Für das Auslesen aus einer Datei muss die Zieldatei angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_OFFSET = "Für das Auslesen aus einer Datei muss der Offset angegeben werden.";
+    private static final String HINWEIS_AUS_DATEI_LAENGE = "Für das Auslesen aus einer Datei muss die Länge angegeben werden.";
+
+    private static final String OPTION_ZUFALLSDATEI = "zufallsdatei";
+    private static final String OPTION_ZUFALLSDATEI_NAME = "name";
+    private static final String OPTION_ZUFALLSDATEI_LAENGE = "laenge";
+
+    private static final String HINWEIS_ZUFFALSDATEI_NAME = "Für die Erzeugung einer Datei mit Zufallswerten muss der Dateiname angegeben werden";
+    private static final String HINWEIS_ZUFFALSDATEI_LAENGE = "Für die Erzeugung einer Datei mit Zufallswerten muss die Dateilänge angegeben werden";
 
     private Kommandozeile kommandozeile;
     private final Aktionen aktionen = Mockito.mock(Aktionen.class);
@@ -488,6 +521,38 @@ public class KommandozeileTest {
         String ausgabe = os.toString();
         assertFalse(ausgabe.contains(HINWEIS_ID));
         assertFalse(ausgabe.contains(HINWEIS_DATEI_PUBLIC_KEY));
+    }
+
+    @Test
+    public void testBehandleKommandozeileErzeugeZufallsdateiAlleParameter() throws IOException, ParseException {
+        String[] name = erzeugeParameter(OPTION_ZUFALLSDATEI_NAME, "heuhaufen");
+        String[] laenge = erzeugeParameter(OPTION_ZUFALLSDATEI_LAENGE, "1000");
+        String[] args = { "--" + OPTION_ZUFALLSDATEI, name[0], name[1], laenge[0], laenge[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileInDateiAlleParameter() throws IOException, ParseException {
+        String[] quelldatei = erzeugeParameter(OPTION_IN_DATEI_QUELLE, "versteckregel");
+        String[] zieldatei = erzeugeParameter(OPTION_IN_DATEI_ZIEL, "zufallsdatei");
+        String[] laenge = erzeugeParameter(OPTION_IN_DATEI_LAENGE, "1000");
+        String[] offset = erzeugeParameter(OPTION_IN_DATEI_OFFSET, "500");
+        String[] erzeugung = erzeugeParameter(OPTION_IN_DATEI_ERZEUGUNG, "true");
+        String[] args = { "--" + OPTION_IN_DATEI, quelldatei[0], quelldatei[1], zieldatei[0], zieldatei[1], laenge[0], laenge[1], offset[0], offset[1] , erzeugung[0], erzeugung[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
+    }
+
+    @Test
+    public void testBehandleKommandozeileAusDateiAlleParameter() throws IOException, ParseException {
+        String[] quelldatei = erzeugeParameter(OPTION_AUS_DATEI_QUELLE, "zufallsdatei");
+        String[] zieldatei = erzeugeParameter(OPTION_AUS_DATEI_ZIEL, "versteckregel");
+        String[] laenge = erzeugeParameter(OPTION_AUS_DATEI_OFFSET, "1000");
+        String[] offset = erzeugeParameter(OPTION_AUS_DATEI_LAENGE, "500");
+        String[] args = { "--" + OPTION_AUS_DATEI, quelldatei[0], quelldatei[1], zieldatei[0], zieldatei[1], laenge[0], laenge[1], offset[0], offset[1] };
+        assertEquals(0, kommandozeile.behandleKommandozeile(args));
+        assertTrue(os.toString().isEmpty());
     }
 
     private static String[] erzeugeParameter(String name, String wert) {
