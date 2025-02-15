@@ -23,8 +23,11 @@ import org.junit.Test;
 import de.platen.extern.wavfile.WavFile;
 import de.platen.extern.wavfile.WavFileException;
 import de.platen.steganograph.utils.DateiUtils;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.internal.matchers.ArrayEquals;
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class AktionenTest {
 
     private static final String DATEINAME_VERTEILREGELl = "src/test/resources/verteilregeln";
