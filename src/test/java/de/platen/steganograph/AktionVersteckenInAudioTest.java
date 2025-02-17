@@ -12,6 +12,8 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
 import de.platen.extern.wavfile.WavFile;
@@ -31,6 +33,7 @@ import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.KonfigurationVerteilregeln;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class AktionVersteckenInAudioTest {
 
     private static final String DATEINAME_VERTEILREGEl = "src/test/resources/verteilregeln";
