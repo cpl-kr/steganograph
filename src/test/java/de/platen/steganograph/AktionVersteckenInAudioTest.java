@@ -33,7 +33,7 @@ import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.KonfigurationVerteilregeln;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
-@TestMethodOrder(MethodOrderer.MethodName.class)
+@TestMethodOrder(MethodOrderer.Random.class)
 public class AktionVersteckenInAudioTest {
 
     private static final String DATEINAME_VERTEILREGEl = "src/test/resources/verteilregeln";
@@ -41,11 +41,6 @@ public class AktionVersteckenInAudioTest {
     private static final String DATEINAME_AUDIO_ORIGINAL = "src/test/resources/audiooriginal.wav";
     private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
-
-    @Before
-    public void before() {
-        loescheDateien();
-    }
 
     @After
     public void after() {

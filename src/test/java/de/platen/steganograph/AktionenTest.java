@@ -27,7 +27,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.internal.matchers.ArrayEquals;
 
-@TestMethodOrder(MethodOrderer.MethodName.class)
+@TestMethodOrder(MethodOrderer.Random.class)
 public class AktionenTest {
 
     private static final String DATEINAME_VERTEILREGELl = "src/test/resources/verteilregeln";
@@ -44,11 +44,6 @@ public class AktionenTest {
     private static final String DATEINAME_PRIVATE_KEY = "src/test/resources/private.pgp";
     private static final String ID = "person";
     private static final String PASSWORT = "passwort";
-
-    @Before
-    public void before() {
-        loescheDateien();
-    }
 
     @After
     public void after() {
