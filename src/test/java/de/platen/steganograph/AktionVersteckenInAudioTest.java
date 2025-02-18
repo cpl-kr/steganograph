@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
 import de.platen.extern.wavfile.WavFile;
@@ -33,7 +33,6 @@ import de.platen.steganograph.utils.DateiUtils;
 import de.platen.steganograph.verteilregelgenerierung.KonfigurationVerteilregeln;
 import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
-@TestMethodOrder(MethodOrderer.Random.class)
 public class AktionVersteckenInAudioTest {
 
     private static final String DATEINAME_VERTEILREGEl = "src/test/resources/verteilregeln";
@@ -42,9 +41,17 @@ public class AktionVersteckenInAudioTest {
     private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
     private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
 
+    private final Lock lock = new ReentrantLock();
+
+    @Before
+    public void before() {
+        this.lock.lock();
+    }
+
     @After
     public void after() {
         loescheDateien();
+        this.lock.unlock();
     }
 
     @Test

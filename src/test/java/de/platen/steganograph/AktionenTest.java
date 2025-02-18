@@ -11,23 +11,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import de.platen.crypt.KeyVerwaltung;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.platen.extern.wavfile.WavFile;
 import de.platen.extern.wavfile.WavFileException;
 import de.platen.steganograph.utils.DateiUtils;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.mockito.internal.matchers.ArrayEquals;
 
-@TestMethodOrder(MethodOrderer.Random.class)
 public class AktionenTest {
 
     private static final String DATEINAME_VERTEILREGELl = "src/test/resources/verteilregeln";
@@ -45,9 +42,17 @@ public class AktionenTest {
     private static final String ID = "person";
     private static final String PASSWORT = "passwort";
 
+    private final Lock lock = new ReentrantLock();
+
+    @Before
+    public void before() {
+        this.lock.lock();
+    }
+
     @After
     public void after() {
         loescheDateien();
+        this.lock.unlock();
     }
 
     @Test
