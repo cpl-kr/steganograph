@@ -6,14 +6,16 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-import org.junit.After;
-import org.junit.Before;
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mockito;
 
 import de.platen.extern.wavfile.WavFile;
@@ -35,23 +37,27 @@ import de.platen.steganograph.verteilregelgenerierung.Verteilregelgenerierung;
 
 public class AktionVersteckenInAudioTest {
 
-    private static final String DATEINAME_VERTEILREGEl = "src/test/resources/verteilregeln";
-    private static final String DATEINAME_NUTZDATEN = "src/test/resources/nutzdatenOriginal";
-    private static final String DATEINAME_AUDIO_ORIGINAL = "src/test/resources/audiooriginal.wav";
-    private static final String DATEINAME_AUDIO_VERSTECK = "src/test/resources/audioversteck.wav";
-    private static final String DATEINAME_NUTZDATEN_NEU = "src/test/resources/nutzdatenneu";
+    private static final String VERZEICHNIS = "src/test/resources/daten";
+    private static final String FILEDELIMITER = FileSystems.getDefault().getSeparator();
+    private static final String DATEINAME_VERTEILREGEl = "verteilregeln";
+    private static final String DATEINAME_NUTZDATEN = "nutzdatenOriginal";
+    private static final String DATEINAME_AUDIO_ORIGINAL = "audiooriginal.wav";
+    private static final String DATEINAME_AUDIO_VERSTECK = "audioversteck.wav";
 
-    private final Lock lock = new ReentrantLock();
-
-    @Before
-    public void before() {
-        this.lock.lock();
+    @BeforeClass
+    public static void erzeugeVerzeichnis() {
+        File file = new File(VERZEICHNIS);
+        if (!file.mkdirs()) {
+            System.out.println("Verzeichnis " + VERZEICHNIS + " konnte nicht erzeugt werden.");
+        } else {
+            System.out.println("Verzeichnis " + VERZEICHNIS + " erzeugt.");
+        }
     }
 
-    @After
-    public void after() {
-        loescheDateien();
-        this.lock.unlock();
+    @AfterClass
+    public static void loescheVerzeichnis() throws IOException {
+        File file = new File(VERZEICHNIS);
+        FileUtils.deleteDirectory(file);
     }
 
     @Test
@@ -141,15 +147,19 @@ public class AktionVersteckenInAudioTest {
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(10);
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(4);
         Bittiefe bittiefe = new Bittiefe(2);
+        final String verzeichnis = "test1";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(5);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        WavFile wavFile = erzeugeAudiodatei(10);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        WavFile wavFile = erzeugeAudiodatei(10, pfad);
         wavFile.close();
         try {
-            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                    DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                    pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
             assertEquals("Die Anzahl der Kanäle von den Versteckregeln ist größer als die Anzahl der Kanäle von Audio.",
@@ -164,14 +174,18 @@ public class AktionVersteckenInAudioTest {
         AnzahlKanaele anzahlKanaele = new AnzahlKanaele(2);
         Bittiefe bittiefe = new Bittiefe(2);
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        final String verzeichnis = "test2";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(100000);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        WavFile wavFile = erzeugeAudiodatei(1);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        WavFile wavFile = erzeugeAudiodatei(1, pfad);
         wavFile.close();
         try {
-            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                    DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+            new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                    pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
             fail();
         } catch (RuntimeException e) {
             assertEquals("Es können nicht alle Nutzdaten in Audio untergebracht werden.", e.getMessage());
@@ -180,7 +194,11 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuer1BlockAlsTeilblock() throws IOException, WavFileException {
-        WavFile wavFileOriginal = erzeugeAudiodatei(1);
+        final String verzeichnis = "test3";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileOriginal = erzeugeAudiodatei(1, pfad);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -193,12 +211,12 @@ public class AktionVersteckenInAudioTest {
         Bittiefe bittiefe = new Bittiefe(2);
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
-        WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        WavFile wavFileVersteck = WavFile.openWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
         assertEquals(numFrames, wavFileVersteck.getNumFrames());
         assertEquals(sampleRate, wavFileVersteck.getSampleRate());
@@ -214,7 +232,11 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuer1BlockAlsKomplettblock() throws IOException, WavFileException {
-        WavFile wavFileOriginal = erzeugeAudiodatei(1);
+        final String verzeichnis = "test4";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileOriginal = erzeugeAudiodatei(1, pfad);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -227,12 +249,12 @@ public class AktionVersteckenInAudioTest {
         Bittiefe bittiefe = new Bittiefe(2);
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
-        WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        WavFile wavFileVersteck = WavFile.openWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
         assertEquals(numFrames, wavFileVersteck.getNumFrames());
         assertEquals(sampleRate, wavFileVersteck.getSampleRate());
@@ -248,7 +270,11 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioFuerMehrereBloeckeKompletteBloecke() throws IOException, WavFileException {
-        WavFile wavFileOriginal = erzeugeAudiodatei(1);
+        final String verzeichnis = "test5";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileOriginal = erzeugeAudiodatei(1, pfad);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -261,12 +287,12 @@ public class AktionVersteckenInAudioTest {
         Bittiefe bittiefe = new Bittiefe(2);
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
-        WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        WavFile wavFileVersteck = WavFile.openWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
         assertEquals(numFrames, wavFileVersteck.getNumFrames());
         assertEquals(sampleRate, wavFileVersteck.getSampleRate());
@@ -285,7 +311,11 @@ public class AktionVersteckenInAudioTest {
     @Test
     public void testVersteckeNutzdatenInAudioFuerMehrereBloeckeLetzterBlockTeilblock()
             throws IOException, WavFileException {
-        WavFile wavFileOriginal = erzeugeAudiodatei(1);
+        final String verzeichnis = "test6";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileOriginal = erzeugeAudiodatei(1, pfad);
         int numChannels = wavFileOriginal.getNumChannels();
         long numFrames = wavFileOriginal.getNumFrames();
         long sampleRate = wavFileOriginal.getSampleRate();
@@ -298,12 +328,12 @@ public class AktionVersteckenInAudioTest {
         Bittiefe bittiefe = new Bittiefe(2);
         byte[] verteilregel = generiere(blockgroesse, anzahlNutzdaten, anzahlKanaele, bittiefe);
         List<Eintrag> eintraege = Verteilregelgenerierung.konvertiereEintraege(verteilregel);
-        DateiUtils.schreibeDatei(DATEINAME_VERTEILREGEl, verteilregel);
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, verteilregel);
         byte[] nutzdaten = erzeugeNutzdaten(anzahlBytes);
-        DateiUtils.schreibeDatei(DATEINAME_NUTZDATEN, nutzdaten);
-        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(DATEINAME_VERTEILREGEl, DATEINAME_NUTZDATEN,
-                DATEINAME_AUDIO_ORIGINAL, DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
-        WavFile wavFileVersteck = WavFile.openWavFile(new File(DATEINAME_AUDIO_VERSTECK));
+        DateiUtils.schreibeDatei(pfad + FILEDELIMITER + DATEINAME_NUTZDATEN, nutzdaten);
+        new AktionVersteckenInAudio().versteckeNutzdatenInAudio(pfad + FILEDELIMITER + DATEINAME_VERTEILREGEl, pfad + FILEDELIMITER + DATEINAME_NUTZDATEN,
+                pfad + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL, pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK, Verrauschoption.ALLES);
+        WavFile wavFileVersteck = WavFile.openWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK));
         assertEquals(numChannels, wavFileVersteck.getNumChannels());
         assertEquals(numFrames, wavFileVersteck.getNumFrames());
         assertEquals(sampleRate, wavFileVersteck.getSampleRate());
@@ -419,7 +449,11 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVersteckeNutzdatenInAudioParameterUngleich() throws IOException, WavFileException {
-        WavFile wavFileQuelle = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK), 2, 10, 16, 1000);
+        final String verzeichnis = "test7";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileQuelle = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK), 2, 10, 16, 1000);
         byte[] verteilregel = new byte[10];
         byte[] nutzdaten = new byte[10];
         Verrauschoption verrauschoption = Verrauschoption.ALLES;
@@ -427,7 +461,7 @@ public class AktionVersteckenInAudioTest {
         String dateinameNutzdaten = "dateinameNutzdaten";
         WavFile wavFileZiel = null;
         try {
-            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "1"), 3, 10, 16, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK + "1"), 3, 10, 16, 1000);
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
@@ -437,7 +471,7 @@ public class AktionVersteckenInAudioTest {
             wavFileZiel.close();
         }
         try {
-            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "2"), 2, 20, 16, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK + "2"), 2, 20, 16, 1000);
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
@@ -447,7 +481,7 @@ public class AktionVersteckenInAudioTest {
             wavFileZiel.close();
         }
         try {
-            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "3"), 2, 10, 8, 1000);
+            wavFileZiel = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK + "3"), 2, 10, 8, 1000);
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
@@ -457,7 +491,7 @@ public class AktionVersteckenInAudioTest {
             wavFileZiel.close();
         }
         try {
-            wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK + "4"), 2, 10, 16, 2000);
+            wavFileZiel = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK + "4"), 2, 10, 16, 2000);
             new AktionVersteckenInAudio().versteckeNutzdatenInAudio(verteilregel, nutzdaten, wavFileQuelle, wavFileZiel,
                     verrauschoption, uniFormatAudio, dateinameNutzdaten);
         } catch (IllegalArgumentException e) {
@@ -470,8 +504,12 @@ public class AktionVersteckenInAudioTest {
 
     @Test
     public void testVerrauscheRest() throws IOException, WavFileException {
-        WavFile wavFileQuelle = erzeugeAudiodatei(1);
-        WavFile wavFileZiel = WavFile.newWavFile(new File(DATEINAME_AUDIO_VERSTECK), wavFileQuelle.getNumChannels(),
+        final String verzeichnis = "test8";
+        final String pfad = VERZEICHNIS + FILEDELIMITER + verzeichnis;
+        final File file = new File(pfad);
+        file.mkdirs();
+        WavFile wavFileQuelle = erzeugeAudiodatei(1, pfad);
+        WavFile wavFileZiel = WavFile.newWavFile(new File(pfad + FILEDELIMITER + DATEINAME_AUDIO_VERSTECK), wavFileQuelle.getNumChannels(),
                 wavFileQuelle.getNumFrames(), wavFileQuelle.getValidBits(), wavFileQuelle.getSampleRate());
         Blockgroesse blockgroesse = new Blockgroesse(200);
         AnzahlNutzdaten anzahlNutzdaten = new AnzahlNutzdaten(50);
@@ -488,51 +526,13 @@ public class AktionVersteckenInAudioTest {
         Mockito.verify(uniFormatAudio, Mockito.times(221)).verrausche();
     }
 
-    private void loescheDateien() {
-        File fileVerteilregel = new File(DATEINAME_VERTEILREGEl);
-        File fileNutzdatenOriginal = new File(DATEINAME_NUTZDATEN);
-        File fileOriginal = new File(DATEINAME_AUDIO_ORIGINAL);
-        File fileVersteck = new File(DATEINAME_AUDIO_VERSTECK);
-        File fileVersteck1 = new File(DATEINAME_AUDIO_VERSTECK + "1");
-        File fileVersteck2 = new File(DATEINAME_AUDIO_VERSTECK + "2");
-        File fileVersteck3 = new File(DATEINAME_AUDIO_VERSTECK + "3");
-        File fileVersteck4 = new File(DATEINAME_AUDIO_VERSTECK + "4");
-        File fileNutzdatenNeu = new File(DATEINAME_NUTZDATEN_NEU);
-        if (fileVerteilregel.exists()) {
-            fileVerteilregel.delete();
-        }
-        if (fileNutzdatenOriginal.exists()) {
-            fileNutzdatenOriginal.delete();
-        }
-        if (fileOriginal.exists()) {
-            fileOriginal.delete();
-        }
-        if (fileVersteck.exists()) {
-            fileVersteck.delete();
-        }
-        if (fileVersteck1.exists()) {
-            fileVersteck1.delete();
-        }
-        if (fileVersteck2.exists()) {
-            fileVersteck2.delete();
-        }
-        if (fileVersteck3.exists()) {
-            fileVersteck3.delete();
-        }
-        if (fileVersteck4.exists()) {
-            fileVersteck4.delete();
-        }
-        if (fileNutzdatenNeu.exists()) {
-            fileNutzdatenNeu.delete();
-        }
-    }
-
-    private WavFile erzeugeAudiodatei(int anzahlSekunden) throws IOException, WavFileException {
+    private WavFile erzeugeAudiodatei(int anzahlSekunden, String verzeichnis) throws IOException, WavFileException {
         int numChannels = 2;
         int validBits = 16;
         int sampleRate = 44100;
         int numFrames = sampleRate * anzahlSekunden;
-        WavFile wavFile = WavFile.newWavFile(new File(DATEINAME_AUDIO_ORIGINAL), numChannels, numFrames, validBits,
+        String datei = verzeichnis + FILEDELIMITER + DATEINAME_AUDIO_ORIGINAL;
+        WavFile wavFile = WavFile.newWavFile(new File(datei), numChannels, numFrames, validBits,
                 sampleRate);
         int[][] sampleBuffer = new int[numChannels][sampleRate];
         for (int sekunde = 1; sekunde <= 10; sekunde++) {
@@ -545,7 +545,7 @@ public class AktionVersteckenInAudioTest {
             wavFile.writeFrames(sampleBuffer, sampleRate);
         }
         wavFile.close();
-        return WavFile.openWavFile(new File(DATEINAME_AUDIO_ORIGINAL));
+        return WavFile.openWavFile(new File(datei));
     }
 
     private byte[] erzeugeNutzdaten(int anzahl) {
