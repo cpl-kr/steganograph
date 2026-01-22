@@ -131,10 +131,15 @@ Die Web-Anwendung kann mit folgendem Befehl aus dem Projektverzeichnis gestartet
 </li>
 <li><b>Zugriff:</b><br>
 Nach dem Start ist die Oberfläche im Browser unter folgender Adresse erreichbar:
-<pre>http://localhost:9000</pre>
+<pre>http://localhost:9222</pre>
 </li>
 <li><b>Funktionen:</b><br>
 Alle Funktionen der Original-Anwendung (Regelgenerierung, Verstecken, Holen, Schlüsselverwaltung, Dateitools) sind über das Web-Interface zugänglich.
+</li>
+<li><b>Docker:</b><br>
+Die Anwendung kann auch mit Docker gestartet werden:
+<pre>docker-compose up --build</pre>
+Danach ist die Oberfläche ebenfalls unter <pre>http://localhost:9222</pre> erreichbar.
 </li>
 </ul>
 

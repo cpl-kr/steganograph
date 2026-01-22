@@ -1,0 +1,8 @@
+services:
+  steganograph-web:
+    build: .
+    ports:
+      - "9222:9222"
+    environment:
+      - SERVER_PORT=9222
+    restart: unless-stopped
