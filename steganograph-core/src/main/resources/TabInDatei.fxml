@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.platen.steganograph.gui.TabInDateiController">
+   <children>
+       <Label layoutX="5.0" layoutY="14.0" text="Verstecken einer Datei in einer Datei mit Zufallswerten">
+           <font>
+               <Font name="System Bold" size="14.0" />
+           </font>
+       </Label>
+
+       <Button layoutX="15.0" layoutY="44.0" mnemonicParsing="false" onAction="#behandleButtonVersteckdatei" text="Ablageort zu versteck. Datei" />
+       <TextField fx:id="textfeldVersteckdatei" editable="false" layoutX="219.0" layoutY="43.0" prefHeight="25.0" prefWidth="361.0" />
+
+       <Label layoutX="15.0" layoutY="85.0" text="Größe der zu verst. Datei:" />
+       <TextField fx:id="textfeldGroesseVersteckdatei" editable="false" layoutX="219.0" layoutY="85.0" prefHeight="25.0" prefWidth="361.0" />
+
+       <TextField fx:id="textfeldZufallsdateiverzeichnis" editable="false" layoutX="219.0" layoutY="127.0" prefHeight="25.0" prefWidth="361.0" />
+       <Button layoutX="15.0" layoutY="127.0" mnemonicParsing="false" onAction="#behandleButtonZufallsdateiverzeichnis" text="Verzeichnis Zufallsdatei" />
+
+       <Label layoutX="15.0" layoutY="171.0" text="Zufallsdateiname:" />
+       <TextField fx:id="textfeldZufallsdateiname" layoutX="219.0" layoutY="171.0" onKeyReleased="#onKeyName" prefHeight="25.0" prefWidth="361.0" />
+
+       <Label layoutX="15.0" layoutY="219.0" text="Größe Zufallsdatei in KB:" />
+       <TextField fx:id="textfeldGroesse" layoutX="219.0" layoutY="219.0" onKeyReleased="#onKeyGroesse" prefHeight="25.0" prefWidth="361.0" />
+
+       <Label layoutX="15.0" layoutY="269.0" text="Position in Zufallsdatei:" />
+       <TextField fx:id="textfeldPosition" layoutX="219.0" layoutY="269.0" onKeyReleased="#onKeyPosition" prefHeight="25.0" prefWidth="361.0" />
+
+       <Button fx:id="buttonVerstecken" disable="true" layoutX="245.0" layoutY="450.0" mnemonicParsing="false" onAction="#behandleButtonVerstecken" text="Verstecken" />
+   </children>
+</Pane>
+<!--
+85
+127
+171
+219
+280
+-->

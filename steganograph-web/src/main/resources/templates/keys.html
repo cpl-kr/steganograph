@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Keys - Steganograph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Steganograph</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/generate">Generate Rule</a>
+                <a href="/hide">Hide Data</a>
+                <a href="/extract">Extract Data</a>
+                <a href="/keys" class="active">Keys</a>
+                <a href="/files">Files</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>Generate PGP Key Pair</h2>
+            <p>Create a public/private key pair for encrypting distribution rules.</p>
+
+            <form action="/keys" method="post">
+                <div class="form-group">
+                    <label for="id">User ID (e.g., Name <email@example.com>)</label>
+                    <input type="text" id="id" name="id" placeholder="John Doe <john@example.com>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwort">Password (Optional)</label>
+                    <input type="text" id="passwort" name="passwort" placeholder="Secure Password">
+                </div>
+
+                <button type="submit">Generate & Download Keys (.zip)</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

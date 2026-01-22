@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganograph Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Steganograph</a>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/generate">Generate Rule</a>
+                <a href="/hide">Hide Data</a>
+                <a href="/extract">Extract Data</a>
+                <a href="/keys">Keys</a>
+                <a href="/files">Files</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Secure Your Data</h1>
+            <p>Advanced steganography tool to hide information in images and audio files securely.</p>
+        </div>
+
+        <div class="grid">
+            <a href="/generate" class="feature-card">
+                <span class="feature-icon">📝</span>
+                <div class="feature-title">Generate Distribution Rule</div>
+                <div class="feature-desc">Create a secure distribution rule file required for hiding and extracting
+                    data.</div>
+            </a>
+
+            <a href="/hide" class="feature-card">
+                <span class="feature-icon">🔒</span>
+                <div class="feature-title">Hide Data</div>
+                <div class="feature-desc">Conceal secret files within image or audio carriers using your distribution
+                    rule.</div>
+            </a>
+
+            <a href="/extract" class="feature-card">
+                <span class="feature-icon">🔓</span>
+                <div class="feature-title">Extract Data</div>
+                <div class="feature-desc">Retrieve hidden information from carrier files using the matching rule.</div>
+            </a>
+
+            <a href="/keys" class="feature-card">
+                <span class="feature-icon">🔑</span>
+                <div class="feature-title">Manage Keys</div>
+                <div class="feature-desc">Generate PGP key pairs to encrypt and protect your distribution rules.</div>
+            </a>
+
+            <a href="/files" class="feature-card">
+                <span class="feature-icon">📁</span>
+                <div class="feature-title">File Tools</div>
+                <div class="feature-desc">Offset-based hiding, random file generation, and other low-level file
+                    operations.</div>
+            </a>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Operations - Steganograph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Steganograph</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/generate">Generate Rule</a>
+                <a href="/hide">Hide Data</a>
+                <a href="/extract">Extract Data</a>
+                <a href="/keys">Keys</a>
+                <a href="/files" class="active">Files</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>Generate Random File</h2>
+            <p>Create a file filled with random data of a specific length.</p>
+
+            <form action="/files/random" method="post">
+                <div class="form-group">
+                    <label for="name">File Name</label>
+                    <input type="text" id="name" name="name" value="random_data.bin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="laenge">Length (Bytes)</label>
+                    <input type="number" id="laenge" name="laenge" value="1024" required>
+                </div>
+
+                <button type="submit">Generate & Download</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Hide File in Another File (Offset)</h2>
+            <p>Conceal a file within another file starting at a specific offset.</p>
+
+            <form action="/files/hide" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="quelle">File to Hide</label>
+                    <input type="file" id="quelle" name="quelle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ziel">Target Carrier File</label>
+                    <input type="file" id="ziel" name="ziel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="laenge">Length to Hide (Bytes)</label>
+                    <input type="number" id="laenge" name="laenge" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="offset">Offset to start (Bytes)</label>
+                    <input type="number" id="offset" name="offset" value="0" required>
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="erzeugung" name="erzeugung" style="width: auto;">
+                    <label for="erzeugung" style="margin-bottom: 0;">Fill Carrier with Random Data first</label>
+                </div>
+
+                <button type="submit">Process & Download</button>
+            </form>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2>Extract File from Another File (Offset)</h2>
+            <p>Retrieve a concealed file from a carrier starting at a specific offset.</p>
+
+            <form action="/files/extract" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="quelle">Carrier File</label>
+                    <input type="file" id="quelle" name="quelle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="zieldateiname">Target File Name (to be created)</label>
+                    <input type="text" id="zieldateiname" name="zieldateiname" value="extracted_file.bin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="laenge">Length to Extract (Bytes)</label>
+                    <input type="number" id="laenge" name="laenge" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="offset">Offset to start (Bytes)</label>
+                    <input type="number" id="offset" name="offset" value="0" required>
+                </div>
+
+                <button type="submit">Extract & Download</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

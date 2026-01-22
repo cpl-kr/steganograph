@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Rule - Steganograph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Steganograph</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/generate" class="active">Generate Rule</a>
+                <a href="/hide">Hide Data</a>
+                <a href="/extract">Extract Data</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>Generate Distribution Rule</h2>
+            <p>Create a distribution rule for hiding data. This rule specifies how bits are distributed in the carrier
+                file.</p>
+
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <button type="button" onclick="setPreset('image')"
+                    style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; flex: 1;">Preset:
+                    Image</button>
+                <button type="button" onclick="setPreset('audio')"
+                    style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; flex: 1;">Preset:
+                    Audio</button>
+            </div>
+
+            <form action="/generate" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="blockgroesse">Block Size (Bytes)</label>
+                    <input type="number" id="blockgroesse" name="blockgroesse" value="1024" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nutzdaten">Payload Size (Bytes)</label>
+                    <input type="number" id="nutzdaten" name="nutzdaten" value="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="kanale">Channels</label>
+                    <input type="number" id="kanale" name="kanale" value="3" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bittiefe">Bit Depth</label>
+                    <input type="number" id="bittiefe" name="bittiefe" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="publicKeys">Public Keys (Optional, multiple allowed)</label>
+                    <input type="file" id="publicKeys" name="publicKeys" multiple>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwort">Encryption Password (Optional)</label>
+                    <input type="text" id="passwort" name="passwort">
+                </div>
+
+                <button type="submit">Generate & Download Rule</button>
+            </form>
+        </div>
+    </main>
+    <script>
+        function setPreset(type) {
+            if (type === 'image') {
+                document.getElementById('blockgroesse').value = 100;
+                document.getElementById('nutzdaten').value = 50;
+                document.getElementById('kanale').value = 3;
+                document.getElementById('bittiefe').value = 2;
+            } else if (type === 'audio') {
+                document.getElementById('blockgroesse').value = 200;
+                document.getElementById('nutzdaten').value = 50;
+                document.getElementById('kanale').value = 2;
+                document.getElementById('bittiefe').value = 2;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract Data - Steganograph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Steganograph</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/generate">Generate Rule</a>
+                <a href="/hide">Hide Data</a>
+                <a href="/extract" class="active">Extract Data</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>Extract Hidden Information</h2>
+            <p>Upload the carrier file containing hidden information and the corresponding rule.</p>
+
+            <form action="/extract" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="quelle">Carrier File (PNG, BMP, WAV)</label>
+                    <input type="file" id="quelle" name="quelle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="verteilregel">Distribution Rule (.dat)</label>
+                    <input type="file" id="verteilregel" name="verteilregel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="privateKey">Private Key (Optional, for encrypted rules)</label>
+                    <input type="file" id="privateKey" name="privateKey">
+                </div>
+
+                <div class="form-group">
+                    <label for="passwort">Password (Optional)</label>
+                    <input type="text" id="passwort" name="passwort">
+                </div>
+
+                <button type="submit">Extract & Download Data</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -120,9 +120,27 @@ Beispiele:<br>
 <i>java -jar Steganograph.jar --inDatei --quelldatei versteckregel --ztieldatei heuhaufen --laenge 1000 --offset 500 --erzeugung true</i>
 <i>java -jar Steganograph.jar --inDatei --quelldatei heuhaufen --zieldatei versteckregel --offset 500 --laenge 1000</i>
 
+<b>Web-Oberfläche (Spring Boot):</b><br>
+
+Neben der Desktop-GUI und der Kommandozeile verfügt der Steganograph nun über eine Spring Boot Web-Oberfläche.
+
+<ul>
+<li><b>Starten der Web-Anwendung:</b><br>
+Die Web-Anwendung kann mit folgendem Befehl aus dem Projektverzeichnis gestartet werden:
+<pre>mvn spring-boot:run -pl steganograph-web</pre>
+</li>
+<li><b>Zugriff:</b><br>
+Nach dem Start ist die Oberfläche im Browser unter folgender Adresse erreichbar:
+<pre>http://localhost:9000</pre>
+</li>
+<li><b>Funktionen:</b><br>
+Alle Funktionen der Original-Anwendung (Regelgenerierung, Verstecken, Holen, Schlüsselverwaltung, Dateitools) sind über das Web-Interface zugänglich.
+</li>
+</ul>
+
 <b>Ausblick auf weitere Entwicklungen:</b>
 <ul>
 <li>Beschleunigung des Laufzeitverhaltens</li>
-<li>Verstecken von Nutzdaten in (verlustfreien oder verlustfreien Anteilen) Videodateien</li>
-<li>Verstecken von Live-Streams (Video, Audio) in Live-Streams (Video, Audio, hierbei verlustfrei oder verlustfreien Anteilen)</li>
+<li>Verstecken von Nutzdaten in (verlustfreien oder verlustfreien Anteilen) Videodateien?</li>
+<li>Verstecken von Live-Streams (Video, Audio) in Live-Streams (Video, Audio, hierbei verlustfrei oder verlustfreien Anteilen)?</li>
 </ul>
